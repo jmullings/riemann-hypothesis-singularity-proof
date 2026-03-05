@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="">
+    <meta property="og:title" content="The Riemann Hypothesis φ Singularity">
+    <meta property="og:description" content="Interactive visualization of the φ-weighted spectral framework for the Riemann Hypothesis - A novel transfer operator approach with structural definitions and conjectural architecture.">
+    <meta property="og:image" content="https://raw.githubusercontent.com/jmullings/riemann-hypothesis-singularity-proof/main/RH_SINGULARITY_OG.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="The Riemann Hypothesis φ Singularity Framework - Phase wheel visualization showing φ-weighted transfer operator dynamics">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="">
+    <meta property="twitter:title" content="The Riemann Hypothesis φ Singularity">
+    <meta property="twitter:description" content="Interactive visualization of the φ-weighted spectral framework for the Riemann Hypothesis - A novel transfer operator approach with structural definitions and conjectural architecture.">
+    <meta property="twitter:image" content="https://raw.githubusercontent.com/jmullings/riemann-hypothesis-singularity-proof/main/RH_SINGULARITY_OG.png">
+    <meta property="twitter:image:alt" content="The Riemann Hypothesis φ Singularity Framework - Phase wheel visualization showing φ-weighted transfer operator dynamics">
+    
+    <!-- LinkedIn & Standard -->
+    <meta name="description" content="Interactive visualization of the φ-weighted spectral framework for the Riemann Hypothesis - A novel transfer operator approach with structural definitions and conjectural architecture.">
+    <meta name="image" content="https://raw.githubusercontent.com/jmullings/riemann-hypothesis-singularity-proof/main/RH_SINGULARITY_OG.png">
+    <meta name="author" content="Jason Mullings">
+    <meta name="keywords" content="Riemann Hypothesis, transfer operator, spectral theory, phi-weighted, mathematics, number theory, visualization">
+    
+    <title>The Riemann Hypothesis φ Singularity</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&display=swap');
+
+        :root {
+            --void: #00030a;
+            --deep: #020610;
+            --panel: #040c18;
+            --border: rgba(0, 180, 120, 0.12);
+            --phi: #00e09a;
+            --phi-dim: rgba(0, 224, 154, 0.18);
+            --gold: #f0c060;
+            --gold-dim: rgba(240, 192, 96, 0.22);
+            --crimson: #ff3366;
+            --blue: #4090ff;
+            --white: #d8eee4;
+            --muted: #3a6a54;
+            --tier1: #00e09a;
+            --tier2: #f0c060;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--void);
+            color: var(--white);
+            font-family: 'Space Mono', monospace;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* ── Layout ── */
+        #app {
+            display: grid;
+            grid-template-columns: 320px 1fr 280px;
+            grid-template-rows: 60px 1fr 160px;
+            height: 100vh;
+            width: 100vw;
+            gap: 0;
+        }
+
+        /* ── Header ── */
+        #header {
+            grid-column: 1 / 4;
+            grid-row: 1;
+            background: var(--deep);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            padding: 0 28px;
+            gap: 28px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--phi), transparent);
+            opacity: 0.4;
+        }
+
+        .header-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 18px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            color: var(--white);
+        }
+
+        .header-sub {
+            font-size: 9px;
+            letter-spacing: 4px;
+            color: var(--muted);
+            text-transform: uppercase;
+        }
+
+        .header-divider {
+            width: 1px;
+            height: 28px;
+            background: var(--border);
+            flex-shrink: 0;
+        }
+
+        .header-stat {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .hs-label {
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--muted);
+            text-transform: uppercase;
+        }
+
+        .hs-value {
+            font-size: 12px;
+            color: var(--phi);
+            font-weight: 700;
+        }
+
+        .header-tier {
+            margin-left: auto;
+            display: flex;
+            gap: 12px;
+        }
+
+        .tier-badge {
+            font-size: 8px;
+            letter-spacing: 2px;
+            padding: 3px 8px;
+            border: 1px solid;
+            text-transform: uppercase;
+        }
+
+        .tier-badge.t1 {
+            border-color: rgba(0, 224, 154, 0.35);
+            color: var(--tier1);
+        }
+
+        .tier-badge.t2 {
+            border-color: rgba(240, 192, 96, 0.35);
+            color: var(--tier2);
+        }
+
+        /* ── Left Panel ── */
+        #left {
+            grid-column: 1;
+            grid-row: 2;
+            background: var(--panel);
+            border-right: 1px solid var(--border);
+            overflow-y: auto;
+            padding: 20px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        #left::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        #left::-webkit-scrollbar-thumb {
+            background: var(--phi-dim);
+        }
+
+        .panel-section {
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 14px;
+        }
+
+        .ps-title {
+            font-size: 8px;
+            letter-spacing: 4px;
+            color: var(--phi);
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        /* Equation display */
+        .eq-block {
+            background: rgba(0, 224, 154, 0.03);
+            border: 1px solid rgba(0, 224, 154, 0.1);
+            border-left: 2px solid var(--phi);
+            padding: 10px 12px;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .eq-block.tier2 {
+            border-left-color: var(--gold);
+        }
+
+        .eq-label {
+            font-size: 7px;
+            letter-spacing: 3px;
+            color: var(--muted);
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .eq-formula {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 13px;
+            font-style: italic;
+            color: var(--white);
+            line-height: 1.6;
+        }
+
+        .eq-status {
+            position: absolute;
+            top: 8px;
+            right: 10px;
+            font-size: 7px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .eq-status.rigorous {
+            color: var(--phi);
+        }
+
+        .eq-status.structural {
+            color: var(--blue);
+        }
+
+        .eq-status.conjecture {
+            color: var(--tier2);
+        }
+
+        /* Data rows */
+        .data-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+            font-size: 10px;
+        }
+
+        .dr-label {
+            color: var(--muted);
+        }
+
+        .dr-value {
+            color: var(--white);
+            font-weight: 700;
+        }
+
+        .dr-value.green {
+            color: var(--phi);
+        }
+
+        .dr-value.gold {
+            color: var(--gold);
+        }
+
+        .dr-value.red {
+            color: var(--crimson);
+        }
+
+        .dr-value.blue {
+            color: var(--blue);
+        }
+
+        /* Branch probability bars */
+        .branch-bars {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .branch-bar-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 9px;
+        }
+
+        .branch-bar-label {
+            color: var(--muted);
+            width: 16px;
+            text-align: right;
+        }
+
+        .branch-bar-outer {
+            flex: 1;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 1px;
+            overflow: hidden;
+        }
+
+        .branch-bar-fill {
+            height: 100%;
+            border-radius: 1px;
+            transition: width 0.1s;
+        }
+
+        .branch-bar-val {
+            color: var(--muted);
+            width: 36px;
+            text-align: right;
+            font-size: 8px;
+        }
+
+        /* Score meter */
+        .score-meter-wrap {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 6px;
+            position: relative;
+        }
+
+        .score-meter-fill {
+            height: 100%;
+            border-radius: 2px;
+            background: linear-gradient(90deg, var(--crimson), var(--gold), var(--phi));
+            transition: width 0.12s;
+        }
+
+        /* ── Centre Canvas ── */
+        #centre {
+            grid-column: 2;
+            grid-row: 2;
+            position: relative;
+            background: var(--void);
+            overflow: hidden;
+        }
+
+        #wheel-canvas {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        #singularity-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 0;
+            height: 0;
+            pointer-events: none;
+            transition: opacity 0.08s;
+        }
+
+        /* ── Right Panel ── */
+        #right {
+            grid-column: 3;
+            grid-row: 2;
+            background: var(--panel);
+            border-left: 1px solid var(--border);
+            overflow-y: auto;
+            padding: 20px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        #right::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        #right::-webkit-scrollbar-thumb {
+            background: var(--phi-dim);
+        }
+
+        /* Zero selector */
+        .zero-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 4px;
+        }
+
+        .zero-btn {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            padding: 5px 4px;
+            background: rgba(0, 224, 154, 0.04);
+            border: 1px solid rgba(0, 224, 154, 0.15);
+            color: var(--muted);
+            cursor: pointer;
+            transition: all 0.12s;
+            text-align: center;
+            letter-spacing: 0.5px;
+        }
+
+        .zero-btn:hover {
+            background: rgba(0, 224, 154, 0.1);
+            color: var(--phi);
+            border-color: rgba(0, 224, 154, 0.35);
+        }
+
+        .zero-btn.active {
+            background: rgba(0, 224, 154, 0.14);
+            color: var(--phi);
+            border-color: rgba(0, 224, 154, 0.55);
+            box-shadow: 0 0 8px rgba(0, 224, 154, 0.12);
+        }
+
+        /* Speed slider */
+        input[type=range] {
+            width: 100%;
+            height: 4px;
+            accent-color: var(--phi);
+            background: transparent;
+            cursor: pointer;
+        }
+
+        /* Singularity alert */
+        #singularity-alert {
+            text-align: center;
+            padding: 14px 10px;
+            border: 1px solid rgba(0, 224, 154, 0.2);
+            background: rgba(0, 224, 154, 0.03);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.15s;
+        }
+
+        #singularity-alert.firing {
+            border-color: var(--gold);
+            background: rgba(240, 192, 96, 0.08);
+            box-shadow: 0 0 20px rgba(240, 192, 96, 0.15);
+        }
+
+        .sa-label {
+            font-size: 8px;
+            letter-spacing: 4px;
+            color: var(--muted);
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        #sa-value {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 28px;
+            font-weight: 600;
+            display: block;
+            transition: color 0.1s;
+        }
+
+        #sa-indicator {
+            font-size: 8px;
+            letter-spacing: 3px;
+            color: var(--muted);
+            text-transform: uppercase;
+            display: block;
+            margin-top: 5px;
+        }
+
+        /* ── Bottom strip ── */
+        #bottom {
+            grid-column: 1 / 4;
+            grid-row: 3;
+            background: var(--deep);
+            border-top: 1px solid var(--border);
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            padding: 16px 24px;
+            gap: 16px;
+            overflow: hidden;
+        }
+
+        .bottom-col {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .bc-title {
+            font-size: 8px;
+            letter-spacing: 4px;
+            color: var(--phi);
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .bc-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 12px;
+            font-style: italic;
+            color: var(--muted);
+            line-height: 1.7;
+        }
+
+        .bc-text em {
+            color: #8abca0;
+            font-style: normal;
+        }
+
+        .bc-formula {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 13px;
+            font-style: italic;
+            color: var(--white);
+            letter-spacing: 0.5px;
+        }
+
+        /* Balance line chart */
+        #balance-chart {
+            display: block;
+        }
+
+        /* Sweep cursor line on wheel */
+        .centre-label {
+            position: absolute;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 8px;
+            letter-spacing: 3px;
+            color: var(--muted);
+            text-transform: uppercase;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="app">
+
+        <!-- HEADER -->
+        <div id="header">
+            <div>
+                <div class="header-title">The Riemann Hypothesis φ Singularity</div>
+                <div class="header-sub">Illustrative Framework by Jason Mullings</div>
+                <div class="header-note" style="font-size: 7px; color: var(--muted); letter-spacing: 1px; margin-top: 2px;">Tier 2 items are conjectural architecture and heuristics; not proved statements.</div>
+            </div>
+            <div class="header-divider"></div>
+            <div class="header-stat">
+                <div class="hs-label">φ (golden ratio)</div>
+                <div class="hs-value" id="hdr-phi">1.6180339887</div>
+            </div>
+            <div class="header-divider"></div>
+            <div class="header-stat">
+                <div class="hs-label">Branches</div>
+                <div class="hs-value">k = 0 … 8</div>
+            </div>
+            <div class="header-divider"></div>
+            <div class="header-stat">
+                <div class="hs-label">Current T</div>
+                <div class="hs-value" id="hdr-T">—</div>
+            </div>
+            <div class="header-divider"></div>
+            <div class="header-stat">
+                <div class="hs-label">|B^λ(T)|</div>
+                <div class="hs-value" id="hdr-bal">—</div>
+            </div>
+            <div class="header-tier">
+                <div class="tier-badge t1">Tier 1 — Rigorous</div>
+                <div class="tier-badge t2">Tier 2 — Conjecture</div>
+            </div>
+        </div>
+
+        <!-- LEFT PANEL -->
+        <div id="left">
+            <div class="panel-section">
+                <div class="ps-title">Equations</div>
+
+                <div class="eq-block">
+                    <div class="eq-label">Branch Weights</div>
+                    <div class="eq-formula">w_k = φ^{-(k+1)}, Σw_k &lt; φ</div>
+                    <div class="eq-status rigorous">rigorous</div>
+                </div>
+
+                <div class="eq-block">
+                    <div class="eq-label">Transfer Kernel</div>
+                    <div class="eq-formula">κ_k(s) = w_k · σ_k · e^{−s·ℓ_k}</div>
+                    <div class="eq-status rigorous">rigorous</div>
+                </div>
+
+                <div class="eq-block">
+                    <div class="eq-label">Ruelle Zeta (Tier 1)</div>
+                    <div class="eq-formula">ζ_φ(s) = ∏_γ (1 − w_k σ_k e^{−sℓ})^{−1}</div>
+                    <div class="eq-status structural">structural</div>
+                </div>
+
+                <div class="eq-block">
+                    <div class="eq-label">Fredholm Determinant (Tier 1)</div>
+                    <div class="eq-formula">det(I − L_s) = Σ (−1)^n e_n(κ)</div>
+                    <div class="eq-status structural">model-level</div>
+                </div>
+
+                <div class="eq-block tier2">
+                    <div class="eq-label">HT3-λ Balance (Tier 2 — Conjecture)</div>
+                    <div class="eq-formula">B_φ^(λ)(T) = H_φ + λ₁ · e^{iθ_φ} · T_φ</div>
+                    <div class="eq-status conjecture">conjecture</div>
+                </div>
+
+                <div class="eq-block tier2">
+                    <div class="eq-label">Singularity Heuristic (Tier 2)</div>
+                    <div class="eq-formula">|B_φ^(λ)(T)| ≈ 0 ⟺ ζ(½+iT) = 0</div>
+                    <div class="eq-status conjecture">conjecture</div>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <div class="ps-title">Transfer Spectrum</div>
+                <div class="data-row">
+                    <span class="dr-label">λ₁(s)</span>
+                    <span class="dr-value blue" id="lam1">—</span>
+                </div>
+                <div class="data-row">
+                    <span class="dr-label">|λ₁|</span>
+                    <span class="dr-value green" id="abs-lam">—</span>
+                </div>
+                <div class="data-row">
+                    <span class="dr-label">θ_φ(T)</span>
+                    <span class="dr-value" id="theta-phi">—</span>
+                </div>
+                <div class="data-row">
+                    <span class="dr-label">d_φ (phase lock)</span>
+                    <span class="dr-value gold" id="d-phi">—</span>
+                </div>
+                <div class="data-row">
+                    <span class="dr-label">φ-entropy S_φ</span>
+                    <span class="dr-value" id="s-phi">—</span>
+                </div>
+                <div class="data-row">
+                    <span class="dr-label">Dominant branch</span>
+                    <span class="dr-value green" id="dom-branch">—</span>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <div class="ps-title">Branch Probabilities |κ_k|/Σ|κ|</div>
+                <div class="branch-bars" id="branch-bars"></div>
+            </div>
+
+            <div>
+                <div class="ps-title">Heuristic Score</div>
+                <div class="data-row">
+                    <span class="dr-label">singularity_score_heuristic</span>
+                    <span class="dr-value gold" id="score">—</span>
+                </div>
+                <div class="score-meter-wrap">
+                    <div class="score-meter-fill" id="score-fill" style="width:0%"></div>
+                </div>
+                <div style="font-size:8px;color:var(--muted);margin-top:5px;">c1·balance + c2·entropy + c3·anchor +
+                    c4·phase + c5·damping</div>
+            </div>
+        </div>
+
+        <!-- CENTRE (Phase Wheel) -->
+        <div id="centre">
+            <canvas id="wheel-canvas"></canvas>
+            <div class="centre-label" id="centre-label">PHASE WHEEL — φ-RUELLE TRANSFER OPERATOR</div>
+        </div>
+
+        <!-- RIGHT PANEL -->
+        <div id="right">
+
+            <div class="panel-section">
+                <div class="ps-title">Singularity Detection</div>
+                <div id="singularity-alert">
+                    <span class="sa-label">|B^λ(T)| — Balance Magnitude</span>
+                    <span id="sa-value">—</span>
+                    <span id="sa-indicator">scanning…</span>
+                    <span id="sa-subtitle" style="display: block; font-size: 7px; color: var(--muted); margin-top: 4px; opacity: 0.8;">heuristic event in visualization; not a certified zero test</span>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <div class="ps-title">Zero Selector</div>
+                <div class="zero-grid" id="zero-btns"></div>
+            </div>
+
+            <div class="panel-section">
+                <div class="ps-title">Balance History</div>
+                <canvas id="balance-chart" width="248" height="80"></canvas>
+            </div>
+
+            <div class="panel-section">
+                <div class="ps-title">Scan Controls</div>
+                <div class="data-row">
+                    <span class="dr-label">Speed</span>
+                    <span class="dr-value" id="speed-val">0.40</span>
+                </div>
+                <input type="range" id="speed-slider" min="0.01" max="3" step="0.01" value="0.4"
+                    oninput="document.getElementById('speed-val').textContent=parseFloat(this.value).toFixed(2)">
+                <div class="data-row" style="margin-top:10px;">
+                    <span class="dr-label">Auto-scan</span>
+                    <label style="cursor:pointer;font-size:10px;color:var(--phi);">
+                        <input type="checkbox" id="auto-scan" checked> ON
+                    </label>
+                </div>
+                <div class="data-row" style="margin-top:4px;">
+                    <span class="dr-label">Show chain</span>
+                    <label style="cursor:pointer;font-size:10px;color:var(--phi);">
+                        <input type="checkbox" id="show-chain" checked> ON
+                    </label>
+                </div>
+            </div>
+
+            <div>
+                <div class="ps-title">Conditions (at singularity)</div>
+                <div class="data-row"><span class="dr-label">(i) φ-entropy ↑</span><span class="dr-value green"
+                        id="cond1">—</span></div>
+                <div class="data-row"><span class="dr-label">(ii) dom branch = 0</span><span class="dr-value green"
+                        id="cond2">—</span></div>
+                <div class="data-row"><span class="dr-label">(iii) d_φ &lt; 0.15</span><span class="dr-value green"
+                        id="cond3">—</span></div>
+                <div class="data-row"><span class="dr-label">(iv) 0.90 &lt; |λ₁| &lt; 0.95</span><span
+                        class="dr-value green" id="cond4">—</span></div>
+            </div>
+        </div>
+
+        <!-- BOTTOM STRIP -->
+        <div id="bottom">
+            <div class="bottom-col">
+                <div class="bc-title">Proof Architecture (Tier 1 → Tier 2)</div>
+                <div class="bc-formula" style="margin-bottom: 8px;">Tier 1: det(I−L_s) ∈ ℂ (definition)</div>
+                <div class="bc-formula">Tier 2: det(I−L̃_s) ∝ ξ(s) (conjectural)</div>
+                <div class="bc-text">
+                    The <em>conjectural bridge</em> links Riemann zeros to spectral return of the φ-weighted
+                    transfer operator. Self-adjointness of <em>H_cand</em> is intended to suggest eigenvalues real (Tier 2 conjecture) —
+                    zeros would lie on the critical line.
+                </div>
+            </div>
+            <div class="bottom-col">
+                <div class="bc-title">φ-Geometric Entropy (log-free)</div>
+                <div class="bc-formula">S_φ(T) = Σ_k p_k · φ^{-(k+1)}</div>
+                <div class="bc-text">
+                    Replaces Shannon entropy — <em>no logarithm</em> anywhere in the framework (log-free
+                    protocol). Maximum <em>S_φ = φ⁻¹ ≈ 0.618</em> achieved when branch 0 dominates.
+                    Uniform distribution yields S_φ ≈ 0.177.
+                </div>
+            </div>
+            <div class="bottom-col">
+                <div class="bc-title">Phase Wheel Guide</div>
+                <div class="bc-text">
+                    The <em>9 golden spokes</em> are the φ-decay branch weights w_k = φ^{-(k+1)}.
+                    The <em>green arc</em> traces the balance vector B_φ(T). The <em>gold dot</em>
+                    marks the half-vector (½ anchor). A <em>singularity light</em> fires when
+                    the lead phase aligns and |B^λ| collapses toward zero.
+                </div>
+            </div>
+        </div>
+
+    </div><!-- /app -->
+
+    <script>
+        // ═══════════════════════════════════════════════════════════
+        //  φ-Ruelle Singularity Framework  (JavaScript port of the Python class)
+        // ═══════════════════════════════════════════════════════════
+
+        const PHI = (1 + Math.sqrt(5)) / 2;
+        const NUM_BRANCHES = 9;
+        const TWO_PI = 2 * Math.PI;
+
+        // Branch signatures: σ_k = (-1)^k
+        const SIGNATURES = Array.from({ length: 9 }, (_, k) => k % 2 === 0 ? 1 : -1);
+
+        // Branch weights: w_k = φ^{-(k+1)}
+        const WEIGHTS = Array.from({ length: 9 }, (_, k) => Math.pow(PHI, -(k + 1)));
+        const WEIGHT_SUM = WEIGHTS.reduce((a, b) => a + b, 0);
+
+        // PHI_ENTROPY_UNIFORM = Σw/9 (uniform-distribution baseline)
+        const PHI_ENTROPY_UNIFORM = WEIGHT_SUM / NUM_BRANCHES;
+
+        // 9-fold nodal quantisation axes
+        const NODAL_ANGLES = Array.from({ length: 9 }, (_, m) => TWO_PI * m / 9);
+
+        // Default branch lengths ℓ_k = k+1
+        const DEFAULT_LENGTHS = Array.from({ length: 9 }, (_, k) => k + 1);
+
+        // Known Riemann zeros (first 15)
+        const ZEROS_T = [
+            14.134725141734693, 21.022039638771554, 25.010857580145688,
+            30.424876125859513, 32.935061587739189, 37.586178158825671,
+            40.918719012147495, 43.327073280914999, 48.005150881167159,
+            49.773832477672302, 52.970321477714460, 56.446247697063246,
+            59.347044002602352, 60.831778524609809, 65.112544048081607
+        ];
+
+        // ─── Core maths ────────────────────────────────────────────
+
+        function branchKernel(s_re, s_im, lengths) {
+            // κ_k(s) = w_k · σ_k · e^{-s·ℓ_k} (complex)
+            return WEIGHTS.map((w, k) => {
+                const sig = SIGNATURES[k];
+                const l = lengths[k];
+                const decay = Math.exp(-s_re * l);
+                const ang = -s_im * l;
+                return {
+                    re: w * sig * decay * Math.cos(ang),
+                    im: w * sig * decay * Math.sin(ang)
+                };
+            });
+        }
+
+        function spectralRadius(s_re, s_im, lengths) {
+            const kappa = branchKernel(s_re, s_im, lengths);
+            let re = 0, im = 0;
+            kappa.forEach(k => { re += k.re; im += k.im; });
+            return { re, im, abs: Math.sqrt(re * re + im * im) };
+        }
+
+        function phiPhase(T) {
+            const theta = T / (PHI * WEIGHT_SUM);
+            return { re: Math.cos(theta), im: Math.sin(theta), arg: ((theta % TWO_PI) + TWO_PI) % TWO_PI };
+        }
+
+        function phiPhaseArg(T) {
+            return ((T / (PHI * WEIGHT_SUM)) % TWO_PI + TWO_PI) % TWO_PI;
+        }
+
+        function phaseDistance(T) {
+            const theta = phiPhaseArg(T);
+            let minD = Infinity;
+            NODAL_ANGLES.forEach(na => {
+                let d = Math.abs(theta - na);
+                if (d > Math.PI) d = TWO_PI - d;
+                if (d < minD) minD = d;
+            });
+            return minD;
+        }
+
+        function evaluate(T) {
+            const lengths = DEFAULT_LENGTHS;
+            const s_re = 0.5, s_im = T;
+            const kappa = branchKernel(s_re, s_im, lengths);
+
+            // H_φ = complex(Σ Re κ, 0),  T_φ = complex(0, Σ Im κ)
+            let sumRe = 0, sumIm = 0;
+            kappa.forEach(k => { sumRe += k.re; sumIm += k.im; });
+
+            const H_re = sumRe, H_im = 0;
+            const Tf_re = 0, Tf_im = sumIm;
+
+            // λ₁ = Σ κ_k
+            const lam = { re: sumRe, im: sumIm, abs: Math.sqrt(sumRe * sumRe + sumIm * sumIm) };
+
+            const phase = phiPhase(T);
+
+            // balance = H + phase * Tf
+            const pTf_re = phase.re * Tf_re - phase.im * Tf_im;
+            const pTf_im = phase.re * Tf_im + phase.im * Tf_re;
+            const bal_re = H_re + pTf_re;
+            const bal_im = H_im + pTf_im;
+            const bal_mag = Math.sqrt(bal_re * bal_re + bal_im * bal_im);
+
+            // lambda_balance = H + λ₁ * phase * Tf
+            // λ₁ * phase
+            const lpRe = lam.re * phase.re - lam.im * phase.im;
+            const lpIm = lam.re * phase.im + lam.im * phase.re;
+            // (λ₁·phase) * Tf
+            const lpTf_re = lpRe * Tf_re - lpIm * Tf_im;
+            const lpTf_im = lpRe * Tf_im + lpIm * Tf_re;
+            const lbal_re = H_re + lpTf_re;
+            const lbal_im = H_im + lpTf_im;
+            const lbal_mag = Math.sqrt(lbal_re * lbal_re + lbal_im * lbal_im);
+
+            // Branch probabilities
+            const mags = kappa.map(k => Math.sqrt(k.re * k.re + k.im * k.im));
+            const magSum = mags.reduce((a, b) => a + b, 0) || 1;
+            const p = mags.map(m => m / magSum);
+
+            // φ-geometric entropy (log-free)
+            let S_phi = 0;
+            p.forEach((pk, k) => { S_phi += pk * WEIGHTS[k]; });
+
+            const d_phi = phaseDistance(T);
+            const dom = p.indexOf(Math.max(...p));
+
+            // Singularity score (heuristic)
+            const c1 = Math.max(0, 1 - lbal_mag / 0.15);
+            const c2 = Math.min(1, S_phi / PHI_ENTROPY_UNIFORM);
+            const c3 = dom === 0 ? 1 : 0;
+            const c4 = Math.max(0, 1 - d_phi / (Math.PI / NUM_BRANCHES));
+            const c5 = (lam.abs > 0.90 && lam.abs < 0.95) ? 1 : 0;
+            const score = (c1 + c2 + c3 + c4 + c5) / 5;
+
+            return {
+                T, lam, abs_lam: lam.abs,
+                phase, theta: phase.arg,
+                H: { re: H_re, im: H_im },
+                Tf: { re: Tf_re, im: Tf_im },
+                bal: { re: bal_re, im: bal_im, mag: bal_mag },
+                lbal: { re: lbal_re, im: lbal_im, mag: lbal_mag },
+                d_phi, S_phi, p, dom,
+                c1, c2, c3, c4, c5, score,
+                kappa
+            };
+        }
+
+        // ─── Tone colours ────────────────────────────────────────────
+        const BRANCH_COLORS = [
+            [0, 224, 154],   // φ-green
+            [240, 192, 96],   // gold
+            [100, 180, 255],   // blue
+            [255, 80, 120],   // rose
+            [160, 120, 255],   // violet
+            [0, 200, 200],    // cyan
+            [255, 160, 60],   // amber
+            [80, 220, 120],   // mint
+            [200, 80, 200],   // magenta
+        ];
+
+        function branchColor(k, alpha = 1) {
+            const [r, g, b] = BRANCH_COLORS[k];
+            return `rgba(${r},${g},${b},${alpha})`;
+        }
+
+        // ─── Setup wheel canvas ──────────────────────────────────────
+        const wheelCanvas = document.getElementById('wheel-canvas');
+        const wctx = wheelCanvas.getContext('2d');
+        let wheelSize = 0;
+
+        function resizeWheel() {
+            const centre = document.getElementById('centre');
+            const sz = Math.min(centre.clientWidth, centre.clientHeight) * 0.92;
+            wheelSize = sz;
+            wheelCanvas.width = sz;
+            wheelCanvas.height = sz;
+        }
+
+        // ─── Balance history ─────────────────────────────────────────
+        const balChart = document.getElementById('balance-chart');
+        const bctx = balChart.getContext('2d');
+        const BAL_HIST = 248;
+        const balHistory = new Float32Array(BAL_HIST).fill(0.5);
+        let balHistPtr = 0;
+
+        function pushBal(val) {
+            balHistory[balHistPtr % BAL_HIST] = Math.min(1, val);
+            balHistPtr++;
+        }
+
+        function drawBalChart() {
+            const W = balChart.width, H = balChart.height;
+            bctx.fillStyle = 'rgba(0,3,10,0.9)';
+            bctx.fillRect(0, 0, W, H);
+
+            // zero line at 0.15
+            const y015 = H - (0.15 / 1.0) * H;
+            bctx.beginPath();
+            bctx.moveTo(0, y015); bctx.lineTo(W, y015);
+            bctx.strokeStyle = 'rgba(240,192,96,0.3)';
+            bctx.lineWidth = 0.8;
+            bctx.setLineDash([4, 4]);
+            bctx.stroke();
+            bctx.setLineDash([]);
+
+            bctx.beginPath();
+            for (let i = 0; i < BAL_HIST; i++) {
+                const idx = (balHistPtr + i) % BAL_HIST;
+                const v = balHistory[idx];
+                const x = (i / (BAL_HIST - 1)) * W;
+                const y = H - v * H;
+                i === 0 ? bctx.moveTo(x, y) : bctx.lineTo(x, y);
+            }
+            bctx.strokeStyle = 'rgba(0,224,154,0.75)';
+            bctx.lineWidth = 1.2;
+            bctx.stroke();
+        }
+
+        // ─── Draw phase wheel ─────────────────────────────────────────
+        function drawWheel(ev) {
+            const sz = wheelSize;
+            if (!sz) return;
+            const ctx = wctx;
+            const cx = sz / 2, cy = sz / 2;
+            const R = sz * 0.45;
+
+            ctx.clearRect(0, 0, sz, sz);
+
+            // Void background
+            ctx.fillStyle = '#00030a';
+            ctx.fillRect(0, 0, sz, sz);
+
+            // Outer glow ring
+            const outerGrad = ctx.createRadialGradient(cx, cy, R * 0.85, cx, cy, R * 1.05);
+            outerGrad.addColorStop(0, 'rgba(0,224,154,0)');
+            outerGrad.addColorStop(0.6, `rgba(0,224,154,${0.02 + ev.score * 0.06})`);
+            outerGrad.addColorStop(1, 'rgba(0,224,154,0)');
+            ctx.beginPath(); ctx.arc(cx, cy, R * 1.05, 0, TWO_PI);
+            ctx.fillStyle = outerGrad; ctx.fill();
+
+            // Concentric reference rings
+            [0.25, 0.5, 0.75, 1.0].forEach(fr => {
+                ctx.beginPath(); ctx.arc(cx, cy, R * fr, 0, TWO_PI);
+                ctx.strokeStyle = `rgba(0,180,100,${fr === 1 ? 0.18 : 0.07})`;
+                ctx.lineWidth = fr === 1 ? 0.8 : 0.4;
+                ctx.stroke();
+            });
+
+            // 9-fold nodal axes (quantisation grid)
+            NODAL_ANGLES.forEach((na, m) => {
+                const dist = Math.min(1, ev.d_phi / (Math.PI / 9));
+                const alpha = 0.06 + (1 - dist) * 0.1;
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.lineTo(cx + R * 1.02 * Math.cos(na - Math.PI / 2),
+                    cy + R * 1.02 * Math.sin(na - Math.PI / 2));
+                ctx.strokeStyle = `rgba(240,192,96,${alpha})`;
+                ctx.lineWidth = 0.6;
+                ctx.stroke();
+            });
+
+            // ── PARTIAL SUM CHAIN ─────────────────────────────────────
+            // Each branch k contributes κ_k(s) as a vector; we draw the cumulative chain
+            if (document.getElementById('show-chain').checked) {
+                const chainScale = R * 0.55;
+                let cumX = 0, cumY = 0;
+                const pts = [[0, 0]];
+                ev.kappa.forEach(k => { cumX += k.re; cumY += k.im; pts.push([cumX, cumY]); });
+                const maxM = Math.max(...pts.map(([x, y]) => Math.sqrt(x * x + y * y))) || 1;
+                const norm = chainScale / maxM;
+
+                for (let k = 0; k < NUM_BRANCHES; k++) {
+                    const [x0, y0] = pts[k];
+                    const [x1, y1] = pts[k + 1];
+                    ctx.beginPath();
+                    ctx.moveTo(cx + x0 * norm, cy - y0 * norm);
+                    ctx.lineTo(cx + x1 * norm, cy - y1 * norm);
+                    ctx.strokeStyle = branchColor(k, 0.55);
+                    ctx.lineWidth = Math.max(0.6, 2.2 - k * 0.18);
+                    ctx.stroke();
+
+                    // Dot at segment end
+                    ctx.beginPath();
+                    ctx.arc(cx + x1 * norm, cy - y1 * norm, Math.max(1.5, 3 - k * 0.25), 0, TWO_PI);
+                    ctx.fillStyle = branchColor(k, 0.7);
+                    ctx.fill();
+                }
+
+                // ── ζ resultant vector ────────────────────────────────────
+                const [ex, ey] = pts[NUM_BRANCHES];
+                const vx = ex * norm, vy = -ey * norm;
+                const ang = Math.atan2(vy, vx);
+
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.lineTo(cx + vx, cy + vy);
+                ctx.strokeStyle = `rgba(0,224,154,${0.6 + ev.score * 0.35})`;
+                ctx.lineWidth = 2.2;
+                ctx.stroke();
+
+                // Arrowhead
+                const AL = 10;
+                ctx.beginPath();
+                ctx.moveTo(cx + vx, cy + vy);
+                ctx.lineTo(cx + vx - AL * Math.cos(ang - 0.38), cy + vy - AL * Math.sin(ang - 0.38));
+                ctx.lineTo(cx + vx - AL * Math.cos(ang + 0.38), cy + vy - AL * Math.sin(ang + 0.38));
+                ctx.closePath();
+                ctx.fillStyle = `rgba(0,224,154,0.9)`;
+                ctx.fill();
+
+                // ½-vector marker
+                ctx.beginPath();
+                ctx.arc(cx + vx * 0.5, cy + vy * 0.5, 4, 0, TWO_PI);
+                ctx.fillStyle = 'rgba(240,192,96,0.95)';
+                ctx.fill();
+            }
+
+            // ── BRANCH WEIGHT SPOKES ─────────────────────────────────────
+            // The 9 golden spokes at nodal angles, radius ∝ w_k
+            WEIGHTS.forEach((w, k) => {
+                const p_k = ev.p[k];
+                const ang = NODAL_ANGLES[k] - Math.PI / 2;
+                const r = R * (0.25 + 0.65 * p_k);
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.lineTo(cx + r * Math.cos(ang), cy + r * Math.sin(ang));
+                ctx.strokeStyle = branchColor(k, 0.35 + p_k * 0.45);
+                ctx.lineWidth = 1.0 + p_k * 2;
+                ctx.stroke();
+
+                // Outer dot
+                const dr = R * 0.96;
+                ctx.beginPath();
+                ctx.arc(cx + dr * Math.cos(ang), cy + dr * Math.sin(ang), 3.5, 0, TWO_PI);
+                ctx.fillStyle = branchColor(k, 0.65);
+                ctx.fill();
+
+                // Label
+                ctx.font = '8px Space Mono';
+                ctx.fillStyle = branchColor(k, 0.55);
+                const lr = R * 1.07;
+                ctx.fillText(`k${k}`, cx + lr * Math.cos(ang) - 8, cy + lr * Math.sin(ang) + 3);
+            });
+
+            // ── PHASE POINTER (e^{iθ_φ}) ─────────────────────────────────
+            const pAng = ev.theta - Math.PI / 2;
+            const pR = R * 0.88;
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.lineTo(cx + pR * Math.cos(pAng), cy + pR * Math.sin(pAng));
+            ctx.strokeStyle = `rgba(240,192,96,0.9)`;
+            ctx.lineWidth = 1.8;
+            ctx.setLineDash([6, 3]);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Phase pointer tip
+            ctx.beginPath();
+            ctx.arc(cx + pR * Math.cos(pAng), cy + pR * Math.sin(pAng), 5, 0, TWO_PI);
+            ctx.fillStyle = 'rgba(240,192,96,0.95)';
+            ctx.fill();
+
+            // ── BALANCE VECTOR B^λ(T) — fixed scale, tip at true magnitude ──
+            const lbRe = ev.lbal.re, lbIm = ev.lbal.im;
+            const lbMag = ev.lbal.mag;
+
+            // Fixed scale: max plausible magnitude ~1.0 maps to R*0.72
+            // so the vector length faithfully shows how close to zero it is
+            const LB_SCALE = R * 0.72;
+            const lbNorm = LB_SCALE;          // lbMag=1 → full length; lbMag→0 → tip at centre
+            const lbx = lbRe * lbNorm, lby = -lbIm * lbNorm;
+            const tipX = cx + lbx, tipY = cy + lby;
+
+            // Proximity to centre: 1 = tip exactly at origin
+            const proximity = Math.max(0, 1 - lbMag / 0.35);
+
+            // Glow trail along vector as it approaches centre
+            const trailAlpha = 0.5 + proximity * 0.45;
+            const trailWidth = 1.8 + proximity * 2.2;
+
+            // Outer corona on the line when near centre
+            if (proximity > 0.1) {
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.lineTo(tipX, tipY);
+                ctx.strokeStyle = `rgba(100,180,255,${proximity * 0.35})`;
+                ctx.lineWidth = trailWidth + 6;
+                ctx.stroke();
+            }
+
+            // Main vector line
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.lineTo(tipX, tipY);
+            const vecBlue = `rgba(100,180,255,${trailAlpha})`;
+            ctx.strokeStyle = vecBlue;
+            ctx.lineWidth = trailWidth;
+            ctx.stroke();
+
+            // Arrowhead at tip
+            if (lbMag > 0.01) {
+                const ang = Math.atan2(lby, lbx);
+                const AL = 9 + proximity * 4;
+                ctx.beginPath();
+                ctx.moveTo(tipX, tipY);
+                ctx.lineTo(tipX - AL * Math.cos(ang - 0.4), tipY - AL * Math.sin(ang - 0.4));
+                ctx.lineTo(tipX - AL * Math.cos(ang + 0.4), tipY - AL * Math.sin(ang + 0.4));
+                ctx.closePath();
+                ctx.fillStyle = `rgba(100,180,255,${trailAlpha})`;
+                ctx.fill();
+            }
+
+            // ζ symbol at the tip
+            const zetaSize = 13 + proximity * 6;
+            ctx.save();
+            ctx.font = `${zetaSize}px Cormorant Garamond, serif`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            // Glow halo behind ζ
+            if (proximity > 0.05) {
+                ctx.shadowColor = `rgba(100,180,255,${proximity * 0.9})`;
+                ctx.shadowBlur = 10 + proximity * 12;
+            }
+            ctx.fillStyle = `rgba(140,200,255,${0.7 + proximity * 0.3})`;
+            ctx.fillText('ζ', tipX, tipY - zetaSize * 0.55);
+            ctx.shadowBlur = 0;
+            ctx.restore();
+
+            // Small dot at tip
+            ctx.beginPath();
+            ctx.arc(tipX, tipY, 3 + proximity * 3, 0, TWO_PI);
+            ctx.fillStyle = `rgba(160,210,255,${0.7 + proximity * 0.3})`;
+            ctx.fill();
+
+            // ── SINGULARITY LIGHT ────────────────────────────────────────────
+            // Fires at the precise moment the ζ-tip passes through / into centre
+            // Threshold: tip is within 8px of centre in canvas-space (lbMag < ~0.11)
+            const SING_THRESHOLD = 0.11;
+            const singularityFiring = lbMag < SING_THRESHOLD;
+            // Soft approach glow starts from 0.35
+            const singScore = ev.score;
+            const approachGlow = Math.max(0, 1 - lbMag / 0.35);
+
+            // Approach halo — builds as tip nears centre
+            if (approachGlow > 0) {
+                const haloR = R * 0.18 * (1 - approachGlow * 0.5);
+                const haloGr = ctx.createRadialGradient(cx, cy, 0, cx, cy, haloR * 2);
+                haloGr.addColorStop(0, `rgba(100,180,255,${approachGlow * 0.18})`);
+                haloGr.addColorStop(1, 'rgba(100,180,255,0)');
+                ctx.beginPath(); ctx.arc(cx, cy, haloR * 2, 0, TWO_PI);
+                ctx.fillStyle = haloGr; ctx.fill();
+            }
+
+            if (singularityFiring) {
+                // Intensity scales from 0→1 as lbMag goes 0.11→0
+                const intensity = Math.min(1, (SING_THRESHOLD - lbMag) / SING_THRESHOLD);
+                const glowR = 8 + intensity * 26;
+                const now = Date.now() * 0.004;
+
+                // Outer burst
+                const sg = ctx.createRadialGradient(cx, cy, 0, cx, cy, glowR * 3);
+                sg.addColorStop(0, `rgba(255,255,220,${0.9 + intensity * 0.1})`);
+                sg.addColorStop(0.15, `rgba(240,200,80, ${intensity * 0.85})`);
+                sg.addColorStop(0.45, `rgba(0,224,154,  ${intensity * 0.4})`);
+                sg.addColorStop(1, 'rgba(0,224,154,0)');
+                ctx.beginPath(); ctx.arc(cx, cy, glowR * 3, 0, TWO_PI);
+                ctx.fillStyle = sg; ctx.fill();
+
+                // Bright core
+                ctx.beginPath(); ctx.arc(cx, cy, glowR, 0, TWO_PI);
+                ctx.fillStyle = `rgba(255,252,230,${intensity})`;
+                ctx.fill();
+
+                // Expanding ring 1
+                const r1 = glowR + 10 + 8 * Math.sin(now * 4);
+                ctx.beginPath(); ctx.arc(cx, cy, r1, 0, TWO_PI);
+                ctx.strokeStyle = `rgba(240,192,60,${intensity * (0.5 + 0.4 * Math.sin(now * 6))})`;
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                // Expanding ring 2 (offset phase)
+                const r2 = glowR + 20 + 8 * Math.sin(now * 4 + 1.5);
+                ctx.beginPath(); ctx.arc(cx, cy, r2, 0, TWO_PI);
+                ctx.strokeStyle = `rgba(100,220,180,${intensity * 0.35 * (0.5 + 0.4 * Math.sin(now * 5))})`;
+                ctx.lineWidth = 1;
+                ctx.stroke();
+
+                // ζ(½+iT) = 0 label — centred, appears over the singularity light
+                ctx.save();
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                const labelY = cy - glowR - 22;
+
+                ctx.font = `bold ${9 + intensity * 3}px Space Mono`;
+                ctx.shadowColor = `rgba(255,220,80,${intensity})`;
+                ctx.shadowBlur = 12;
+                ctx.fillStyle = `rgba(255,240,160,${intensity})`;
+                ctx.fillText('◈  SINGULARITY', cx, labelY);
+
+                ctx.shadowBlur = 6;
+                ctx.font = `italic ${11 + intensity * 4}px Cormorant Garamond, serif`;
+                ctx.fillStyle = `rgba(255,255,210,${intensity})`;
+                ctx.fillText('ζ(½+iT) = 0', cx, labelY + 16);
+
+                ctx.shadowBlur = 0;
+                ctx.font = `8px Space Mono`;
+                ctx.fillStyle = `rgba(200,230,200,${intensity * 0.8})`;
+                ctx.fillText(`|B^λ| = ${lbMag.toFixed(5)}`, cx, labelY + 30);
+                ctx.restore();
+
+            } else {
+                // Dim centre dot when idle
+                ctx.beginPath(); ctx.arc(cx, cy, 3, 0, TWO_PI);
+                ctx.fillStyle = `rgba(0,224,154,${0.12 + approachGlow * 0.2})`;
+                ctx.fill();
+            }
+
+            // ── LEGEND ──────────────────────────────────────────────────────
+            const lx = 10, ly = sz - 64;
+            ctx.font = '7px Space Mono';
+            ctx.fillStyle = 'rgba(0,224,154,0.6)'; ctx.fillText('── Branch kernels (chain)', lx, ly);
+            ctx.fillStyle = 'rgba(0,224,154,0.9)'; ctx.fillText('─→ ζ resultant', lx, ly + 12);
+            ctx.fillStyle = 'rgba(240,192,96,0.8)'; ctx.fillText('─── Phase pointer e^{iθ_φ}', lx, ly + 24);
+            ctx.fillStyle = 'rgba(100,180,255,0.8)'; ctx.fillText('─ζ  λ-balance B^λ(T)  (ζ at tip)', lx, ly + 36);
+            ctx.fillStyle = 'rgba(240,192,96,0.7)'; ctx.fillText('● ½-vector anchor', lx, ly + 48);
+
+            // T value
+            ctx.font = '10px Space Mono';
+            ctx.fillStyle = 'rgba(240,192,96,0.85)';
+            ctx.textAlign = 'right';
+            ctx.fillText(`T = ${ev.T.toFixed(6)}`, sz - 10, sz - 10);
+            ctx.textAlign = 'left';
+        }
+
+        // ─── Build branch probability bars ────────────────────────────
+        {
+            const container = document.getElementById('branch-bars');
+            container.innerHTML = '';
+            for (let k = 0; k < NUM_BRANCHES; k++) {
+                const row = document.createElement('div');
+                row.className = 'branch-bar-row';
+                const [r, g, b] = BRANCH_COLORS[k];
+                row.innerHTML = `
+      <span class="branch-bar-label">k${k}</span>
+      <div class="branch-bar-outer">
+        <div class="branch-bar-fill" id="bb${k}"
+             style="background:rgba(${r},${g},${b},0.8);width:0%"></div>
+      </div>
+      <span class="branch-bar-val" id="bv${k}">0.000</span>
+    `;
+                container.appendChild(row);
+            }
+        }
+
+        // ─── Build zero buttons ────────────────────────────────────────
+        {
+            const container = document.getElementById('zero-btns');
+            ZEROS_T.forEach((t, i) => {
+                const btn = document.createElement('div');
+                btn.className = 'zero-btn' + (i === 0 ? ' active' : '');
+                btn.textContent = `γ${i + 1}`;
+                btn.title = `T = ${t.toFixed(8)}`;
+                btn.onclick = () => {
+                    document.querySelectorAll('.zero-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    scanT = t;          // warp to this zero
+                    autoScan = true;       // keep scanning forward from here
+                    document.getElementById('auto-scan').checked = true;
+                };
+                container.appendChild(btn);
+            });
+        }
+
+        // ─── UI update ─────────────────────────────────────────────────
+        function updateUI(ev) {
+            document.getElementById('hdr-T').textContent = ev.T.toFixed(8);
+            document.getElementById('hdr-bal').textContent = ev.lbal.mag.toFixed(5);
+            document.getElementById('lam1').textContent = `${ev.lam.re.toFixed(4)} + ${ev.lam.im.toFixed(4)}i`;
+            document.getElementById('abs-lam').textContent = ev.abs_lam.toFixed(6);
+            document.getElementById('theta-phi').textContent = ev.theta.toFixed(6);
+            document.getElementById('d-phi').textContent = ev.d_phi.toFixed(6);
+            document.getElementById('s-phi').textContent = ev.S_phi.toFixed(6);
+            document.getElementById('dom-branch').textContent = `k = ${ev.dom}`;
+
+            // Branch bars
+            for (let k = 0; k < NUM_BRANCHES; k++) {
+                const pct = (ev.p[k] * 100).toFixed(1);
+                document.getElementById(`bb${k}`).style.width = pct + '%';
+                document.getElementById(`bv${k}`).textContent = ev.p[k].toFixed(3);
+            }
+
+            // Score
+            document.getElementById('score').textContent = ev.score.toFixed(4);
+            document.getElementById('score-fill').style.width = (ev.score * 100) + '%';
+
+            // Singularity alert
+            const sa = document.getElementById('singularity-alert');
+            const sv = document.getElementById('sa-value');
+            const si = document.getElementById('sa-indicator');
+            const subtitle = document.getElementById('sa-subtitle');
+            sv.textContent = ev.lbal.mag.toFixed(5);
+            const firing = ev.score > 0.5 || ev.lbal.mag < 0.15;
+            sa.className = 'singularity-alert ' + (firing ? 'firing' : '');
+            if (ev.lbal.mag < 0.05) {
+                sv.style.color = '#ffd060';
+                si.textContent = '◈ SINGULARITY DETECTED';
+                si.style.color = '#ffd060';
+                subtitle.style.opacity = '1.0';
+            } else if (ev.lbal.mag < 0.15) {
+                sv.style.color = '#00e09a';
+                si.textContent = '◆ near singularity';
+                si.style.color = '#00e09a';
+                subtitle.style.opacity = '0.8';
+            } else {
+                sv.style.color = '#4090ff';
+                si.textContent = 'scanning…';
+                si.style.color = 'var(--muted)';
+                subtitle.style.opacity = '0.6';
+            }
+
+            // Conditions
+            const c = (v, threshold, dir = 'above') => {
+                const ok = dir === 'above' ? v >= threshold : v <= threshold;
+                const el = document.getElementById(`cond${[1, 2, 3, 4].indexOf(
+                    parseInt(arguments.callee.toString().match(/cond(\d)/)?.[1] || 0) + 1)}`);
+            };
+            const condEl = (id, ok, label) => {
+                const el = document.getElementById(id);
+                el.textContent = ok ? `✓ ${label}` : `✗ ${label}`;
+                el.style.color = ok ? 'var(--phi)' : 'var(--crimson)';
+            };
+            condEl('cond1', ev.S_phi >= PHI_ENTROPY_UNIFORM * 0.85, `${ev.S_phi.toFixed(4)}`);
+            condEl('cond2', ev.dom === 0, ev.dom === 0 ? 'satisfied' : `dom=k${ev.dom}`);
+            condEl('cond3', ev.d_phi < 0.22, ev.d_phi.toFixed(4));
+            condEl('cond4', ev.abs_lam > 0.90 && ev.abs_lam < 0.95,
+                `|λ|=${ev.abs_lam.toFixed(3)}`);
+        }
+
+        // ─── Scan state ───────────────────────────────────────────────
+        let scanT = ZEROS_T[0];
+        let autoScan = true;
+        let scanDir = 1;
+        const SCAN_MIN = 10, SCAN_MAX = 70;
+
+        document.getElementById('auto-scan').onchange = function () { autoScan = this.checked; };
+
+        // ─── Main loop ────────────────────────────────────────────────
+        function loop() {
+            requestAnimationFrame(loop);
+            const speed = parseFloat(document.getElementById('speed-slider').value);
+
+            if (autoScan) {
+                scanT += speed * 0.025 * scanDir;
+                if (scanT > SCAN_MAX) scanDir = -1;
+                if (scanT < SCAN_MIN) scanDir = 1;
+            }
+
+            const ev = evaluate(scanT);
+            drawWheel(ev);
+            updateUI(ev);
+            pushBal(ev.lbal.mag);
+            drawBalChart();
+        }
+
+        // ─── Init ─────────────────────────────────────────────────────
+        window.addEventListener('resize', () => { resizeWheel(); });
+        resizeWheel();
+        loop();
+    </script>
+</body>
+
+</html>

@@ -8,6 +8,9 @@
 # Include the specific image file
 !RH_SINGULARITY_OG.png
 
+# Include the HTML visualization
+!RH_SINGULARITY.html
+
 # Keep .gitignore itself
 !.gitignore
 
