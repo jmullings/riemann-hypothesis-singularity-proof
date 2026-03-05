@@ -358,11 +358,11 @@ The two decisive null models (shuffle, random phase) collapsed by ~50-70%, while
 
 ---
 
-## Bit-Centric Geodesic Layer (MKM Space)
+## Bit-Centric Geodesic Layer
 
 ### Overview
 
-A **bit-indexed observable** attached to geodesic states, implementing discrete MKM (Multiplicative-Kolmogorov-Mellin) space coordinates.
+A **bit-indexed observable** attached to geodesic states, implementing discrete bit-stratified coordinates.
 
 ### Mathematical Structure
 
@@ -418,7 +418,7 @@ Mean bit-scale: 5.83
 
 ### Status: ⚠️ STRUCTURAL EVIDENCE (Not Asymptotic Proof)
 
-The bit-centric layer provides a plausible path to discrete MKM formulation, but asymptotic stability under this representation remains open.
+The bit-centric layer provides a plausible path to discrete bit-stratified formulation, but asymptotic stability under this representation remains open.
 
 ---
 
@@ -559,7 +559,7 @@ N(T) = C · T · log(T)        # Arithmetic cutoff
 ε(T) = ε₀ · 2π / log(T)      # Tolerance bound
 ```
 
-### 5. Bit-Centric Geodesic (MKM Space)
+### 5. Bit-Centric Geodesic
 
 ```
 # Bit-length coordinate
