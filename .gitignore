@@ -1,0 +1,15 @@
+# Ignore everything by default
+*
+
+# Include only CONJECTURE_III folder and its contents
+!CONJECTURE_III/
+!CONJECTURE_III/**
+
+# Include the specific image file
+!RH_SINGULARITY_OG.png
+
+# Keep .gitignore itself
+!.gitignore
+
+# Keep README if you want to add one
+!README.md
