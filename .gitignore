@@ -5,11 +5,32 @@
 !CONJECTURE_III/
 !CONJECTURE_III/**
 
+# Include CONJECTURE_IV folder and its contents
+!CONJECTURE_IV/
+!CONJECTURE_IV/**
+
+# Include BETA_PRECISION folder and its contents
+!BETA_PRECISION/
+!BETA_PRECISION/**
+
+# Include TEST_SUITE folder and its contents
+!TEST_SUITE/
+!TEST_SUITE/**
+
+# But exclude Python cache files and OS files everywhere
+__pycache__/
+*.pyc
+*.pyo
+.DS_Store
+
 # Include the specific image file
 !RH_SINGULARITY_OG.png
 
 # Include the HTML visualization
 !RH_SINGULARITY.html
+
+# Include index page
+!index.html
 
 # Keep .gitignore itself
 !.gitignore
