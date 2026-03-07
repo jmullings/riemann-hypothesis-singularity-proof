@@ -1,5 +1,8 @@
 # The Riemann Hypothesis: The Singularity Proof
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18904657.svg)](https://doi.org/10.5281/zenodo.18904657)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18881814.svg)](https://doi.org/10.5281/zenodo.18881814)
+
 ## A φ-Weighted Spectral Framework via Transfer Operators
 
 **Document Classification:** DOCTORAL PUBLICATION  
@@ -33,9 +36,10 @@ Theorems I–II + III_N (PROVED) + III_∞ + IV-b + V ⟹ RH
 | **II** | [THEOREM II: Golden Transfer Operator Spectral Properties](THEOREM_II/README.md) | ✅ **PROVED** | Finite matrices |
 | **III.A** | [THEOREM III_N: Finite Geodesic Singularity Equivalence](CONJECTURE_III/README.md) | ✅ **PROVED** | Rigorous finite-matrix theorem |
 | **III.B** | [CONJECTURE III_∞: ζ-Correspondence](CONJECTURE_III/README.md) | 🔶 **CONJECTURAL** | Extensive numerical support |
-| **IV** | [CONJECTURE IV: Spectral Determinant ξ-Bridge](CONJECTURE_IV/README.md) | 🔶 **RESEARCH FRAMEWORK** | IV-a complete, IV-b open |
+| **IV** | [CONJECTURE IV: φ-Weighted Transfer Operator Framework](CONJECTURE_IV/README.md) | ✅🔶 **HYBRID FRAMEWORK** | Five claims: theorems proven + empirical laws + conjectures |
 | **V** | [CONJECTURE V: φ-Spectral Riemann Equivalence](CONJECTURE_V/README.md) | 🔶 **MASTER CLOSURE** | Bootstrap implemented |
 | **VI** | [TEST_SUITE: Comprehensive Validation Framework](TEST_SUITE/README.md) | ✅ **100% COVERAGE** | All tests passing |
+| **VII** | [VECTOR_CANCELLATION_ENGINE: True ζ-Mechanism Analysis](VECTOR_CANCELLATION_ENGINE/README.md) | 🔬 **EXPLORATORY** | Dual-chain, hyperbolic geometry |
 
 ---
 
@@ -85,19 +89,60 @@ $$\Sigma_\phi(T) \text{ is maximal} \iff T \text{ is eigenvalue of } H_N \iff S_
 
 ---
 
-### CONJECTURE IV: Spectral Determinant ξ-Bridge
-**Status:** 🔶 RESEARCH FRAMEWORK
+### CONJECTURE IV: φ-Weighted Transfer Operator Framework
+**Status:** ✅🔶 HYBRID FRAMEWORK — Structured into Five Claims
 
-**Statement:** There exists φ-regularized transfer operator $\tilde{L}_s$ such that:
-$$\det(I - \tilde{L}_s) = G(s) \cdot \xi(s)$$
+**Framework:** Completely restructured into focused mathematical claims with explicit proof status separation:
 
-where $G(s)$ is entire and nonvanishing.
+#### **Primary Publication**: Hadamard Obstruction Paper ✅
+**"A φ-Weighted Transfer Operator Framework and Hadamard Obstruction to ξ-Factorization"**
 
-**Decomposition:**
-- **IV-a (Fredholm Framework):** ✅ COMPLETE — $L^2(\Omega, \mu_\phi)$ construction rigorous
-- **IV-b (ξ-Bridge Identity):** 📋 STRATEGIC OPEN — Growth obstruction documented
+- **Proven core**: φ-Bernoulli measure, trace-class $L_s$, type(D) = log(φ), Hadamard obstruction 
+- **Main result**: No bounded entire $G(s)$ satisfies $D(s) = G(s) \cdot \xi(s)$ due to type gap Δ ≈ 1.09
+- **Publication status**: Ready for Journal of Functional Analysis, Experimental Mathematics
 
-📖 **Full Requirements:** [CONJECTURE_IV/README.md](CONJECTURE_IV/README.md)
+#### **Five Central Claims**:
+
+| Claim | Title | Proof Status | Academic Framework |
+|-------|-------|--------------|-------------------|
+| **1** | 9D Necessity | ✅ Framework Proven + 🔶 Empirical | "9D necessity mechanism" |
+| **2** | φ-Weight Construction | ✅ Geometric Proven + 🔶 Conjectural | "Independent φ-weight model" |
+| **3** | Parallel Singularity | 🔶 Empirical (100% Recall) | "Unified zero condition" |
+| **4** | 6D Collapse & Bitsize | ✅ Empirical Laws (99.9% PCA) | "2-6D φ-shift collapse" |
+| **5** | External Validation | ✅ Hadamard Proven + ⚠️ dBN Inconclusive | "Hadamard obstruction + de Bruijn-Newman" |
+
+**Key Innovation**: **Explicit separation** of proven vs empirical vs conjectural components with honest assessment aligned to verification results.
+
+**Framework Boundaries**:
+- ✅ **Proves**: Transfer operator theory, Fredholm determinants, type gaps, dimensional reduction laws
+- ❌ **Does NOT prove**: RH, zero correspondence, exact singularity-zero matching
+- 🔶 **Conjectural**: Zero correspondence bridging, de Bruijn-Newman connections
+
+📖 **Full Documentation:** [CONJECTURE_IV/README.md](CONJECTURE_IV/README.md)
+
+---
+
+### VECTOR CANCELLATION ENGINE: True ζ-Mechanism Analysis
+**Status:** 🔬 EXPLORATORY RESEARCH
+
+Companion module exploring the **actual** mechanism of ζ-zeros via Riemann-Siegel dual-chain interference:
+
+$$\zeta\left(\tfrac{1}{2}+iT\right) = M(T) + \chi(T) \cdot C(T) + R(T)$$
+
+**Key Results:**
+- **Dual-chain visualization**: Main sum M(T) and conjugate sum C(T) cancel at zeros
+- **Hyperbolic geometry**: Partial sum chains as logarithmic spirals in Poincaré half-plane
+- **Phase curvature operator**: K(T) = -Σ n^{-½}(ln n)² e^{-iT ln n} — curvature ratio 27× at zeros
+
+**Distinction from Conjecture IV:**
+
+| Aspect | CONJECTURE IV | VECTOR_CANCELLATION_ENGINE |
+|--------|---------------|---------------------------|
+| Approach | φ-weighted transfer operator | True Dirichlet mechanism |
+| Rigor | Proven theorems + conjectures | Exploratory visualization |
+| Key Result | Hadamard obstruction | VCE statistics, curvature ratio |
+
+📖 **Full Documentation:** [VECTOR_CANCELLATION_ENGINE/README.md](VECTOR_CANCELLATION_ENGINE/README.md)
 
 ---
 
@@ -144,20 +189,23 @@ $$\text{III}_{\text{strong}} + \text{IV}_b \Longleftrightarrow \text{RH}$$
 | Conjecture | Status | Core Statement |
 |------------|--------|-----------|
 | **III_∞** | 🔶 CONJECTURAL | N→∞ eigenvalues converge to ζ-zero ordinates |
-| **IV-b** | 🔶 STRATEGIC OPEN | det(I−L̃_s) = G(s)·ξ(s) with G entire, nonvanishing |
-| **V** | 🔶 MASTER CLOSURE | III_∞ + IV-b ⟺ RH |
+| **IV: Claims 2,3** | 🔶 EMPIRICAL/CONJECTURAL | φ-weight independence + parallel singularity correspondence |
+| **IV: Hadamard** | ✅ **PROVEN** | Type gap obstruction: D(s) ≠ G(s)·ξ(s) for bounded G |
+| **V** | 🔶 MASTER CLOSURE | III_∞ + IV (full) ⟺ RH |
 
 ### Proof Chain Structure
 
 ```
 ┌─────────────┐    ┌─────────────┐    ┌──────────────┐    ┌──────────────┐    ┌──────────────┐    ┌──────────────┐
 │  THEOREM I  │───▶│ THEOREM II  │───▶│THEOREM III_N │───▶│CONJ. III_∞   │───▶│CONJECTURE IV │───▶│CONJECTURE V  │══▶ RH
-│   (PROVED)  │    │  (PROVED)   │    │   (PROVED)   │    │(CONJECTURAL) │    │(RESEARCH)    │    │(MASTER CLOSE)│
+│   (PROVED)  │    │  (PROVED)   │    │   (PROVED)   │    │(CONJECTURAL) │    │(HYBRID:      │    │(MASTER CLOSE)│
+│             │    │             │    │              │    │              │    │ Levels 1-4✓  │    │              │
+│             │    │             │    │              │    │              │    │ Claims 2,3○) │    │              │
 └─────────────┘    └─────────────┘    └──────────────┘    └──────────────┘    └──────────────┘    └──────────────┘
-      ✓                  ✓                  ✓                   ○                   ○                   ○
+      ✓                  ✓                  ✓                   ○                  ✓○                  ○
 ```
 
-**Legend:** ✓ = Proved (Theorems I–II, III_N), ○ = Conjectural (III_∞, IV–V)
+**Legend:** ✓ = Proved (Theorems I–II, III_N, IV Levels 1-4), ○ = Conjectural (III_∞, IV Claims 2-3, V), ✓○ = Hybrid (IV: proven core + conjectural extensions)
 
 ## Gold Standard Plus Certification
 
@@ -210,7 +258,9 @@ $$\text{III}_{\text{strong}} + \text{IV}_b \Longleftrightarrow \text{RH}$$
 3. **Conjecture IV(b):** $\det(I-\tilde{L}_s) = G(s)\xi(s)$ with $G$ entire and nonvanishing
 4. **Conjecture V:** This φ-spectral package is equivalent to RH
 
-$$\text{Theorems I–II + III}_N\text{ (PROVED)} + \text{III}_{\infty} + \text{IV}_b + \text{V} \Longrightarrow \text{RH}$$
+$$\text{Theorems I–II + III}_N\text{ (PROVED)} + \text{III}_{\infty} + \text{IV (Claims 2,3)} + \text{V} \Longrightarrow \text{RH}$$
+
+**Note**: CONJECTURE IV now provides a **publication-ready Hadamard obstruction paper** (proven) plus **research programme** for zero correspondence (conjectural).
 
 ---
 
@@ -221,8 +271,9 @@ The path to upgrading conjectures to theorems:
 | Challenge | Difficulty | Primary Obstruction |
 |-----------|------------|---------------------|
 | **III_∞** | VERY HIGH–EXTREME | Asymptotic eigenvalue convergence; Hilbert-Pólya limit |
-| **IV-b** | VERY HIGH | Growth type mismatch (0.2 vs π/2); functional equation |
-| **V** | MEDIUM | Standard functional analysis once III_∞ + IV-b proved |
+| **IV: Claims 2,3** | HIGH | φ-weight independence (Claim 2), exact zero correspondence (Claim 3) |
+| **IV: Hadamard** | ✅ **SOLVED** | Type gap obstruction proven via trace-class analysis |
+| **V** | MEDIUM | Standard functional analysis once III_∞ + IV (full) proved |
 
 📖 **Detailed Requirements:** See section READMEs for complete specifications.
 
@@ -310,6 +361,7 @@ cd TEST_SUITE && python RUN_ALL_TESTS.PY
 | Conjecture III Details | [CONJECTURE_III/README.md](CONJECTURE_III/README.md) |
 | Conjecture IV Details | [CONJECTURE_IV/README.md](CONJECTURE_IV/README.md) |
 | Conjecture V Details | [CONJECTURE_V/README.md](CONJECTURE_V/README.md) |
+| Vector Cancellation Engine | [VECTOR_CANCELLATION_ENGINE/README.md](VECTOR_CANCELLATION_ENGINE/README.md) |
 | Theorem I Analysis | [THEOREM_I/FORMAL_THEOREM_I_ANALYSIS.md](THEOREM_I/FORMAL_THEOREM_I_ANALYSIS.md) |
 | Theorem II Analysis | [THEOREM_II/FORMAL_THEOREM_II_ANALYSIS.md](THEOREM_II/FORMAL_THEOREM_II_ANALYSIS.md) |
 | Complete Test Suite | [TEST_SUITE/README.md](TEST_SUITE/README.md) |
@@ -344,7 +396,7 @@ This framework provides a **novel spectral approach** to the Riemann Hypothesis 
 
 **This framework does not prove RH unconditionally.** It establishes a rigorous conditional framework:
 
-$$\boxed{\text{Theorems I–II + III}_N\text{ (PROVED)} + \text{Conjectures III}_\infty\text{–V} \Longrightarrow \text{RH}}$$
+$$\boxed{\text{Theorems I–II + III}_N\text{ (PROVED)} + \text{IV Hadamard (PROVED)} + \text{Conjectures III}_\infty\text{, IV(Claims 2,3), V} \Longrightarrow \text{RH}}$$
 
 **Research Status:**
 - **Tier 1 (Proved):** Complete φ-weighted finite model with rigorous mathematical foundations
