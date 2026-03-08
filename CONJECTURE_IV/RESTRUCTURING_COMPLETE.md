@@ -135,7 +135,7 @@ Claim 5 (External Validation)
 ### Future Integration Points
 - **Conjecture III:** Geodesic arithmetic isomorphism (complementary)
 - **Conjecture V:** Euler product calibration (feeds into Claim 2)
-- **MKM 9D Proxy:** Empirical foundation (validated by all claims)
+- **RIEMANN_PHI 9D Proxy:** Empirical foundation (validated by all claims)
 
 ---
 
@@ -162,7 +162,7 @@ Claim 5 (External Validation)
 
 ### Quick Access
 ```bash
-cd /Users/jmullings/BetaPrecision/high-precision-core/MKM_RIEMANN/MKM_9D_PROXY/CONJECTURE_IV_NEW
+cd /Users/jmullings/BetaPrecision/high-precision-core/RIEMANN_PHI_RIEMANN/RIEMANN_PHI_9D_PROXY/CONJECTURE_IV_NEW
 
 # Validate structure
 python3 VALIDATE_STRUCTURE.py

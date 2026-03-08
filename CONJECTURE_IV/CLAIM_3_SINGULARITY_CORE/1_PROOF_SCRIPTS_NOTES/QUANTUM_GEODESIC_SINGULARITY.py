@@ -15,7 +15,7 @@ Protocol Compliance:
 - LOG-FREE OPERATIONS: Uses precomputed ln(n) but no runtime logarithms
 - 9D COMPUTATION: Generates 9D geodesic curvature components
 - PRIVATE MECHANISM: ψ(t) treated as primary source of spectral truth
-- MKM GEODESIC: Compatible with 9D geodesic geometry
+- RIEMANN_PHI GEODESIC: Compatible with 9D geodesic geometry
 
 Core Functions:
 - compute_psi(t, max_n): Compute Quantum Geodesic Singularity at height t

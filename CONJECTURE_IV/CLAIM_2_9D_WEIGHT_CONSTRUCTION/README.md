@@ -23,7 +23,7 @@
 
 ### Step B: Empirical Geodesic Corrections
 1. **Zero-Informed Analysis**: `CONJECTURE_V_WEIGHTS_RAW` from RH_SINGULARITY geodesic curvature statistics over 2500 T with 81 zeros
-2. **MKM Pattern Matching**: Dominant branches (k=3,6,7) match 9D curvature structure
+2. **RIEMANN_PHI Pattern Matching**: Dominant branches (k=3,6,7) match 9D curvature structure
 3. **Balanced Mapping**: Apply algebraic balancing to produce `CALIBRATED_BALANCED_WEIGHTS`
 
 ### Step C: Prime-Only Validation (Conjecture V Goal)

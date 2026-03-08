@@ -149,18 +149,18 @@ header .meta span{color:var(--text);}
 </div>
 
 <div class="block def">
-  <div class="block-label">Definition 1.4 — MKM 9-Tone State</div>
-  <p>The MKM canonical state vector μ(T) ∈ ℝ⁹ is defined by</p>
+  <div class="block-label">Definition 1.4 — RIEMANN_PHI 9-Tone State</div>
+  <p>The RIEMANN_PHI canonical state vector μ(T) ∈ ℝ⁹ is defined by</p>
   <div class="eq def-eq">
     μ_k(T) = T_k · σ_k · β(T)^{k/φ} / (1 + β(T)^{k/φ})
-    <small>where T_k are the 9 MKM tones, σ_k = sech²(a*·ln(T_k/T_geom)), β(T) = φ⁻¹·T^{1/φ}</small>
+    <small>where T_k are the 9 RIEMANN_PHI tones, σ_k = sech²(a*·ln(T_k/T_geom)), β(T) = φ⁻¹·T^{1/φ}</small>
   </div>
 </div>
 
 <div class="block def">
   <div class="block-label">Definition 1.5 — φ-Weighted Shift Vector</div>
   <p>The <b>shift vector</b> Δ(T) ∈ ℝ⁹ is the φ-exponentially weighted difference between
-  the Riemann hyperbola products and the MKM state:</p>
+  the Riemann hyperbola products and the RIEMANN_PHI state:</p>
   <div class="eq def-eq">
     Δ_k(T) = [h_k(T) − μ_k(T)] · e^{−k/φ}
     <small>The weights e^{−k/φ} ≈ [1.00, 0.54, 0.29, 0.16, 0.085, 0.046, 0.025, 0.014, 0.0074]</small>
@@ -269,7 +269,7 @@ header .meta span{color:var(--text);}
   </table>
   <p>The actual decay is <b>faster</b> than φ^{−k} at small k and converges toward it at large k.
   The ratio column climbs monotonically from 0.35 to 0.51, indicating a secondary envelope
-  modulating the golden template — likely the MKM spectral weights σ_k.</p>
+  modulating the golden template — likely the RIEMANN_PHI spectral weights σ_k.</p>
   <div class="qed">∎</div>
 </div>
 

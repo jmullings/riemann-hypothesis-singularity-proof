@@ -6,7 +6,7 @@ DIMENSIONAL_REDUCTION_ANALYSIS.py
 Is 9D the real object, or just a coordinate shadow of 6D (or 2D)?
 
 This script tests whether the key discriminators and observables in the
-MKM-Riemann framework lose any power when projected to lower dimensions.
+RIEMANN_PHI-Riemann framework lose any power when projected to lower dimensions.
 
 ═══════════════════════════════════════════════════════════════════════
 TESTS
@@ -14,7 +14,7 @@ TESTS
 
 1. RE-RUN DISCRIMINATORS IN REDUCED DIMENSIONS
    - P(T): Zero/non-zero alignment discriminator
-   - Z₉D(T): Riemann-MKM cosine similarity  
+   - Z₉D(T): Riemann-RIEMANN_PHI cosine similarity  
    - ||Δ||·B: Bitsize constant
 
 2. LEARN EXPLICIT 6×9 PROJECTION MATRIX L
@@ -28,7 +28,7 @@ TESTS
 HYPOTHESIS: If 6D (or 2D) retains >99% discriminative power,
 then "6D is the real object; 9D is just coordinate embedding."
 
-Author: MKM Dimensional Analysis
+Author: RIEMANN_PHI Dimensional Analysis
 Date: March 2026
 """
 
@@ -43,7 +43,7 @@ warnings.filterwarnings('ignore')
 # Import from the validated framework
 from PHI_WEIGHTED_9D_SHIFT import (
     RIEMANN_ZEROS, PhiWeighted9DShiftEngine, bitsize,
-    PHI, PHI_EXP_WEIGHTS, N_DIM, MKM_TONES
+    PHI, PHI_EXP_WEIGHTS, N_DIM, RIEMANN_PHI_TONES
 )
 
 
@@ -120,10 +120,10 @@ def test_alignment_discriminator(engine: DimensionalAnalysisEngine, n_dims: int)
     mags_zero = np.linalg.norm(deltas_proj, axis=1)
     mags_nonzero = np.linalg.norm(deltas_nz_proj, axis=1)
     
-    # Compute full alignment using projected Riemann/MKM vectors
+    # Compute full alignment using projected Riemann/RIEMANN_PHI vectors
     def compute_alignment_proj(T: float, n_dims: int) -> float:
         R = engine.engine.compute_riemann_9d(T)
-        M = engine.engine.compute_mkm_9d(T)
+        M = engine.engine.compute_riemann_phi_9d(T)
         R_proj = R @ engine.pca_basis[:, :n_dims]
         M_proj = M @ engine.pca_basis[:, :n_dims]
         R_norm = R_proj / (np.linalg.norm(R_proj) + 1e-15)

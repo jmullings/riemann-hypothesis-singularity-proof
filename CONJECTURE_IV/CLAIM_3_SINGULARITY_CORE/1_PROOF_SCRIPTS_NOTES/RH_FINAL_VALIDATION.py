@@ -48,7 +48,7 @@ from core.PHIGEOMETRICGROWTHVERIFIER import PhiGeometricGrowthVerifier
 # V–IV bridge utilities (partial sums, type gap)
 from core.CONJECTUREVBRIDGE import psipartialsum, TYPEGAP
 
-# Unified 9D dimensional shift / MKM–Riemann geometry
+# Unified 9D dimensional shift / RIEMANN_PHI–Riemann geometry
 from UNIFIEDDIMENSIONALSHIFTEQUATION import (
     UnifiedDimensionalShiftEngine,
     RIEMANNZEROS,       # numpy array
@@ -163,7 +163,7 @@ class GlobalDiagnosticReport:
               f"({'PASS' if self.shift_laws.pca_6d_pass else 'INCONCLUSIVE'})")
         print(f"  2D / 6D energy fraction   : {self.shift_laws.pca_2d_fraction_of_6d*100:.1f}%")
 
-        print(f"\nRiemann–MKM alignment:")
+        print(f"\nRiemann–RIEMANN_PHI alignment:")
         print(f"  Discriminates at zeros vs off-zeros : "
               f"{'YES' if self.shift_laws.alignment_discriminates else 'NO CLEAR PATTERN'}")
         print(f"  Mean alignment gap                   : {self.shift_laws.alignment_gap:.4f}")
@@ -197,7 +197,7 @@ class GlobalDiagnosticReport:
         print("\n[4] Global Interpretation")
         print("-" * 72)
         print("This diagnostic suite shows:")
-        print("  • The 9D MKM–Riemann shift empirically lives in a stable, φ-structured")
+        print("  • The 9D RIEMANN_PHI–Riemann shift empirically lives in a stable, φ-structured")
         print("    low-dimensional subspace (6D, effectively ~2D), with strong bitsize")
         print("    and golden-decay structure at tested Riemann zeros.")
         print("  • The φ-weighted transfer operator’s Fredholm determinant has order 1 and")
@@ -282,7 +282,7 @@ def run_shift_law_diagnostics() -> ShiftLawDiagnostics:
 
     pca_6d_pass = var6d >= PCA_6D_THRESHOLD
 
-    # Riemann–MKM alignment discrimination
+    # Riemann–RIEMANN_PHI alignment discrimination
     # reuse the computeshift() to get raw vectors; compare cos-sim at zeros vs midpoints
     def cos_sim(u: np.ndarray, v: np.ndarray) -> float:
         nu = np.linalg.norm(u)
@@ -295,11 +295,11 @@ def run_shift_law_diagnostics() -> ShiftLawDiagnostics:
     align_non: List[float] = []
 
     for T in zeros:
-        delta, h, mkm = engine.computeshiftdetailed(float(T))
-        align_zero.append(cos_sim(h, mkm))
+        delta, h, riemann_phi = engine.computeshiftdetailed(float(T))
+        align_zero.append(cos_sim(h, riemann_phi))
     for T in nonzero_Ts:
-        delta, h, mkm = engine.computeshiftdetailed(float(T))
-        align_non.append(cos_sim(h, mkm))
+        delta, h, riemann_phi = engine.computeshiftdetailed(float(T))
+        align_non.append(cos_sim(h, riemann_phi))
 
     mean_align_zero = statistics.fmean(align_zero)
     mean_align_non = statistics.fmean(align_non)

@@ -14,7 +14,7 @@ that satisfy:
 With balanced weights, the Spectral Confinement Theorem applies:
     All singularities of L_s are confined to Re(s) = 1/2
 
-This is the critical bridge between the MKM 9-Tone knowledge and the public
+This is the critical bridge between the RIEMANN_PHI 9-Tone knowledge and the public
 mathematical proof framework.
 
 CALIBRATION STRATEGY:
@@ -93,7 +93,7 @@ CALIBRATED_BALANCED_WEIGHTS = np.array([
 ])
 
 # GEODESIC CRITERION COEFFICIENTS from RH_SINGULARITY.py
-# These encode the MKM 9-Tone relationships for zero detection
+# These encode the RIEMANN_PHI 9-Tone relationships for zero detection
 GEODESIC_COEF_DARG_DT:      float = 2.5118    # argumental derivative
 GEODESIC_COEF_Z80_ABS:      float = -2.2895   # |z80| discriminant  
 GEODESIC_COEF_RHO4:         float = 1.0069    # persistence ratio κ₄/κ₁
@@ -149,7 +149,7 @@ class ConjVCalibrator:
     """
     Conjecture V Weight Calibrator.
     
-    Constructs balanced weights using the MKM 9-Tone knowledge encoded
+    Constructs balanced weights using the RIEMANN_PHI 9-Tone knowledge encoded
     in the Conjecture V geodesic analysis.
     
     The calibration finds scale factors α_k such that:
@@ -321,7 +321,7 @@ class ConjVCalibrator:
         1. Alternating balance (Σ w_k σ_k = 0)
         2. Spectral confinement (max radius at σ=0.5)
         
-        This combines the MKM 9-Tone knowledge with the mathematical constraint.
+        This combines the RIEMANN_PHI 9-Tone knowledge with the mathematical constraint.
         """
         # Start with Conjecture V weights
         weights = CONJECTURE_V_WEIGHTS.copy()
@@ -420,7 +420,7 @@ class BalancedSpectralAnalyzer:
     Balance alone is necessary but NOT sufficient. We also need 
     φ-coherent branch lengths that align with the geodesic structure.
     
-    The geodesic coefficients encode how the MKM 9-Tones organize
+    The geodesic coefficients encode how the RIEMANN_PHI 9-Tones organize
     branch lengths for spectral confinement.
     """
     
@@ -701,7 +701,7 @@ def demonstrate_conjecture_v_calibration():
     cv_alt = np.sum(cv_weights * BRANCH_SIGNATURES)
     print(f"  Alternating sum: {cv_alt:.10f}")
     print(f"  Close to balanced, but needs fine-tuning")
-    print("\n  GEODESIC COEFFICIENTS (MKM 9-Tone Encoding):")
+    print("\n  GEODESIC COEFFICIENTS (RIEMANN_PHI 9-Tone Encoding):")
     print(f"    darg/dT coef:     {GEODESIC_COEF_DARG_DT:.4f}")
     print(f"    |z80| coef:       {GEODESIC_COEF_Z80_ABS:.4f}")
     print(f"    ρ₄ (persistence): {GEODESIC_COEF_RHO4:.4f}")
@@ -756,7 +756,7 @@ The Conjecture V calibration resolves the key challenge:
     CONJECTURE V WEIGHTS:      Alternating sum = {cv_alt:.4f}
     CALIBRATED WEIGHTS:        Alternating sum = {balanced.alternating_sum:.2e}
 
-The MKM 9-Tone structure (encoded in geodesic coefficients) provides 
+The RIEMANN_PHI 9-Tone structure (encoded in geodesic coefficients) provides 
 the physical basis for the calibration:
 
   - k=3,6,7 branches are DOMINANT at zeros (higher curvature)

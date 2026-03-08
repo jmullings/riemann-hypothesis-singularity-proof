@@ -470,7 +470,7 @@ python TRINITY_VALIDATOR.py
 ### Connection to Other Conjectures
 - **Conjecture III:** Geodesic arithmetic isomorphism framework
 - **Conjecture V:** Euler product calibration (feeds into Claim 2)
-- **MKM 9D Proxy:** Empirical foundation (feeds into Claim 4)
+- **RIEMANN_PHI 9D Proxy:** Empirical foundation (feeds into Claim 4)
 
 ### Variational RH Proof Connection
 - These variational results are external to this codebase; here they serve only as motivation and qualitative consistency checks

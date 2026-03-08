@@ -3,14 +3,14 @@
 UNIFIEDDIMENSIONALSHIFTEQUATION.py
 ==================================
 
-Unified 9D Dimensional Shift Framework for MKM–Riemann Geometry
+Unified 9D Dimensional Shift Framework for RIEMANN_PHI–Riemann Geometry
 
 This module implements the dimensional shift equation:
-    Δ(T) = H(T) - MKM(T)
+    Δ(T) = H(T) - RIEMANN_PHI(T)
 
 where:
 - H(T) is the 9D Hilbert–Hardy projection
-- MKM(T) is the Mertens–Kummer–Montgomery reference
+- RIEMANN_PHI(T) is the Mertens–Kummer–Montgomery reference
 - Δ(T) lives in an effective 6D (collapsing to ~2D) subspace
 
 The Three Laws of Unified Dimensional Shift:
@@ -62,7 +62,7 @@ class DimensionalShift:
 
 class UnifiedDimensionalShiftEngine:
     """
-    Compute and analyze the unified dimensional shift Δ(T) = H(T) - MKM(T).
+    Compute and analyze the unified dimensional shift Δ(T) = H(T) - RIEMANN_PHI(T).
     """
     
     def __init__(self, maxn: int = 5000):
@@ -83,25 +83,25 @@ class UnifiedDimensionalShiftEngine:
         """
         Compute the 9D dimensional shift vector Δ(T).
         
-        Δ_k(T) = H_k(T) - MKM_k(T)
+        Δ_k(T) = H_k(T) - RIEMANN_PHI_k(T)
         """
         # Hilbert-Hardy projection onto 9 branches
         H = self._compute_hilbert_projection(T)
         
-        # MKM reference (Mertens-Kummer-Montgomery)
-        MKM = self._compute_mkm_reference(T)
+        # RIEMANN_PHI reference (Mertens-Kummer-Montgomery)
+        RIEMANN_PHI = self._compute_riemann_phi_reference(T)
         
-        return H - MKM
+        return H - RIEMANN_PHI
     
     def computeshiftdetailed(self, T: float) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
         """
         Compute shift with full diagnostic output.
         
-        Returns (Δ, H, MKM).
+        Returns (Δ, H, RIEMANN_PHI).
         """
         H = self._compute_hilbert_projection(T)
-        MKM = self._compute_mkm_reference(T)
-        return H - MKM, H, MKM
+        RIEMANN_PHI = self._compute_riemann_phi_reference(T)
+        return H - RIEMANN_PHI, H, RIEMANN_PHI
     
     def _compute_hilbert_projection(self, T: float) -> np.ndarray:
         """
@@ -125,22 +125,22 @@ class UnifiedDimensionalShiftEngine:
         
         return H
     
-    def _compute_mkm_reference(self, T: float) -> np.ndarray:
+    def _compute_riemann_phi_reference(self, T: float) -> np.ndarray:
         """
-        Compute the MKM reference vector MKM(T).
+        Compute the RIEMANN_PHI reference vector RIEMANN_PHI(T).
         
         Based on Mertens function asymptotic behavior.
         """
-        MKM = np.zeros(9)
+        RIEMANN_PHI = np.zeros(9)
         
         # Bitsize scaling
         B_T = np.log2(max(T, 2.0))
         
         for k in range(9):
-            # MKM component with φ-decay
-            MKM[k] = self.phi_weights[k] * np.sin(T / ((k + 1) * PHI)) / B_T
+            # RIEMANN_PHI component with φ-decay
+            RIEMANN_PHI[k] = self.phi_weights[k] * np.sin(T / ((k + 1) * PHI)) / B_T
         
-        return MKM
+        return RIEMANN_PHI
     
     def analyzeshift(self, T: float) -> DimensionalShift:
         """

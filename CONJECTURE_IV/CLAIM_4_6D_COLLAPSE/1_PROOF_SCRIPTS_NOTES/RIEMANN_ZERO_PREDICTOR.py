@@ -92,7 +92,7 @@ def load_riemann_zeros(filepath: str = None, num_zeros: int = 100000) -> np.ndar
     """Load known Riemann zeros for calibration."""
     if filepath is None:
         script_dir = os.path.dirname(os.path.abspath(__file__))
-        filepath = os.path.join(script_dir, '..', '..', 'MKM_Hilbert_Polya', 'RiemannZeros.txt')
+        filepath = os.path.join(script_dir, '..', '..', 'RIEMANN_PHI_Hilbert_Polya', 'RiemannZeros.txt')
     
     zeros = []
     try:
@@ -237,7 +237,7 @@ def phi_canonical_state(T: float) -> np.ndarray:
     Pure φ-weighted 9D canonical state:
         μ_k = φ^{-k} · β^{k/φ} / (1 + β^{k/φ})
     
-    Uses ONLY the golden ratio φ for weighting — no MKM tones.
+    Uses ONLY the golden ratio φ for weighting — no RIEMANN_PHI tones.
     """
     beta = INV_PHI * (T ** INV_PHI) if T > 0 else 0
     
@@ -313,7 +313,7 @@ class ZeroDiscriminator:
         so we need raw differences to preserve the scaling.
         """
         R = self.engine.compute_riemann_9d(T)
-        M = phi_canonical_state(T)  # Pure φ-weighted state (no MKM tones)
+        M = phi_canonical_state(T)  # Pure φ-weighted state (no RIEMANN_PHI tones)
         # NO division by B_T — this preserves Law 2: ||Δ||·B ≈ constant
         delta = (R - M) * PHI_EXP_WEIGHTS
         return delta
@@ -327,7 +327,7 @@ class ZeroDiscriminator:
         """
         # Get complex Riemann vector
         R_complex = self.engine.compute_riemann_9d_complex(T)
-        M = phi_canonical_state(T)  # Pure φ-weighted state (no MKM tones)
+        M = phi_canonical_state(T)  # Pure φ-weighted state (no RIEMANN_PHI tones)
         
         # Apply Riemann-Siegel theta rotation to align phases
         theta = theta_riemann_full(T)

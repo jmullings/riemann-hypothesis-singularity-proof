@@ -3,15 +3,15 @@
 PHI_WEIGHTED_9D_SHIFT.py
 ========================
 
-Alternative 9D Riemann-φ-Weighted Approach + MKM INFINITY TRINITY
+Alternative 9D Riemann-φ-Weighted Approach + RIEMANN_PHI INFINITY TRINITY
 -----------------------------------------------------------------
 
 This script provides an alternative computational pathway to validate
 the Three Laws of Dimensional Shift using a pure φ-weighted basis,
-AND applies the MKM Infinity Trinity Protocol for full validation.
+AND applies the RIEMANN_PHI Infinity Trinity Protocol for full validation.
 
 ═══════════════════════════════════════════════════════════════════
-MKM INFINITY TRINITY PROTOCOL
+RIEMANN_PHI INFINITY TRINITY PROTOCOL
 ═══════════════════════════════════════════════════════════════════
 
 ALL THREE DOCTRINES MUST PASS before results are considered valid:
@@ -35,11 +35,11 @@ METHODOLOGY DIFFERENCES FROM UNIFIED_DIMENSIONAL_SHIFT_EQUATION.py:
    
    This rotates the phase by k·π/φ for each component.
 
-2. Instead of MKM 9-tone state, uses φ-SCALED RESONANCE VECTOR:
+2. Instead of RIEMANN_PHI 9-tone state, uses φ-SCALED RESONANCE VECTOR:
    
        M_k(T) = e^{-k/φ} · sin(T/T_k)
    
-   where T_k are the 9 MKM tones.
+   where T_k are the 9 RIEMANN_PHI tones.
 
 3. Shift equation uses RAW R (no normalization) for natural T-scaling:
    
@@ -110,7 +110,7 @@ TRINITY_WEIGHTS = TRINITY_WEIGHTS / TRINITY_WEIGHTS.sum()
 
 
 # ══════════════════════════════════════════════════════════════════════
-# MKM INFINITY TRINITY PROTOCOL
+# RIEMANN_PHI INFINITY TRINITY PROTOCOL
 # ══════════════════════════════════════════════════════════════════════
 #
 # The Trinity Protocol embeds the shift manifold F: Zeros → T^9 × [0,1)
@@ -348,7 +348,7 @@ def doctrine_iii_injective(zeros: np.ndarray, deltas: np.ndarray, tol: float = 1
 
 def run_infinity_trinity(zeros: np.ndarray, deltas: np.ndarray) -> Tuple[bool, dict]:
     """
-    Run the complete MKM Infinity Trinity Protocol.
+    Run the complete RIEMANN_PHI Infinity Trinity Protocol.
     
     Returns True if all three doctrines pass:
       I.   Topological Compactification
@@ -356,7 +356,7 @@ def run_infinity_trinity(zeros: np.ndarray, deltas: np.ndarray) -> Tuple[bool, d
       III. Injective Encoding / Information-Theoretic Control
     """
     print("\n" + "═"*70)
-    print("MKM INFINITY TRINITY PROTOCOL")
+    print("RIEMANN_PHI INFINITY TRINITY PROTOCOL")
     print("═"*70)
     print(f"  Testing {len(zeros)} zeros/shifts...")
     
@@ -498,7 +498,7 @@ class PhiWeightedSpectralEngine:
 
 
 # ══════════════════════════════════════════════════════════════════════
-# φ-SCALED RESONANCE VECTOR (Alternative to MKM 9D State)
+# φ-SCALED RESONANCE VECTOR (Alternative to RIEMANN_PHI 9D State)
 # ══════════════════════════════════════════════════════════════════════
 
 def phi_resonance_vector(T: float) -> np.ndarray:
@@ -515,9 +515,9 @@ def phi_resonance_vector(T: float) -> np.ndarray:
     return resonances
 
 
-def mkm_canonical_state(T: float) -> np.ndarray:
+def riemann_phi_canonical_state(T: float) -> np.ndarray:
     """
-    Standard MKM 9D state (same as UNIFIED for comparison):
+    Standard RIEMANN_PHI 9D state (same as UNIFIED for comparison):
     
         μ_k = T_k · σ_k · β^{k/φ} / (1 + β^{k/φ})
     """
@@ -575,7 +575,7 @@ class PhiShiftResult:
     T: float
     delta_vector: np.ndarray      # 9D shift
     riemann_vector: np.ndarray    # Riemann-side 9D
-    mkm_vector: np.ndarray        # MKM-side 9D
+    riemann_phi_vector: np.ndarray        # RIEMANN_PHI-side 9D
     shift_magnitude: float        # ||Δ||
     bitsize: float                # B(T)
     normalized_mag: float         # ||Δ|| · B(T)
@@ -593,7 +593,7 @@ class PhiWeighted9DShiftEngine:
     
     where:
         R_k(T) = φ-weighted spectral moment (Riemann side)
-        M_k(T) = MKM canonical state or φ-resonance (MKM side)
+        M_k(T) = RIEMANN_PHI canonical state or φ-resonance (RIEMANN_PHI side)
         e^{-k/φ} = φ-exponential decay weight
         B(T) = bitsize
     
@@ -615,9 +615,9 @@ class PhiWeighted9DShiftEngine:
         else:
             return self.spectral_engine.compute_9d_spectral_vector(T)
     
-    def compute_mkm_9d(self, T: float) -> np.ndarray:
-        """Compute MKM-side 9D vector (use canonical for comparability)."""
-        return mkm_canonical_state(T)
+    def compute_riemann_phi_9d(self, T: float) -> np.ndarray:
+        """Compute RIEMANN_PHI-side 9D vector (use canonical for comparability)."""
+        return riemann_phi_canonical_state(T)
     
     def compute_shift(self, T: float) -> np.ndarray:
         """
@@ -630,7 +630,7 @@ class PhiWeighted9DShiftEngine:
         needed for the bitsize scaling law.
         """
         R = self.compute_riemann_9d(T)
-        M = self.compute_mkm_9d(T)
+        M = self.compute_riemann_phi_9d(T)
         
         # NO normalization - raw R preserves natural T-growth
         # This is critical for Law 2: ||Δ||·B ≈ constant (CV = 2.2%)
@@ -647,7 +647,7 @@ class PhiWeighted9DShiftEngine:
     ) -> PhiShiftResult:
         """Full shift analysis at height T."""
         R = self.compute_riemann_9d(T)
-        M = self.compute_mkm_9d(T)
+        M = self.compute_riemann_phi_9d(T)
         # NO normalization - use raw R
         
         B_T = bitsize(T)
@@ -668,7 +668,7 @@ class PhiWeighted9DShiftEngine:
             T=T,
             delta_vector=delta,
             riemann_vector=R,
-            mkm_vector=M,
+            riemann_phi_vector=M,
             shift_magnitude=np.linalg.norm(delta),
             bitsize=B_T,
             normalized_mag=np.linalg.norm(delta) * B_T,
@@ -844,7 +844,7 @@ def test_law3_golden():
 
 def test_alignment_discrimination():
     """
-    Test: Does Riemann-MKM alignment discriminate between zeros and non-zeros?
+    Test: Does Riemann-RIEMANN_PHI alignment discriminate between zeros and non-zeros?
     """
     print("\n" + "="*70)
     print("ALIGNMENT DISCRIMINATION TEST")
@@ -858,7 +858,7 @@ def test_alignment_discrimination():
     
     def compute_alignment(T: float) -> float:
         R = engine.compute_riemann_9d(T)
-        M = engine.compute_mkm_9d(T)
+        M = engine.compute_riemann_phi_9d(T)
         R_norm = R / (np.linalg.norm(R) + 1e-15)
         M_norm = M / (np.linalg.norm(M) + 1e-15)
         return float(np.dot(R_norm, M_norm))
@@ -978,7 +978,7 @@ def run_all_tests():
     # ═══════════════════════════════════════════════════════════════════
     
     print("\n" + "▓"*70)
-    print("▓  PHASE 2: MKM INFINITY TRINITY PROTOCOL                          ▓")
+    print("▓  PHASE 2: RIEMANN_PHI INFINITY TRINITY PROTOCOL                          ▓")
     print("▓"*70)
     
     # Compute all shifts for Trinity validation
@@ -1004,7 +1004,7 @@ def run_all_tests():
         ('law1', 'LAW 1 — SUPPORT: Dimensional collapse'),
         ('law2', 'LAW 2 — BITSIZE: Scaling law'),
         ('law3', 'LAW 3 — GOLDEN: φ-exponential decay'),
-        ('alignment', 'BONUS — Riemann-MKM alignment'),
+        ('alignment', 'BONUS — Riemann-RIEMANN_PHI alignment'),
         ('stability', 'BONUS — Subspace stability'),
     ]
     

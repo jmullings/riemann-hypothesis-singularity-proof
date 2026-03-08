@@ -58,7 +58,7 @@ class PhiGeometricLens:
         self._e = None
 
 # Compatibility alias for backward compatibility
-MKMGeometricLens = PhiGeometricLens
+RIEMANN_PHIGeometricLens = PhiGeometricLens
 
 class GeoNumber:
     """

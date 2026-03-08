@@ -26,7 +26,7 @@ PASS CRITERIA:
 • No parameter that "tightens" as ε → 0
 • τ(n) linearity R² > 0.99 without tuning
 
-The MKM contour-free winding approach validates this through
+The RIEMANN_PHI contour-free winding approach validates this through
 w(t) = (dθ/dt) · sech²(|ψ|/κ) where κ is FIXED.
 
 Author: Trap Compliance Suite
