@@ -2,6 +2,7 @@
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18904657.svg)](https://doi.org/10.5281/zenodo.18904657)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18881814.svg)](https://doi.org/10.5281/zenodo.18881814)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18912432.svg)](https://doi.org/10.5281/zenodo.18912432)
 
 ## A φ-Weighted Spectral Framework via Transfer Operators
 
@@ -43,84 +44,89 @@ Theorems I–II + III_N (PROVED) + III_∞ + IV-b + V ⟹ RH
 
 ---
 
-## Part I: Proved Theorems (Rigorous Foundation)
+## Mathematical Framework: Five-Part Structure
 
-### THEOREM I: φ-Weighted Ruelle Zeta Convergence
-**Status:** ✅ PROVED (Finite Model)
+### 1. Theorem I — φ-Weighted Ruelle Zeta (Finite Model)
+**Status:** ✅ **PROVED** (finite-dimensional model)
 
-For the φ-weighted branch system with weights $w_k = \phi^{-(k+1)}$, $k=0,\ldots,8$:
+Defines the φ-weighted Ruelle–type zeta $\zeta_\phi(s)$ for the 9-branch system with weights $w_k = \phi^{-(k+1)}$.
 
-$$\zeta_\phi(s) = \prod_\gamma \left(1 - \kappa_\gamma\right)^{-1}$$
+**Key Results:**
+- Proves absolute convergence for $\Re(s) > 1$ and establishes basic spectral properties in the finite model
+- Provides the φ-summability condition $\sum_k w_k < \phi$ and a controlled "log-free" implementation
+- **Core Achievement:** $\sum w_k = 1.597 < \phi = 1.618$ with margin $\delta \approx 0.021$
 
-converges absolutely for $\Re(s) > 1$, with controlled behaviour on the critical line.
-
-**Key Result:** φ-summability condition $\sum w_k = 1.597 < \phi = 1.618$ with margin $\delta \approx 0.021$.
-
-📖 **Full Documentation:** [THEOREM_I/README.md](THEOREM_I/README.md)
-
----
-
-### THEOREM II: Golden Transfer Operator Spectral Properties
-**Status:** ✅ PROVED (Finite Matrices $L_s^{(n)}$)
-
-For each $n$, the matrix $L_s^{(n)}$ has:
-- $\det(I - L_s^{(n)})$ entire in $s$
-- Dominant eigenvalue $\approx \phi^{-1} + O(n^{-1})$
-- Spectral gap $= \phi^{-1} \approx 0.618$
-
-**Key Result:** Monotonic LOG-FREE pressure function $P_\phi(s) = |\lambda_1|^{1/\phi} - 1$.
-
-📖 **Full Documentation:** [THEOREM_II/README.md](THEOREM_II/README.md)
+📖 **Details:** [THEOREM_I/README.md](THEOREM_I/README.md)
 
 ---
 
-## Part II: Conjectural Programme (Research Challenges)
+### 2. Theorem II — Golden Transfer Operator (Finite Matrices)
+**Status:** ✅ **PROVED** (finite matrices $L_s^{(n)}$)
 
-### THEOREM III_N + CONJECTURE III_∞: Geodesic Singularity Equivalence
+Studies the finite-dimensional transfer matrices $L_s^{(n)}$ associated with the φ-weighted branches.
 
-**THEOREM III_N** (✅ PROVED): For fixed matrix size $N$ and calibrated $H_N$ with $\kappa = \kappa^*$:
-$$\Sigma_\phi(T) \text{ is maximal} \iff T \text{ is eigenvalue of } H_N \iff S_N(E) \text{ has scattering pole}$$
+**Proves:**
+- $\det(I - L_s^{(n)})$ is an entire function of $s$
+- A dominant eigenvalue $\lambda_1^{(n)}$ with $\lambda_1^{(n)} \approx \phi^{-1} + O(n^{-1})$
+- A spectral gap governed by $\phi^{-1} \approx 0.618$ in the finite model
+- Introduces the log-free pressure functional $P_\phi(s)$ as a structural diagnostic
 
-**CONJECTURE III_∞** (🔶 CONJECTURAL): As $N \to \infty$ with $\kappa = \kappa^*(N)$:
-1. Eigenvalues of $H_N$ converge to Riemann zero ordinates
-2. $\det S_N(E)$ converges to $\xi(1/2+iE)/\xi(1/2-iE)$
+📖 **Details:** [THEOREM_II/README.md](THEOREM_II/README.md)
 
-📖 **Full Requirements:** [CONJECTURE_III/README.md](CONJECTURE_III/README.md)
+---
+
+### 3. Conjecture III — Geodesic Singularity and ζ-Correspondence
+**Status:** ✅🔶 **MIXED** — finite theorem proved, infinite limit conjectural
+
+**Theorem III_N** (✅ **PROVED**): For each fixed $N$, establishes a finite geodesic "singularity ⟺ eigenvalue ⟺ scattering pole" equivalence for the calibrated matrix $H_N$.
+
+**Conjecture III_∞** (🔶 **CONJECTURAL**): As $N \to \infty$,
+- Eigenvalues of $H_N$ converge to ordinates of the nontrivial zeros of $\zeta$
+- The finite scattering data converge to $\xi(1/2+iE)/\xi(1/2-iE)$
+
+This is the Hilbert–Pólya-type bridge from the finite φ-geometric model to the actual zeta zeros.
+
+📖 **Details:** [CONJECTURE_III/README.md](CONJECTURE_III/README.md)
 
 ---
 
-### CONJECTURE IV: φ-Weighted Transfer Operator Framework
-**Status:** ✅🔶 HYBRID FRAMEWORK — Structured into Five Claims
+### 4. Conjecture IV — φ-Weighted Transfer Operator and Hadamard Obstruction
+**Status:** ✅🔶 **HYBRID** — operator-theoretic core proved; zero-correspondence programme conjectural
 
-**Framework:** Completely restructured into focused mathematical claims with explicit proof status separation:
+Builds a φ-weighted transfer operator on a symbolic φ-Bernoulli space and **proves:**
+- Existence of a trace-class operator $L_\phi(s)$ on a Hilbert space
+- Analyticity of the Fredholm determinant $D(s) = \det(I - L_\phi(s))$ in a right half-plane
+- **Conditional Hadamard obstruction:** Under natural hypotheses $D(s)$ has exponential type $\log \phi$, so no bounded entire $G$ satisfies $D(s) = G(s) \xi(s)$
 
-#### **Primary Publication**: Hadamard Obstruction Paper ✅
-**"A φ-Weighted Transfer Operator Framework and Hadamard Obstruction to ξ-Factorization"**
+**Provides evidence and structured conjectural programme for:**
+- 9D necessity and φ-weight construction
+- 9D→6D dimensional collapse and bitsize laws
+- Parallel singularity behaviour aligned with zeta zeros
 
-- **Proven core**: φ-Bernoulli measure, trace-class $L_s$, type(D) = log(φ), Hadamard obstruction 
-- **Main result**: No bounded entire $G(s)$ satisfies $D(s) = G(s) \cdot \xi(s)$ due to type gap Δ ≈ 1.09
-- **Publication status**: Ready for Journal of Functional Analysis, Experimental Mathematics
+**Framework Boundaries:**
+- ✅ **Proved core:** Hadamard obstruction and operator-theoretic framework
+- 🔶 **Open parts:** Zero-correspondence, exact φ-optimality, full 9D→6D analytic collapse
 
-#### **Five Central Claims**:
-
-| Claim | Title | Proof Status | Academic Framework |
-|-------|-------|--------------|-------------------|
-| **1** | 9D Necessity | ✅ Framework Proven + 🔶 Empirical | "9D necessity mechanism" |
-| **2** | φ-Weight Construction | ✅ Geometric Proven + 🔶 Conjectural | "Independent φ-weight model" |
-| **3** | Parallel Singularity | 🔶 Empirical (100% Recall) | "Unified zero condition" |
-| **4** | 6D Collapse & Bitsize | ✅ Empirical Laws (99.9% PCA) | "2-6D φ-shift collapse" |
-| **5** | External Validation | ✅ Hadamard Proven + ⚠️ dBN Inconclusive | "Hadamard obstruction + de Bruijn-Newman" |
-
-**Key Innovation**: **Explicit separation** of proven vs empirical vs conjectural components with honest assessment aligned to verification results.
-
-**Framework Boundaries**:
-- ✅ **Proves**: Transfer operator theory, Fredholm determinants, type gaps, dimensional reduction laws
-- ❌ **Does NOT prove**: RH, zero correspondence, exact singularity-zero matching
-- 🔶 **Conjectural**: Zero correspondence bridging, de Bruijn-Newman connections
-
-📖 **Full Documentation:** [CONJECTURE_IV/README.md](CONJECTURE_IV/README.md)
+📖 **Details:** [CONJECTURE_IV/README.md](CONJECTURE_IV/README.md)
 
 ---
+
+### 5. Conjecture V — φ-Spectral Riemann Equivalence and Full Proof Programme
+**Status:** 🔶 **MASTER CONJECTURAL CLOSURE** (conditional RH programme)
+
+Formulates the φ-spectral package that would complete the path to RH:
+
+$$\boxed{\text{Theorems I–II + III}_N\text{ (proved finite model)} + \text{Conjecture III}_\infty + \text{Conjecture IV (full)} + \text{Conjecture V} \Longrightarrow \text{RH}}$$
+
+**Conjecture V** asserts that, once the III_∞ limit and the full φ-weighted operator framework are established, the resulting φ-spectral package is equivalent to the Riemann Hypothesis.
+
+**The "Full Proof" is therefore conditional at this stage:** It is a precise programme showing how RH would follow from the stated conjectures, not yet an unconditional proof.
+
+📖 **Details and conditional full-proof sketch:** [CONJECTURE_V/README.md](CONJECTURE_V/README.md) and [FORMAL_PROOF/](FORMAL_PROOF/)
+
+---
+
+## Part II: Exploratory Research
 
 ### VECTOR CANCELLATION ENGINE: True ζ-Mechanism Analysis
 **Status:** 🔬 EXPLORATORY RESEARCH
@@ -143,16 +149,6 @@ $$\zeta\left(\tfrac{1}{2}+iT\right) = M(T) + \chi(T) \cdot C(T) + R(T)$$
 | Key Result | Hadamard obstruction | VCE statistics, curvature ratio |
 
 📖 **Full Documentation:** [VECTOR_CANCELLATION_ENGINE/README.md](VECTOR_CANCELLATION_ENGINE/README.md)
-
----
-
-### CONJECTURE V: φ-Spectral Riemann Equivalence (Master Closure)
-**Status:** 🔶 CONJECTURAL MASTER CLOSURE
-
-**Programme Statement:** The φ-weighted spectral framework captures $\zeta(s)$ so completely that:
-$$\text{III}_{\text{strong}} + \text{IV}_b \Longleftrightarrow \text{RH}$$
-
-📖 **Full Documentation:** [CONJECTURE_V/README.md](CONJECTURE_V/README.md)
 
 ---
 
@@ -284,13 +280,15 @@ The path to upgrading conjectures to theorems:
 ### Core Framework
 | File | Purpose |
 |------|---------|
-| `RH_SINGULARITY.PY` | Main φ-weighted framework |
-| `HP9_KAPPA_THEOREM_FRAMEWORK.PY` | HP9/KAPPA theorem implementation |
-| `HB_SPACE.PY` | Hilbert space construction |
-| `UNIVERSAL_SPECTRUM_DRIVER.PY` | Unified execution driver |
+| `RH_SINGULARITY.py` | Main φ-weighted framework |
+| `THEOREM_I/` | φ-weighted Ruelle zeta convergence (PROVED) |
+| `THEOREM_II/` | Golden transfer operator spectral properties (PROVED) |
+| `UNIVERSAL_SPECTRUM_DRIVER.py` | Unified execution driver |
 
-### Hilbert-Pólya Requirements (REQ_01–REQ_15)
-Complete implementation of 15 mathematical requirements for spectral RH approach.
+### Implementation Structure
+- **THEOREM_I**: Five core files implementing φ-operator theory and Hilbert space framework
+- **THEOREM_II**: Six files implementing golden transfer operator and spectral analysis
+- **FORMAL_PROOF**: Five independent referee-grade proofs structured for publication
 
 ---
 
@@ -358,14 +356,15 @@ cd TEST_SUITE && python RUN_ALL_TESTS.PY
 
 | Document | Location |
 |----------|----------|
+| Theorem I (PROVED) | [THEOREM_I/README.md](THEOREM_I/README.md) |
+| Theorem I Analysis | [THEOREM_I/FORMAL_THEOREM_I_ANALYSIS.md](THEOREM_I/FORMAL_THEOREM_I_ANALYSIS.md) |
+| Theorem II (PROVED) | [THEOREM_II/README.md](THEOREM_II/README.md) |
 | Conjecture III Details | [CONJECTURE_III/README.md](CONJECTURE_III/README.md) |
 | Conjecture IV Details | [CONJECTURE_IV/README.md](CONJECTURE_IV/README.md) |
 | Conjecture V Details | [CONJECTURE_V/README.md](CONJECTURE_V/README.md) |
+| Formal Proof Structure | [FORMAL_PROOF/](FORMAL_PROOF/) |
 | Vector Cancellation Engine | [VECTOR_CANCELLATION_ENGINE/README.md](VECTOR_CANCELLATION_ENGINE/README.md) |
-| Theorem I Analysis | [THEOREM_I/FORMAL_THEOREM_I_ANALYSIS.md](THEOREM_I/FORMAL_THEOREM_I_ANALYSIS.md) |
-| Theorem II Analysis | [THEOREM_II/FORMAL_THEOREM_II_ANALYSIS.md](THEOREM_II/FORMAL_THEOREM_II_ANALYSIS.md) |
 | Complete Test Suite | [TEST_SUITE/README.md](TEST_SUITE/README.md) |
-| Formal Proof Structure | [../FORMAL_PROOF_STRUCTURE/](../FORMAL_PROOF_STRUCTURE/) |
 
 ---
 

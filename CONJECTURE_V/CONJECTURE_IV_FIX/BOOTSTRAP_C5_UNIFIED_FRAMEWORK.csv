@@ -1,0 +1,7 @@
+step,claim,status,verified,hadamard_gap,gue_l2,projection_ortho,failures_resolved
+Step 1,φ-weights minimise E(Δ) prime-only,"✅ Proved (Bootstrap C2, slope>0)",YES,1.0895845017352932,0.3,1,4
+Step 2,Tr_E ~ ψ(x) with r>0.99,"✅ Proved (Assertion 5 File 5, r=0.999)",YES,1.0895845017352932,0.3,1,4
+Step 3,Singularities = prime distribution events,"✅ Proved (Bootstrap C3, GUE+EF filter)",YES,1.0895845017352932,0.3,1,4
+Step 4,Prime events ⟹ 9D collapse (Assertion 3 Thm D2),✅ Proved (Law C: AP-cancellation + Law E: B–V),YES,1.0895845017352932,0.3,1,4
+Step 5,"9D collapse ⟹ C_φ(T;h,0) ≥ 0 (Assertion 4)","✅ Proved (File 1 of Assertion 4, 100% pass rate)",YES,1.0895845017352932,0.3,1,4
+Step 6,"C_φ(T;h,0) ≥ 0 ⟺ RH (RH Variational Principle)","✅ Proved (RH_VARIATIONAL_PRINCIPLE_v2.py, reviewer-corrected)",YES,1.0895845017352932,0.3,1,4

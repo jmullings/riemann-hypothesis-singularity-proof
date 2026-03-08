@@ -9,6 +9,10 @@
 !CONJECTURE_IV/
 !CONJECTURE_IV/**
 
+# Include CONJECTURE_V folder and its contents
+!CONJECTURE_V/
+!CONJECTURE_V/**
+
 # Include BETA_PRECISION folder and its contents
 !BETA_PRECISION/
 !BETA_PRECISION/**

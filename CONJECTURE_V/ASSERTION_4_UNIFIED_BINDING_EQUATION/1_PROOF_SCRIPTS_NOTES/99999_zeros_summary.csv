@@ -1,0 +1,13 @@
+Metric,Value
+total_zeros,1000
+convex_count,1000
+pass_rate,100.0
+min_C_phi,1.2120146737366194e-12
+max_C_phi,0.0026166893378558598
+mean_C_phi,6.9461880924593435e-06
+std_C_phi,9.946786770374917e-05
+median_C_phi,2.905590767987576e-10
+gamma_min,14.134725142
+gamma_max,1419.422480946
+h,0.02
+total_time_sec,4.7783379554748535
