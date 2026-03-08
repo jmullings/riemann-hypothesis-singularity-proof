@@ -284,7 +284,7 @@ class LiPositivityProof:
         r3 = self.prove_LI3_moments_positive()
         r4 = self.prove_LI4_growth_bounded()
         r5 = self.prove_LI5_classical_consistency()
-        self.export_csv("/Users/jmullings/PersonalProjects/RH_SING_PROOF/riemann-hypothesis-singularity-proof/CONJECTURE_V/ASSERTION_5_NEW_MATHEMATICAL_FINDS/2_ANALYTICS_CHARTS_ILLUSTRATION", r3, r4, r5)
+        self.export_csv("../2_ANALYTICS_CHARTS_ILLUSTRATION", r3, r4, r5)
 
         print("\n" + "=" * 72)
         print("FILE 2 SUMMARY — LI POSITIVITY PRINCIPLE")

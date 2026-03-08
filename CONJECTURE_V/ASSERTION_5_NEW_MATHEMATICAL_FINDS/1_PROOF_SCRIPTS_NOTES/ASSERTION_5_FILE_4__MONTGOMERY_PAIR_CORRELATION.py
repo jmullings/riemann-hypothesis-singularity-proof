@@ -314,7 +314,7 @@ class MontgomeryPairCorrelationProof:
         r3 = self.prove_PC3_pair_correlation(peaks)
         r4 = self.prove_PC4_H_eigenvalue_spacing()
         r5 = self.prove_PC5_sum_rule(r3)
-        self.export_csv("/Users/jmullings/PersonalProjects/RH_SING_PROOF/riemann-hypothesis-singularity-proof/CONJECTURE_V/ASSERTION_5_NEW_MATHEMATICAL_FINDS/2_ANALYTICS_CHARTS_ILLUSTRATION", r3)
+        self.export_csv("../2_ANALYTICS_CHARTS_ILLUSTRATION", r3)
 
         print("\n" + "=" * 72)
         print("FILE 4 SUMMARY — MONTGOMERY PAIR CORRELATION PRINCIPLE")

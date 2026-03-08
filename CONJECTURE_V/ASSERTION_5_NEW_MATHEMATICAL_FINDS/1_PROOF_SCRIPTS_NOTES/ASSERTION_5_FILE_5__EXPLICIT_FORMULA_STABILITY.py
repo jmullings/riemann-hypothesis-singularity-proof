@@ -331,7 +331,7 @@ class ExplicitFormulaStabilityProof:
         r3 = self.prove_EF3_perturbation_degrades()
         r4 = self.prove_EF4_PNT_asymptotics()
         r5 = self.prove_EF5_structural_stability()
-        self.export_csv("/Users/jmullings/PersonalProjects/RH_SING_PROOF/riemann-hypothesis-singularity-proof/CONJECTURE_V/ASSERTION_5_NEW_MATHEMATICAL_FINDS/2_ANALYTICS_CHARTS_ILLUSTRATION", r1, r4)
+        self.export_csv("../2_ANALYTICS_CHARTS_ILLUSTRATION", r1, r4)
 
         print("\n" + "=" * 72)
         print("FILE 5 SUMMARY — EXPLICIT FORMULA STABILITY PRINCIPLE")

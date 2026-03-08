@@ -333,7 +333,7 @@ class HilbertPolyaSpectralProof:
         r3 = self.prove_HP3_self_adjoint()
         r4 = self.prove_HP4_spectrum_tracks_singularities()
         recs = self.build_records()
-        self.export_csv("/Users/jmullings/PersonalProjects/RH_SING_PROOF/riemann-hypothesis-singularity-proof/CONJECTURE_V/ASSERTION_5_NEW_MATHEMATICAL_FINDS/2_ANALYTICS_CHARTS_ILLUSTRATION", recs)
+        self.export_csv("../2_ANALYTICS_CHARTS_ILLUSTRATION", recs)
 
         print("\n" + "=" * 72)
         print("FILE 1 SUMMARY — HILBERT–PÓLYA SPECTRAL PRINCIPLE")

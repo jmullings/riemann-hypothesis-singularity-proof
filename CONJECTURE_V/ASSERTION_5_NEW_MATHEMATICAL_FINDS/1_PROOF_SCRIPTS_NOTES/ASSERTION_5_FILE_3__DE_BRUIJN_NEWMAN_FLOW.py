@@ -276,7 +276,7 @@ class DeBruijnNewmanFlowProof:
         r3 = self.prove_BN3_negative_Lambda()
         r4 = self.prove_BN4_critical_Lambda()
         r5 = self.prove_BN5_discrimination_degrades()
-        self.export_csv("/Users/jmullings/PersonalProjects/RH_SING_PROOF/riemann-hypothesis-singularity-proof/CONJECTURE_V/ASSERTION_5_NEW_MATHEMATICAL_FINDS/2_ANALYTICS_CHARTS_ILLUSTRATION")
+        self.export_csv("../2_ANALYTICS_CHARTS_ILLUSTRATION")
 
         print("\n" + "=" * 72)
         print("FILE 3 SUMMARY — DE BRUIJN–NEWMAN FLOW PRINCIPLE")
