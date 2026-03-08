@@ -13,7 +13,7 @@ import os
 import sys
 
 # Base directory
-BASE_DIR = "/Users/jmullings/BetaPrecision/high-precision-core/RIEMANN_PHI_RIEMANN/RIEMANN_PHI_9D_PROXY/CONJECTURE_IV_NEW"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Expected structure
 EXPECTED_STRUCTURE = {

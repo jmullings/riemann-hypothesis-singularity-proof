@@ -102,7 +102,6 @@ def load_riemann_zeros() -> np.ndarray:
         os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', 'RiemannZeros.txt'),
         os.path.join(os.path.dirname(__file__), 'RiemannZeros.txt'),
         'RiemannZeros.txt',
-        '/Users/jmullings/PersonalProjects/RH_SING_PROOF/riemann-hypothesis-singularity-proof/RiemannZeros.txt',
     ]
     
     for path in possible_paths:

@@ -162,7 +162,7 @@ Claim 5 (External Validation)
 
 ### Quick Access
 ```bash
-cd /Users/jmullings/BetaPrecision/high-precision-core/RIEMANN_PHI_RIEMANN/RIEMANN_PHI_9D_PROXY/CONJECTURE_IV_NEW
+cd CONJECTURE_IV
 
 # Validate structure
 python3 VALIDATE_STRUCTURE.py

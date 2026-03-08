@@ -416,11 +416,12 @@ def verify_obstruction_numerically(zeros_file):
 # ============================================================================
 if __name__ == "__main__":
     # Path to Riemann zeros file
-    zeros_file = Path(__file__).parent.parent / 'CONJECTURE_III' / 'RiemannZeros.txt'
+    repo_root = Path(__file__).resolve().parents[3]
+    zeros_file = repo_root / 'CONJECTURE_III' / 'RiemannZeros.txt'
     
     if not zeros_file.exists():
-        # Try alternate path
-        zeros_file = Path('/Users/jmullings/PersonalProjects/RH_SING_PROOF/riemann-hypothesis-singularity-proof/CONJECTURE_III/RiemannZeros.txt')
+        # Try alternate project-local path
+        zeros_file = repo_root / 'RiemannZeros.txt'
     
     if zeros_file.exists():
         print("\n" + "="*70)

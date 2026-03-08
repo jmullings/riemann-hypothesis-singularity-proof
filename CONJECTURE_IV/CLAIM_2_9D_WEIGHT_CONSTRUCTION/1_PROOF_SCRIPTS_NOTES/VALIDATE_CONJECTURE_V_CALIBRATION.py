@@ -460,14 +460,15 @@ def main():
     print("\n2. LOADING RIEMANN ZEROS")
     print("-" * 50)
     
-    zeros_file = Path(__file__).parent.parent.parent.parent / "RiemannZeros.txt"
+    repo_root = Path(__file__).resolve().parents[4]
+    zeros_file = repo_root / "RiemannZeros.txt"
     if not zeros_file.exists():
         for alt_path in [
-            "/Users/jmullings/BetaPrecision/high-precision-core/RiemannZeros.txt",
-            "../../../RiemannZeros.txt",
+            repo_root / "CONJECTURE_III" / "RiemannZeros.txt",
+            Path(__file__).resolve().parents[3] / "RiemannZeros.txt",
         ]:
-            if Path(alt_path).exists():
-                zeros_file = Path(alt_path)
+            if alt_path.exists():
+                zeros_file = alt_path
                 break
     
     print(f"  Loading from: {zeros_file}")
