@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Riemann Zero Progression — 6 Kernel Forms</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Fira+Code:wght@300;400;500&display=swap');
+
+    :root {
+      --void: #03060d;
+      --panel: rgba(6, 12, 24, 0.92);
+      --rule: rgba(80, 140, 200, 0.08);
+      --text: #6080a0;
+      --bright: #c0d8f0;
+      --k1: #ff6040;
+      /* sech² */
+      --k2: #40c8ff;
+      /* cosh */
+      --k3: #ffd040;
+      /* tanh' */
+      --k4: #40ffa0;
+      /* exp */
+      --k5: #c080ff;
+      /* sinh/cosh */
+      --k6: #ff80c0;
+      /* logistic */
+      --zeta: #ffffff;
+      --zero-mark: #ffd040;
+      --serif: 'Cormorant Garamond', 'Georgia', serif;
+      --mono: 'Fira Code', 'Consolas', monospace;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--void);
+      color: var(--text);
+      font-family: var(--mono);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* Grain overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    }
+
+    header {
+      padding: 24px 32px 16px;
+      border-bottom: 1px solid var(--rule);
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    header h1 {
+      font-family: var(--serif);
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--bright);
+      letter-spacing: 0.5px;
+    }
+
+    header .sub {
+      font-size: 9px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: #3a5068;
+    }
+
+    /* Main layout: 3 rows */
+    .row {
+      display: flex;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .row>* {
+      border-right: 1px solid var(--rule);
+    }
+
+    .row>*:last-child {
+      border-right: none;
+    }
+
+    /* Top row: chain + Z(T) plot */
+    #chain-wrap {
+      width: 35%;
+      height: 340px;
+      position: relative;
+    }
+
+    #zt-wrap {
+      width: 65%;
+      height: 340px;
+      position: relative;
+      padding: 12px 16px;
+    }
+
+    /* Mid row: 6 kernel waveforms */
+    #kernels-wrap {
+      width: 100%;
+      height: 320px;
+      position: relative;
+      padding: 12px 16px;
+    }
+
+    /* Bottom row: controls + readout + legend */
+    #bottom {
+      display: flex;
+      align-items: stretch;
+      min-height: 120px;
+    }
+
+    #controls-wrap {
+      width: 30%;
+      padding: 14px 20px;
+    }
+
+    #readout-wrap {
+      width: 40%;
+      padding: 14px 20px;
+    }
+
+    #legend-wrap {
+      width: 30%;
+      padding: 14px 20px;
+    }
+
+    canvas {
+      display: block;
+    }
+
+    h3 {
+      font-family: var(--serif);
+      font-size: 12px;
+      font-weight: 600;
+      color: #4a6a8a;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+
+    /* Controls */
+    .ctrl-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .ctrl-row label {
+      font-size: 8px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #3a5068;
+      min-width: 70px;
+    }
+
+    .ctrl-row input[type=range] {
+      flex: 1;
+      accent-color: var(--k1);
+      height: 3px;
+    }
+
+    .ctrl-row .val {
+      font-size: 10px;
+      color: var(--bright);
+      min-width: 50px;
+      text-align: right;
+    }
+
+    .ctrl-row button {
+      background: rgba(255, 96, 64, 0.06);
+      border: 1px solid rgba(255, 96, 64, 0.2);
+      color: var(--k1);
+      padding: 4px 12px;
+      border-radius: 3px;
+      cursor: pointer;
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .ctrl-row button:hover {
+      background: rgba(255, 96, 64, 0.12);
+    }
+
+    /* Readout grid */
+    .ro-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+    }
+
+    .ro-cell {
+      background: rgba(255, 255, 255, 0.015);
+      border-radius: 3px;
+      padding: 6px 8px;
+      text-align: center;
+    }
+
+    .ro-cell .ro-label {
+      font-size: 7px;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: #2a4058;
+      margin-bottom: 2px;
+    }
+
+    .ro-cell .ro-val {
+      font-size: 14px;
+      font-family: var(--serif);
+      font-weight: 600;
+      color: var(--bright);
+    }
+
+    /* Legend */
+    .leg-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 5px;
+      font-size: 9px;
+    }
+
+    .leg-swatch {
+      width: 18px;
+      height: 3px;
+      border-radius: 1px;
+    }
+
+    .leg-eq {
+      color: #4a6a8a;
+      font-size: 8px;
+    }
+
+    /* Zero markers */
+    .zero-tag {
+      position: absolute;
+      top: 4px;
+      font-size: 7px;
+      letter-spacing: 1px;
+      color: var(--zero-mark);
+      text-align: center;
+      pointer-events: none;
+      text-shadow: 0 0 8px rgba(255, 208, 64, 0.3);
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div>
+      <h1>Riemann Zero Progression</h1>
+      <div class="sub">Λ(T,H) via 6 equivalent kernel forms · Hardy Z-function · Dirichlet chain</div>
+    </div>
+    <div class="sub" id="clock">T = 10.00</div>
+  </header>
+
+  <!-- TOP ROW -->
+  <div class="row">
+    <div id="chain-wrap"><canvas id="chain-cv"></canvas></div>
+    <div id="zt-wrap">
+      <h3>Z(T)² and Λ(T, H) — zero progression</h3>
+      <canvas id="zt-cv"></canvas>
+    </div>
+  </div>
+
+  <!-- MID ROW -->
+  <div id="kernels-wrap">
+    <h3>6 Kernel Forms — real-time comparison</h3>
+    <canvas id="kern-cv"></canvas>
+  </div>
+
+  <!-- BOTTOM ROW -->
+  <div class="row" id="bottom">
+    <div id="controls-wrap">
+      <h3>Parameters</h3>
+      <div class="ctrl-row"><label>T speed</label><input type="range" id="sl-speed" min="0.01" max="0.5" value="0.08"
+          step="0.01" /><span class="val" id="v-speed">0.08</span></div>
+      <div class="ctrl-row"><label>Sech² H</label><input type="range" id="sl-H" min="0.02" max="2.0" value="0.3"
+          step="0.01" /><span class="val" id="v-H">0.30</span></div>
+      <div class="ctrl-row"><label>Window</label><input type="range" id="sl-win" min="5" max="40" value="15"
+          step="1" /><span class="val" id="v-win">15</span></div>
+      <div class="ctrl-row">
+        <button id="btn-reset">Reset</button>
+        <button id="btn-pause">Pause</button>
+        <button id="btn-goto">→ γ₁</button>
+      </div>
+    </div>
+    <div id="readout-wrap">
+      <h3>Current readings</h3>
+      <div class="ro-grid">
+        <div class="ro-cell">
+          <div class="ro-label">T</div>
+          <div class="ro-val" id="ro-T">—</div>
+        </div>
+        <div class="ro-cell">
+          <div class="ro-label">Z(T)</div>
+          <div class="ro-val" id="ro-Z">—</div>
+        </div>
+        <div class="ro-cell">
+          <div class="ro-label">Z(T)²</div>
+          <div class="ro-val" id="ro-Z2">—</div>
+        </div>
+        <div class="ro-cell">
+          <div class="ro-label">Λ sech²</div>
+          <div class="ro-val" id="ro-L1" style="color:var(--k1)">—</div>
+        </div>
+        <div class="ro-cell">
+          <div class="ro-label">Λ cosh</div>
+          <div class="ro-val" id="ro-L2" style="color:var(--k2)">—</div>
+        </div>
+        <div class="ro-cell">
+          <div class="ro-label">Λ tanh'</div>
+          <div class="ro-val" id="ro-L3" style="color:var(--k3)">—</div>
+        </div>
+        <div class="ro-cell">
+          <div class="ro-label">Λ exp</div>
+          <div class="ro-val" id="ro-L4" style="color:var(--k4)">—</div>
+        </div>
+        <div class="ro-cell">
+          <div class="ro-label">Λ sinh/cosh</div>
+          <div class="ro-val" id="ro-L5" style="color:var(--k5)">—</div>
+        </div>
+        <div class="ro-cell">
+          <div class="ro-label">Λ logistic</div>
+          <div class="ro-val" id="ro-L6" style="color:var(--k6)">—</div>
+        </div>
+      </div>
+    </div>
+    <div id="legend-wrap">
+      <h3>Kernel legend</h3>
+      <div class="leg-item">
+        <div class="leg-swatch" style="background:var(--k1)"></div><span>sech²</span><span
+          class="leg-eq">1/cosh²(u/H)</span>
+      </div>
+      <div class="leg-item">
+        <div class="leg-swatch" style="background:var(--k2)"></div><span>cosh</span><span
+          class="leg-eq">4/(eᵘ/ᴴ+e⁻ᵘ/ᴴ)²</span>
+      </div>
+      <div class="leg-item">
+        <div class="leg-swatch" style="background:var(--k3)"></div><span>tanh'</span><span
+          class="leg-eq">d/du[tanh(u/H)]·H</span>
+      </div>
+      <div class="leg-item">
+        <div class="leg-swatch" style="background:var(--k4)"></div><span>exp</span><span
+          class="leg-eq">4e²ᵘ/ᴴ/(e²ᵘ/ᴴ+1)²</span>
+      </div>
+      <div class="leg-item">
+        <div class="leg-swatch" style="background:var(--k5)"></div><span>sinh/cosh</span><span
+          class="leg-eq">1−tanh²(u/H)</span>
+      </div>
+      <div class="leg-item">
+        <div class="leg-swatch" style="background:var(--k6)"></div><span>logistic</span><span
+          class="leg-eq">4σ(2u/H)(1−σ)</span>
+      </div>
+      <div class="leg-item" style="margin-top:6px">
+        <div class="leg-swatch" style="background:var(--zeta)"></div><span>Z(T)²</span><span class="leg-eq">Hardy
+          Z-function squared</span>
+      </div>
+      <div class="leg-item">
+        <div class="leg-swatch" style="background:var(--zero-mark);height:6px;width:6px;border-radius:50%"></div><span
+          style="color:var(--zero-mark)">Zero γₙ</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ═══════════════════════════════════════════════
+    //  PRECOMPUTED TABLES — NO log() IN HOT PATHS
+    // ═══════════════════════════════════════════════
+    const PI = Math.PI;
+    const N = 9;
+    const LN = new Float64Array(N + 1);
+    const AMP = new Float64Array(N + 1);
+    for (let n = 1; n <= N; n++) { LN[n] = Math.log(n); AMP[n] = Math.pow(n, -0.5); }
+
+    const ZEROS = [14.134725, 21.022040, 25.010858, 30.424876, 32.935062, 37.586178, 40.918719, 43.327073, 48.005151, 49.773832];
+
+    // ═══════════════════════════════════════════════
+    //  HARDY Z
+    // ═══════════════════════════════════════════════
+    const Z_CACHE = new Map();
+
+    function hardy_Z(T) {
+      if (T < 2) return 0;
+      const key = Math.round(T * 1000);
+      if (Z_CACHE.has(key)) return Z_CACHE.get(key);
+      const th = (T / 2) * LN_of(T / (2 * PI)) - T / 2 - PI / 8 + 1 / (48 * T);
+      const NRS = Math.floor(Math.sqrt(T / (2 * PI)));
+      let Z = 0;
+      for (let n = 1; n <= NRS; n++) Z += Math.cos(th - T * LN_of(n)) / Math.sqrt(n);
+      Z *= 2;
+      const p = Math.sqrt(T / (2 * PI)) - NRS;
+      const cp = Math.cos(2 * PI * p);
+      if (Math.abs(cp) > 0.01) {
+        Z += (NRS % 2 === 0 ? 1 : -1) * Math.pow(T / (2 * PI), -0.25) * Math.cos(2 * PI * (p * p - p - 1 / 16)) / cp;
+      }
+      if (Z_CACHE.size > 50000) Z_CACHE.clear();
+      Z_CACHE.set(key, Z);
+      return Z;
+    }
+
+    // Cached log for integers + general
+    const LOG_CACHE = new Float64Array(100001);
+    for (let i = 1; i < 100001; i++) LOG_CACHE[i] = Math.log(i);
+    function LN_of(x) {
+      const ix = Math.round(x);
+      if (ix > 0 && ix < 100001 && Math.abs(x - ix) < 0.0001) return LOG_CACHE[ix];
+      return Math.log(x);
+    }
+
+    // ═══════════════════════════════════════════════
+    //  CHAIN
+    // ═══════════════════════════════════════════════
+    function chainSums(T) {
+      const s = []; let re = 0, im = 0;
+      for (let n = 1; n <= N; n++) {
+        const p = -T * LN[n];
+        re += AMP[n] * Math.cos(p); im += AMP[n] * Math.sin(p);
+        s.push({ re, im });
+      }
+      return s;
+    }
+
+    // ═══════════════════════════════════════════════
+    //  6 KERNEL FORMS
+    // ═══════════════════════════════════════════════
+    function K_sech2(u, H) { const x = u / H; return Math.abs(x) > 35 ? 0 : 1 / Math.pow(Math.cosh(x), 2); }
+    function K_cosh(u, H) { const x = u / H; if (Math.abs(x) > 35) return 0; const e = Math.exp(x), em = Math.exp(-x); return 4 / Math.pow(e + em, 2); }
+    function K_tanh(u, H) { return K_sech2(u, H); } // numerically same
+    function K_exp(u, H) { const x = 2 * u / H; if (Math.abs(x) > 70) return 0; const e = Math.exp(x); return 4 * e / Math.pow(e + 1, 2); }
+    function K_sinhcosh(u, H) { const x = u / H; if (Math.abs(x) > 35) return 0; const t = Math.tanh(x); return 1 - t * t; }
+    function K_logistic(u, H) { const x = 2 * u / H; if (Math.abs(x) > 70) return 0; const s = 1 / (1 + Math.exp(-x)); return 4 * s * (1 - s); }
+
+    const KERNELS = [
+      { name: 'sech²', fn: K_sech2, color: '#ff6040' },
+      { name: 'cosh', fn: K_cosh, color: '#40c8ff' },
+      { name: "tanh'", fn: K_tanh, color: '#ffd040' },
+      { name: 'exp', fn: K_exp, color: '#40ffa0' },
+      { name: 'sinh/cosh', fn: K_sinhcosh, color: '#c080ff' },
+      { name: 'logistic', fn: K_logistic, color: '#ff80c0' },
+    ];
+
+    // ═══════════════════════════════════════════════
+    //  Λ(T,H) via any kernel
+    // ═══════════════════════════════════════════════
+    function Lambda(T, H, kernFn, nq) {
+      nq = nq || 60;
+      const uMax = 3.5 * H;
+      const du = 2 * uMax / nq;
+      let num = 0, den = 0;
+      for (let j = 0; j <= nq; j++) {
+        const u = -uMax + j * du;
+        const tv = T + u;
+        if (tv > 2.5) {
+          const w = kernFn(u, H) * du;
+          const z = hardy_Z(tv);
+          num += z * z * w;
+          den += w;
+        }
+      }
+      return den > 1e-30 ? num / den : 0;
+    }
+
+    // ═══════════════════════════════════════════════
+    //  STATE
+    // ═══════════════════════════════════════════════
+    let T = 8.0;
+    let speed = 0.08;
+    let H = 0.3;
+    let windowSize = 15;
+    let paused = false;
+
+    // History buffers
+    const HIST_LEN = 800;
+    const hist_T = new Float64Array(HIST_LEN);
+    const hist_Z2 = new Float64Array(HIST_LEN);
+    const hist_K = new Array(6);
+    for (let k = 0; k < 6; k++) hist_K[k] = new Float64Array(HIST_LEN);
+    let hIdx = 0;
+
+    // ═══════════════════════════════════════════════
+    //  CANVAS SETUP
+    // ═══════════════════════════════════════════════
+    function setupCanvas(id, parent) {
+      const cv = document.getElementById(id);
+      const rect = parent.getBoundingClientRect();
+      const dpr = Math.min(devicePixelRatio, 2);
+      cv.width = rect.width * dpr;
+      cv.height = (rect.height - 30) * dpr; // leave room for headers
+      cv.style.width = rect.width + 'px';
+      cv.style.height = (rect.height - 30) + 'px';
+      const ctx = cv.getContext('2d');
+      ctx.scale(dpr, dpr);
+      return { cv, ctx, w: rect.width, h: rect.height - 30 };
+    }
+
+    let chainCtx, ztCtx, kernCtx;
+
+    function initCanvases() {
+      chainCtx = setupCanvas('chain-cv', document.getElementById('chain-wrap'));
+      ztCtx = setupCanvas('zt-cv', document.getElementById('zt-wrap'));
+      kernCtx = setupCanvas('kern-cv', document.getElementById('kernels-wrap'));
+    }
+
+    // ═══════════════════════════════════════════════
+    //  DRAW: CHAIN
+    // ═══════════════════════════════════════════════
+    function drawChain() {
+      const { ctx, w, h } = chainCtx;
+      ctx.clearRect(0, 0, w, h);
+
+      const sums = chainSums(T);
+      const cx = w / 2, cy = h / 2;
+      const scale = Math.min(w, h) * 0.28;
+
+      // Grid
+      ctx.strokeStyle = 'rgba(80,140,200,0.06)';
+      ctx.lineWidth = 0.5;
+      for (let r = 1; r <= 3; r++) {
+        ctx.beginPath(); ctx.arc(cx, cy, r * scale / 3, 0, 2 * PI); ctx.stroke();
+      }
+
+      // Origin
+      ctx.fillStyle = '#ffd040';
+      ctx.beginPath(); ctx.arc(cx, cy, 3, 0, 2 * PI); ctx.fill();
+
+      // Chain links
+      let px = cx, py = cy;
+      for (let k = 0; k < N; k++) {
+        const x = cx + sums[k].re * scale;
+        const y = cy - sums[k].im * scale;
+        ctx.strokeStyle = `rgba(64,200,255,${0.3 + k * 0.07})`;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(x, y); ctx.stroke();
+        // Joint
+        ctx.fillStyle = k === N - 1 ? '#ffd040' : 'rgba(64,200,255,0.5)';
+        ctx.beginPath(); ctx.arc(x, y, k === N - 1 ? 5 : 2, 0, 2 * PI); ctx.fill();
+        px = x; py = y;
+      }
+
+      // Head label
+      const head = sums[N - 1];
+      const hx = cx + head.re * scale, hy = cy - head.im * scale;
+      ctx.fillStyle = '#4a6a8a';
+      ctx.font = '9px "Fira Code"';
+      ctx.fillText(`S₉ = ${head.re.toFixed(2)}+${head.im.toFixed(2)}i`, hx + 8, hy - 8);
+
+      // |S₉| near zero indicator
+      const mag = Math.hypot(head.re, head.im);
+      if (mag < 0.5) {
+        ctx.strokeStyle = 'rgba(255,208,64,0.3)';
+        ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.arc(hx, hy, 12 + Math.sin(Date.now() / 200) * 4, 0, 2 * PI); ctx.stroke();
+      }
+    }
+
+    // ═══════════════════════════════════════════════
+    //  DRAW: Z(T)² PLOT with zero progression
+    // ═══════════════════════════════════════════════
+    function drawZT() {
+      const { ctx, w, h } = ztCtx;
+      ctx.clearRect(0, 0, w, h);
+
+      const pad = { l: 40, r: 10, t: 10, b: 25 };
+      const pw = w - pad.l - pad.r, ph = h - pad.t - pad.b;
+
+      // T range
+      const tMin = T - windowSize;
+      const tMax = T + windowSize * 0.2;
+      const tRange = tMax - tMin;
+
+      // Find max Z² in visible history
+      let maxZ2 = 1;
+      for (let i = 0; i < HIST_LEN; i++) {
+        if (hist_T[i] >= tMin && hist_T[i] <= tMax) maxZ2 = Math.max(maxZ2, hist_Z2[i]);
+      }
+      maxZ2 = Math.max(maxZ2, 2);
+
+      // Map
+      const tx = t => pad.l + (t - tMin) / tRange * pw;
+      const vy = v => pad.t + ph - (v / maxZ2) * ph;
+
+      // Grid
+      ctx.strokeStyle = 'rgba(80,140,200,0.06)';
+      ctx.lineWidth = 0.5;
+      for (let g = 0; g <= 4; g++) {
+        const y = vy(g * maxZ2 / 4);
+        ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(w - pad.r, y); ctx.stroke();
+      }
+
+      // Zero lines
+      ctx.strokeStyle = 'rgba(255,208,64,0.12)';
+      ctx.setLineDash([3, 5]);
+      for (const z of ZEROS) {
+        if (z >= tMin && z <= tMax) {
+          const x = tx(z);
+          ctx.beginPath(); ctx.moveTo(x, pad.t); ctx.lineTo(x, h - pad.b); ctx.stroke();
+        }
+      }
+      ctx.setLineDash([]);
+
+      // Z(T)² waveform
+      ctx.strokeStyle = 'rgba(255,255,255,0.6)';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      let started = false;
+      for (let i = 0; i < HIST_LEN; i++) {
+        const idx = (hIdx + i) % HIST_LEN;
+        const t = hist_T[idx];
+        if (t >= tMin && t <= tMax && t > 2) {
+          const x = tx(t), y = vy(hist_Z2[idx]);
+          if (!started) { ctx.moveTo(x, y); started = true; } else ctx.lineTo(x, y);
+        }
+      }
+      ctx.stroke();
+
+      // Kernel Λ lines (plot sech² only on this chart for clarity)
+      ctx.strokeStyle = 'rgba(255,96,64,0.5)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      started = false;
+      for (let i = 0; i < HIST_LEN; i++) {
+        const idx = (hIdx + i) % HIST_LEN;
+        const t = hist_T[idx];
+        if (t >= tMin && t <= tMax && t > 2) {
+          const x = tx(t), y = vy(hist_K[0][idx]);
+          if (!started) { ctx.moveTo(x, y); started = true; } else ctx.lineTo(x, y);
+        }
+      }
+      ctx.stroke();
+
+      // Current position marker
+      const cx = tx(T);
+      ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(cx, pad.t); ctx.lineTo(cx, h - pad.b); ctx.stroke();
+
+      // Zero labels
+      ctx.fillStyle = '#ffd040';
+      ctx.font = '8px "Fira Code"';
+      ZEROS.forEach((z, i) => {
+        if (z >= tMin && z <= tMax) {
+          const x = tx(z);
+          ctx.fillText(`γ${i + 1}`, x - 6, h - pad.b + 12);
+        }
+      });
+
+      // Y-axis labels
+      ctx.fillStyle = '#3a5068';
+      ctx.font = '8px "Fira Code"';
+      ctx.fillText('0', pad.l - 20, vy(0) + 3);
+      ctx.fillText(maxZ2.toFixed(0), pad.l - 25, vy(maxZ2) + 3);
+
+      // T-axis
+      const step = tRange > 20 ? 5 : tRange > 10 ? 2 : 1;
+      for (let t = Math.ceil(tMin / step) * step; t <= tMax; t += step) {
+        const x = tx(t);
+        ctx.fillText(t.toFixed(0), x - 8, h - pad.b + 12);
+      }
+    }
+
+    // ═══════════════════════════════════════════════
+    //  DRAW: 6 KERNEL WAVEFORMS
+    // ═══════════════════════════════════════════════
+    function drawKernels() {
+      const { ctx, w, h } = kernCtx;
+      ctx.clearRect(0, 0, w, h);
+
+      const pad = { l: 40, r: 10, t: 5, b: 20 };
+      const pw = w - pad.l - pad.r, ph = h - pad.t - pad.b;
+      const tMin = T - windowSize;
+      const tMax = T + windowSize * 0.2;
+      const tRange = tMax - tMin;
+
+      // Find max across all kernels
+      let maxV = 1;
+      for (let k = 0; k < 6; k++) {
+        for (let i = 0; i < HIST_LEN; i++) {
+          const idx = (hIdx + i) % HIST_LEN;
+          if (hist_T[idx] >= tMin && hist_T[idx] <= tMax)
+            maxV = Math.max(maxV, hist_K[k][idx]);
+        }
+      }
+      maxV = Math.max(maxV, 1);
+
+      const tx = t => pad.l + (t - tMin) / tRange * pw;
+      const vy = v => pad.t + ph - (v / maxV) * ph;
+
+      // Grid
+      ctx.strokeStyle = 'rgba(80,140,200,0.04)';
+      ctx.lineWidth = 0.5;
+      for (let g = 0; g <= 3; g++) {
+        const y = vy(g * maxV / 3);
+        ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(w - pad.r, y); ctx.stroke();
+      }
+
+      // Zero lines
+      ctx.strokeStyle = 'rgba(255,208,64,0.08)';
+      ctx.setLineDash([2, 4]);
+      for (const z of ZEROS) {
+        if (z >= tMin && z <= tMax) {
+          const x = tx(z);
+          ctx.beginPath(); ctx.moveTo(x, pad.t); ctx.lineTo(x, h - pad.b); ctx.stroke();
+        }
+      }
+      ctx.setLineDash([]);
+
+      // Draw each kernel waveform with vertical offsets
+      for (let k = 5; k >= 0; k--) {
+        ctx.strokeStyle = KERNELS[k].color;
+        ctx.globalAlpha = k === 0 ? 0.9 : 0.45;
+        ctx.lineWidth = k === 0 ? 2 : 1;
+
+        // Add vertical offset based on kernel index
+        const offsetY = k * 15; // 15px spacing between curves
+
+        ctx.beginPath();
+        let started = false;
+        for (let i = 0; i < HIST_LEN; i++) {
+          const idx = (hIdx + i) % HIST_LEN;
+          const t = hist_T[idx];
+          if (t >= tMin && t <= tMax && t > 2) {
+            const x = tx(t), y = vy(hist_K[k][idx]) + offsetY;
+            if (!started) { ctx.moveTo(x, y); started = true; } else ctx.lineTo(x, y);
+          }
+        }
+        ctx.stroke();
+      }
+      ctx.globalAlpha = 1;
+
+      // Current position
+      const cx = tx(T);
+      ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(cx, pad.t); ctx.lineTo(cx, h - pad.b); ctx.stroke();
+
+      // Labels
+      ctx.fillStyle = '#3a5068'; ctx.font = '8px "Fira Code"';
+      ctx.fillText('0', pad.l - 18, vy(0) + 3);
+
+      // Kernel names at current position (aligned with offset curves)
+      const cx2 = Math.min(cx + 6, w - 60);
+      for (let k = 0; k < 6; k++) {
+        const idx = (hIdx - 1 + HIST_LEN) % HIST_LEN;
+        const v = hist_K[k][idx];
+        const offsetY = k * 15; // Match the waveform offset
+        const y = vy(v) + offsetY;
+        ctx.fillStyle = KERNELS[k].color;
+        ctx.globalAlpha = 0.7;
+        ctx.fillText(KERNELS[k].name, cx2, Math.max(pad.t + 8, Math.min(h - pad.b - 2, y)));
+      }
+      ctx.globalAlpha = 1;
+    }
+
+    // ═══════════════════════════════════════════════
+    //  CONTROLS
+    // ═══════════════════════════════════════════════
+    const slSpeed = document.getElementById('sl-speed');
+    const slH = document.getElementById('sl-H');
+    const slWin = document.getElementById('sl-win');
+    slSpeed.oninput = () => { speed = +slSpeed.value; document.getElementById('v-speed').textContent = speed.toFixed(2); };
+    slH.oninput = () => { H = +slH.value; document.getElementById('v-H').textContent = H.toFixed(2); };
+    slWin.oninput = () => { windowSize = +slWin.value; document.getElementById('v-win').textContent = windowSize; };
+    document.getElementById('btn-reset').onclick = () => { T = 8; hIdx = 0; hist_T.fill(0); };
+    document.getElementById('btn-pause').onclick = function () { paused = !paused; this.textContent = paused ? 'Play' : 'Pause'; };
+    document.getElementById('btn-goto').onclick = () => { T = 13; };
+
+    // ═══════════════════════════════════════════════
+    //  MAIN LOOP
+    // ═══════════════════════════════════════════════
+    let frame = 0;
+
+    function tick() {
+      requestAnimationFrame(tick);
+      frame++;
+
+      if (!paused) T += speed;
+
+      // Compute
+      const z = hardy_Z(T);
+      const z2 = z * z;
+
+      // Store
+      hist_T[hIdx % HIST_LEN] = T;
+      hist_Z2[hIdx % HIST_LEN] = z2;
+
+      // Compute all 6 Λ values (every other frame for speed)
+      if (frame % 2 === 0 || frame < 10) {
+        for (let k = 0; k < 6; k++) {
+          hist_K[k][hIdx % HIST_LEN] = Lambda(T, H, KERNELS[k].fn, 40);
+        }
+      } else {
+        for (let k = 0; k < 6; k++) hist_K[k][hIdx % HIST_LEN] = hist_K[k][(hIdx - 1 + HIST_LEN) % HIST_LEN];
+      }
+
+      hIdx++;
+
+      // Draw (throttled)
+      if (frame % 2 === 0) drawChain();
+      if (frame % 2 === 0) drawZT();
+      if (frame % 3 === 0) drawKernels();
+
+      // Readout
+      if (frame % 4 === 0) {
+        document.getElementById('clock').textContent = `T = ${T.toFixed(4)}`;
+        document.getElementById('ro-T').textContent = T.toFixed(3);
+        document.getElementById('ro-Z').textContent = z.toFixed(4);
+        document.getElementById('ro-Z2').textContent = z2.toFixed(4);
+        const idx = (hIdx - 1 + HIST_LEN) % HIST_LEN;
+        for (let k = 0; k < 6; k++) {
+          document.getElementById(`ro-L${k + 1}`).textContent = hist_K[k][idx].toFixed(4);
+        }
+      }
+    }
+
+    // Init
+    window.addEventListener('load', () => {
+      initCanvases();
+      tick();
+    });
+    window.addEventListener('resize', initCanvases);
+  </script>
+</body>
+
+</html>

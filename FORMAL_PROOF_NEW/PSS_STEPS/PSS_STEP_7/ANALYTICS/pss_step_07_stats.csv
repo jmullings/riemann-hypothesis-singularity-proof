@@ -1,0 +1,7 @@
+stat,value,status
+pearson_rho,0.16730730409531183,PASS
+independence_strong,True,PASS
+svd_s1,3.241259899615859,INFO
+svd_s2,2.7375599104206283,INFO
+svd_ratio,1.1839959692855953,INFO
+F2_all_positive,True,PASS

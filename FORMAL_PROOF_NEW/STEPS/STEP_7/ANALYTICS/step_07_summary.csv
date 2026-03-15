@@ -1,0 +1,11 @@
+metric,value,status
+norm_xstar_eq2,1.0000000000,INFO
+NORM_X_STAR,0.3422606711,INFO
+norm_ratio,2.921750,INFO
+cosine_similarity,0.597065,PASS
+all_F2_positive,True,PASS
+micro_norm_stable,True,PASS
+leading_eig_9D,6.635077e+02,INFO
+lambda_star_err,0.00e+00,PASS
+norm_x_star_err,0.00e+00,PASS
+coupling_k_bs4,0.002675,PASS

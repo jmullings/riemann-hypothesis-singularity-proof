@@ -1,0 +1,8 @@
+sigma,analytic_c_mean,numerical_mean,relative_error,eq2_1_confirmed,prop_eq2_1_analytic_positive
+0.3,133.193992,126.896462,0.047281,True,True
+0.4,66.97502,63.977517,0.044756,True,True
+0.45,48.14068,46.05876,0.043247,True,True
+0.5,34.952271,33.498655,0.041589,True,True
+0.55,25.651794,24.63085,0.0398,True,True
+0.6,19.042602,18.32079,0.037905,True,True
+0.7,10.883307,10.514204,0.033915,True,True

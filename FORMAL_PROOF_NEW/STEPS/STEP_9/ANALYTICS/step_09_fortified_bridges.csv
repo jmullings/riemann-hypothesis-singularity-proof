@@ -1,0 +1,8 @@
+bridge,value,note
+B1_Trace_1,4.6552647106e+00,Tr(A~)
+B1_Trace_2,2.1460043505e+01,Tr(A~^2)
+B2_norm_9D,4.6324986244e+00,||eigs_6D||
+B3_recon_err_orig,9.8941640110e-01,Original Axiom 8 error
+B3_recon_err_fort,6.9821070442e-01,Fortified Axiom 8 error
+B3_improvement,2.9432066858e-01,Improvement ratio
+AXIOMS_NORM,3.4226067114e-01,reference

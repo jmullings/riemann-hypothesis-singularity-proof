@@ -1,0 +1,153 @@
+E,E_at_half,E_at_sigma_sym,E_at_sigma_test,E_min_strip,T,check,contradicted,contradiction_gap,d2E_at_half,d2E_sigma,one_plus_rho,pass,proposition,sigma,sigma_sym,sigma_test
+2.15505693,,,,,10.0,"E(σ,T) = |D|² ≥ 0  (non-negativity, trivial)",,,,,,1,EQ4.1,0.3,,
+11.68229702,,,,,14.134,"E(σ,T) = |D|² ≥ 0  (non-negativity, trivial)",,,,,,1,EQ4.1,0.3,,
+7.92839853,,,,,21.022,"E(σ,T) = |D|² ≥ 0  (non-negativity, trivial)",,,,,,1,EQ4.1,0.3,,
+4.37792456,,,,,25.0,"E(σ,T) = |D|² ≥ 0  (non-negativity, trivial)",,,,,,1,EQ4.1,0.3,,
+7.27327435,,,,,30.0,"E(σ,T) = |D|² ≥ 0  (non-negativity, trivial)",,,,,,1,EQ4.1,0.3,,
+10.30598448,,,,,50.0,"E(σ,T) = |D|² ≥ 0  (non-negativity, trivial)",,,,,,1,EQ4.1,0.3,,
+1.42584621,,,,,100.0,"E(σ,T) = |D|² ≥ 0  (non-negativity, trivial)",,,,,,1,EQ4.1,0.3,,
+3.51874544,,,,,200.0,"E(σ,T) = |D|² ≥ 0  (non-negativity, trivial)",,,,,,1,EQ4.1,0.3,,
+1.33127889,,,,,10.0,"E(σ,T) = |D|² ≥ 0  (non-negativity, trivial)",,,,,,1,EQ4.1,0.4,,
+8.31664877,,,,,14.134,"E(σ,T) = |D|² ≥ 0  (non-negativity, trivial)",,,,,,1,EQ4.1,0.4,,
+5.16910093,,,,,21.022,"E(σ,T) = |D|² ≥ 0  (non-negativity, trivial)",,,,,,1,EQ4.1,0.4,,
+2.89955919,,,,,25.0,"E(σ,T) = |D|² ≥ 0  (non-negativity, trivial)",,,,,,1,EQ4.1,0.4,,
+5.13336168,,,,,30.0,"E(σ,T) = |D|² ≥ 0  (non-negativity, trivial)",,,,,,1,EQ4.1,0.4,,
+6.45609292,,,,,50.0,"E(σ,T) = |D|² ≥ 0  (non-negativity, trivial)",,,,,,1,EQ4.1,0.4,,
+0.92876296,,,,,100.0,"E(σ,T) = |D|² ≥ 0  (non-negativity, trivial)",,,,,,1,EQ4.1,0.4,,
+2.62646784,,,,,200.0,"E(σ,T) = |D|² ≥ 0  (non-negativity, trivial)",,,,,,1,EQ4.1,0.4,,
+0.85674638,,,,,10.0,"E(σ,T) = |D|² ≥ 0  (non-negativity, trivial)",,,,,,1,EQ4.1,0.5,,
+6.01062659,,,,,14.134,"E(σ,T) = |D|² ≥ 0  (non-negativity, trivial)",,,,,,1,EQ4.1,0.5,,
+3.44887362,,,,,21.022,"E(σ,T) = |D|² ≥ 0  (non-negativity, trivial)",,,,,,1,EQ4.1,0.5,,
+1.94487943,,,,,25.0,"E(σ,T) = |D|² ≥ 0  (non-negativity, trivial)",,,,,,1,EQ4.1,0.5,,
+3.69936822,,,,,30.0,"E(σ,T) = |D|² ≥ 0  (non-negativity, trivial)",,,,,,1,EQ4.1,0.5,,
+4.20024287,,,,,50.0,"E(σ,T) = |D|² ≥ 0  (non-negativity, trivial)",,,,,,1,EQ4.1,0.5,,
+0.60759181,,,,,100.0,"E(σ,T) = |D|² ≥ 0  (non-negativity, trivial)",,,,,,1,EQ4.1,0.5,,
+2.10829462,,,,,200.0,"E(σ,T) = |D|² ≥ 0  (non-negativity, trivial)",,,,,,1,EQ4.1,0.5,,
+0.57438155,,,,,10.0,"E(σ,T) = |D|² ≥ 0  (non-negativity, trivial)",,,,,,1,EQ4.1,0.6,,
+4.40746871,,,,,14.134,"E(σ,T) = |D|² ≥ 0  (non-negativity, trivial)",,,,,,1,EQ4.1,0.6,,
+2.35387046,,,,,21.022,"E(σ,T) = |D|² ≥ 0  (non-negativity, trivial)",,,,,,1,EQ4.1,0.6,,
+1.32333466,,,,,25.0,"E(σ,T) = |D|² ≥ 0  (non-negativity, trivial)",,,,,,1,EQ4.1,0.6,,
+2.71830526,,,,,30.0,"E(σ,T) = |D|² ≥ 0  (non-negativity, trivial)",,,,,,1,EQ4.1,0.6,,
+2.83330393,,,,,50.0,"E(σ,T) = |D|² ≥ 0  (non-negativity, trivial)",,,,,,1,EQ4.1,0.6,,
+0.40176897,,,,,100.0,"E(σ,T) = |D|² ≥ 0  (non-negativity, trivial)",,,,,,1,EQ4.1,0.6,,
+1.74578384,,,,,200.0,"E(σ,T) = |D|² ≥ 0  (non-negativity, trivial)",,,,,,1,EQ4.1,0.6,,
+0.40087075,,,,,10.0,"E(σ,T) = |D|² ≥ 0  (non-negativity, trivial)",,,,,,1,EQ4.1,0.7,,
+3.27667564,,,,,14.134,"E(σ,T) = |D|² ≥ 0  (non-negativity, trivial)",,,,,,1,EQ4.1,0.7,,
+1.6422517,,,,,21.022,"E(σ,T) = |D|² ≥ 0  (non-negativity, trivial)",,,,,,1,EQ4.1,0.7,,
+0.91483717,,,,,25.0,"E(σ,T) = |D|² ≥ 0  (non-negativity, trivial)",,,,,,1,EQ4.1,0.7,,
+2.03351676,,,,,30.0,"E(σ,T) = |D|² ≥ 0  (non-negativity, trivial)",,,,,,1,EQ4.1,0.7,,
+1.97650071,,,,,50.0,"E(σ,T) = |D|² ≥ 0  (non-negativity, trivial)",,,,,,1,EQ4.1,0.7,,
+0.27026818,,,,,100.0,"E(σ,T) = |D|² ≥ 0  (non-negativity, trivial)",,,,,,1,EQ4.1,0.7,,
+1.45990226,,,,,200.0,"E(σ,T) = |D|² ≥ 0  (non-negativity, trivial)",,,,,,1,EQ4.1,0.7,,
+,,,,,10.0,∂²E/∂σ² > 0  (σ-strict convexity from EQ3_LIFT),,,,63.057576,2.316407,1,EQ4.2,0.3,,
+,,,,,14.134,∂²E/∂σ² > 0  (σ-strict convexity from EQ3_LIFT),,,,159.154842,2.240307,1,EQ4.2,0.3,,
+,,,,,21.022,∂²E/∂σ² > 0  (σ-strict convexity from EQ3_LIFT),,,,171.559872,2.240628,1,EQ4.2,0.3,,
+,,,,,25.0,∂²E/∂σ² > 0  (σ-strict convexity from EQ3_LIFT),,,,81.215274,2.004272,1,EQ4.2,0.3,,
+,,,,,30.0,∂²E/∂σ² > 0  (σ-strict convexity from EQ3_LIFT),,,,109.920423,2.313769,1,EQ4.2,0.3,,
+,,,,,50.0,∂²E/∂σ² > 0  (σ-strict convexity from EQ3_LIFT),,,,283.851484,2.323034,1,EQ4.2,0.3,,
+,,,,,100.0,∂²E/∂σ² > 0  (σ-strict convexity from EQ3_LIFT),,,,25.900808,1.946681,1,EQ4.2,0.3,,
+,,,,,200.0,∂²E/∂σ² > 0  (σ-strict convexity from EQ3_LIFT),,,,89.058588,1.632474,1,EQ4.2,0.3,,
+,,,,,10.0,∂²E/∂σ² > 0  (σ-strict convexity from EQ3_LIFT),,,,33.775918,2.356072,1,EQ4.2,0.4,,
+,,,,,14.134,∂²E/∂σ² > 0  (σ-strict convexity from EQ3_LIFT),,,,104.335492,2.26002,1,EQ4.2,0.4,,
+,,,,,21.022,∂²E/∂σ² > 0  (σ-strict convexity from EQ3_LIFT),,,,101.469671,2.262226,1,EQ4.2,0.4,,
+,,,,,25.0,∂²E/∂σ² > 0  (σ-strict convexity from EQ3_LIFT),,,,51.458383,2.019298,1,EQ4.2,0.4,,
+,,,,,30.0,∂²E/∂σ² > 0  (σ-strict convexity from EQ3_LIFT),,,,69.289246,2.342904,1,EQ4.2,0.4,,
+,,,,,50.0,∂²E/∂σ² > 0  (σ-strict convexity from EQ3_LIFT),,,,154.410691,2.376075,1,EQ4.2,0.4,,
+,,,,,100.0,∂²E/∂σ² > 0  (σ-strict convexity from EQ3_LIFT),,,,17.380809,2.006126,1,EQ4.2,0.4,,
+,,,,,200.0,∂²E/∂σ² > 0  (σ-strict convexity from EQ3_LIFT),,,,34.680358,1.509419,1,EQ4.2,0.4,,
+,,,,,10.0,∂²E/∂σ² > 0  (σ-strict convexity from EQ3_LIFT),,,,18.640575,2.387108,1,EQ4.2,0.5,,
+,,,,,14.134,∂²E/∂σ² > 0  (σ-strict convexity from EQ3_LIFT),,,,69.264824,2.276136,1,EQ4.2,0.5,,
+,,,,,21.022,∂²E/∂σ² > 0  (σ-strict convexity from EQ3_LIFT),,,,61.152321,2.281645,1,EQ4.2,0.5,,
+,,,,,25.0,∂²E/∂σ² > 0  (σ-strict convexity from EQ3_LIFT),,,,32.74314,2.031655,1,EQ4.2,0.5,,
+,,,,,30.0,∂²E/∂σ² > 0  (σ-strict convexity from EQ3_LIFT),,,,44.51959,2.368491,1,EQ4.2,0.5,,
+,,,,,50.0,∂²E/∂σ² > 0  (σ-strict convexity from EQ3_LIFT),,,,86.330922,2.427713,1,EQ4.2,0.5,,
+,,,,,100.0,∂²E/∂σ² > 0  (σ-strict convexity from EQ3_LIFT),,,,11.37222,2.061401,1,EQ4.2,0.5,,
+,,,,,200.0,∂²E/∂σ² > 0  (σ-strict convexity from EQ3_LIFT),,,,14.541116,1.39598,1,EQ4.2,0.5,,
+,,,,,10.0,∂²E/∂σ² > 0  (σ-strict convexity from EQ3_LIFT),,,,10.588186,2.406272,1,EQ4.2,0.6,,
+,,,,,14.134,∂²E/∂σ² > 0  (σ-strict convexity from EQ3_LIFT),,,,46.58948,2.288458,1,EQ4.2,0.6,,
+,,,,,21.022,∂²E/∂σ² > 0  (σ-strict convexity from EQ3_LIFT),,,,37.55573,2.298126,1,EQ4.2,0.6,,
+,,,,,25.0,∂²E/∂σ² > 0  (σ-strict convexity from EQ3_LIFT),,,,20.947203,2.041413,1,EQ4.2,0.6,,
+,,,,,30.0,∂²E/∂σ² > 0  (σ-strict convexity from EQ3_LIFT),,,,29.161396,2.389249,1,EQ4.2,0.6,,
+,,,,,50.0,∂²E/∂σ² > 0  (σ-strict convexity from EQ3_LIFT),,,,49.673877,2.473895,1,EQ4.2,0.6,,
+,,,,,100.0,∂²E/∂σ² > 0  (σ-strict convexity from EQ3_LIFT),,,,7.316324,2.117512,1,EQ4.2,0.6,,
+,,,,,200.0,∂²E/∂σ² > 0  (σ-strict convexity from EQ3_LIFT),,,,7.295099,1.354847,1,EQ4.2,0.6,,
+,,,,,10.0,∂²E/∂σ² > 0  (σ-strict convexity from EQ3_LIFT),,,,6.182667,2.411346,1,EQ4.2,0.7,,
+,,,,,14.134,∂²E/∂σ² > 0  (σ-strict convexity from EQ3_LIFT),,,,31.761424,2.296909,1,EQ4.2,0.7,,
+,,,,,21.022,∂²E/∂σ² > 0  (σ-strict convexity from EQ3_LIFT),,,,23.502863,2.311042,1,EQ4.2,0.7,,
+,,,,,25.0,∂²E/∂σ² > 0  (σ-strict convexity from EQ3_LIFT),,,,13.488648,2.048567,1,EQ4.2,0.7,,
+,,,,,30.0,∂²E/∂σ² > 0  (σ-strict convexity from EQ3_LIFT),,,,19.470041,2.404174,1,EQ4.2,0.7,,
+,,,,,50.0,∂²E/∂σ² > 0  (σ-strict convexity from EQ3_LIFT),,,,29.438678,2.510428,1,EQ4.2,0.7,,
+,,,,,100.0,∂²E/∂σ² > 0  (σ-strict convexity from EQ3_LIFT),,,,4.656959,2.177968,1,EQ4.2,0.7,,
+,,,,,200.0,∂²E/∂σ² > 0  (σ-strict convexity from EQ3_LIFT),,,,4.695586,1.426992,1,EQ4.2,0.7,,
+,0.856746,,,,10.0,Offline σ₀ zero hypothesis contradicted by convexity,1,,18.640575,,,1,EQ4.3,,0.45,0.55
+,6.010627,,,,14.134,Offline σ₀ zero hypothesis contradicted by convexity,1,,69.264824,,,1,EQ4.3,,0.45,0.55
+,3.448874,,,,21.022,Offline σ₀ zero hypothesis contradicted by convexity,1,,61.152321,,,1,EQ4.3,,0.45,0.55
+,1.944879,,,,25.0,Offline σ₀ zero hypothesis contradicted by convexity,1,,32.74314,,,1,EQ4.3,,0.45,0.55
+,3.699368,,,,30.0,Offline σ₀ zero hypothesis contradicted by convexity,1,,44.51959,,,1,EQ4.3,,0.45,0.55
+,4.200243,,,,50.0,Offline σ₀ zero hypothesis contradicted by convexity,1,,86.330922,,,1,EQ4.3,,0.45,0.55
+,0.607592,,,,100.0,Offline σ₀ zero hypothesis contradicted by convexity,1,,11.37222,,,1,EQ4.3,,0.45,0.55
+,2.108295,,,,200.0,Offline σ₀ zero hypothesis contradicted by convexity,1,,14.541116,,,1,EQ4.3,,0.45,0.55
+,0.856746,,,,10.0,Offline σ₀ zero hypothesis contradicted by convexity,1,,18.640575,,,1,EQ4.3,,0.4,0.6
+,6.010627,,,,14.134,Offline σ₀ zero hypothesis contradicted by convexity,1,,69.264824,,,1,EQ4.3,,0.4,0.6
+,3.448874,,,,21.022,Offline σ₀ zero hypothesis contradicted by convexity,1,,61.152321,,,1,EQ4.3,,0.4,0.6
+,1.944879,,,,25.0,Offline σ₀ zero hypothesis contradicted by convexity,1,,32.74314,,,1,EQ4.3,,0.4,0.6
+,3.699368,,,,30.0,Offline σ₀ zero hypothesis contradicted by convexity,1,,44.51959,,,1,EQ4.3,,0.4,0.6
+,4.200243,,,,50.0,Offline σ₀ zero hypothesis contradicted by convexity,1,,86.330922,,,1,EQ4.3,,0.4,0.6
+,0.607592,,,,100.0,Offline σ₀ zero hypothesis contradicted by convexity,1,,11.37222,,,1,EQ4.3,,0.4,0.6
+,2.108295,,,,200.0,Offline σ₀ zero hypothesis contradicted by convexity,1,,14.541116,,,1,EQ4.3,,0.4,0.6
+,0.856746,,,,10.0,Offline σ₀ zero hypothesis contradicted by convexity,1,,18.640575,,,1,EQ4.3,,0.35,0.65
+,6.010627,,,,14.134,Offline σ₀ zero hypothesis contradicted by convexity,1,,69.264824,,,1,EQ4.3,,0.35,0.65
+,3.448874,,,,21.022,Offline σ₀ zero hypothesis contradicted by convexity,1,,61.152321,,,1,EQ4.3,,0.35,0.65
+,1.944879,,,,25.0,Offline σ₀ zero hypothesis contradicted by convexity,1,,32.74314,,,1,EQ4.3,,0.35,0.65
+,3.699368,,,,30.0,Offline σ₀ zero hypothesis contradicted by convexity,1,,44.51959,,,1,EQ4.3,,0.35,0.65
+,4.200243,,,,50.0,Offline σ₀ zero hypothesis contradicted by convexity,1,,86.330922,,,1,EQ4.3,,0.35,0.65
+,0.607592,,,,100.0,Offline σ₀ zero hypothesis contradicted by convexity,1,,11.37222,,,1,EQ4.3,,0.35,0.65
+,2.108295,,,,200.0,Offline σ₀ zero hypothesis contradicted by convexity,1,,14.541116,,,1,EQ4.3,,0.35,0.65
+,0.856746,,,,10.0,Offline σ₀ zero hypothesis contradicted by convexity,1,,18.640575,,,1,EQ4.3,,0.3,0.7
+,6.010627,,,,14.134,Offline σ₀ zero hypothesis contradicted by convexity,1,,69.264824,,,1,EQ4.3,,0.3,0.7
+,3.448874,,,,21.022,Offline σ₀ zero hypothesis contradicted by convexity,1,,61.152321,,,1,EQ4.3,,0.3,0.7
+,1.944879,,,,25.0,Offline σ₀ zero hypothesis contradicted by convexity,1,,32.74314,,,1,EQ4.3,,0.3,0.7
+,3.699368,,,,30.0,Offline σ₀ zero hypothesis contradicted by convexity,1,,44.51959,,,1,EQ4.3,,0.3,0.7
+,4.200243,,,,50.0,Offline σ₀ zero hypothesis contradicted by convexity,1,,86.330922,,,1,EQ4.3,,0.3,0.7
+,0.607592,,,,100.0,Offline σ₀ zero hypothesis contradicted by convexity,1,,11.37222,,,1,EQ4.3,,0.3,0.7
+,2.108295,,,,200.0,Offline σ₀ zero hypothesis contradicted by convexity,1,,14.541116,,,1,EQ4.3,,0.3,0.7
+,,,,0.40087075,10.0,"min_σ E(σ,T) > 0  (prime-side energy lower bound)",,,,,,1,EQ4.4,,,
+,,,,3.27667564,14.134,"min_σ E(σ,T) > 0  (prime-side energy lower bound)",,,,,,1,EQ4.4,,,
+,,,,1.6422517,21.022,"min_σ E(σ,T) > 0  (prime-side energy lower bound)",,,,,,1,EQ4.4,,,
+,,,,0.91483717,25.0,"min_σ E(σ,T) > 0  (prime-side energy lower bound)",,,,,,1,EQ4.4,,,
+,,,,2.03351676,30.0,"min_σ E(σ,T) > 0  (prime-side energy lower bound)",,,,,,1,EQ4.4,,,
+,,,,1.97650071,50.0,"min_σ E(σ,T) > 0  (prime-side energy lower bound)",,,,,,1,EQ4.4,,,
+,,,,0.27026818,100.0,"min_σ E(σ,T) > 0  (prime-side energy lower bound)",,,,,,1,EQ4.4,,,
+,,,,1.45990226,200.0,"min_σ E(σ,T) > 0  (prime-side energy lower bound)",,,,,,1,EQ4.4,,,
+,,1.06251264,0.69793734,,10.0,"Contradiction gap E(1/2,T) > 0  (pair zeros impossible)",,0.85674638,,,,1,EQ4.5,,,0.55
+,,7.0571454,5.13790482,,14.134,"Contradiction gap E(1/2,T) > 0  (pair zeros impossible)",,6.01062659,,,,1,EQ4.5,,,0.55
+,,4.21018817,2.84128896,,21.022,"Contradiction gap E(1/2,T) > 0  (pair zeros impossible)",,3.44887362,,,,1,EQ4.5,,,0.55
+,,2.37071669,1.60125456,,25.0,"Contradiction gap E(1/2,T) > 0  (pair zeros impossible)",,1.94487943,,,,1,EQ4.5,,,0.55
+,,4.34679557,3.16371989,,30.0,"Contradiction gap E(1/2,T) > 0  (pair zeros impossible)",,3.69936822,,,,1,EQ4.5,,,0.55
+,,5.18325143,3.4346437,,50.0,"Contradiction gap E(1/2,T) > 0  (pair zeros impossible)",,4.20024287,,,,1,EQ4.5,,,0.55
+,,0.75049969,0.49321607,,100.0,"Contradiction gap E(1/2,T) > 0  (pair zeros impossible)",,0.60759181,,,,1,EQ4.5,,,0.55
+,,2.33921961,1.91434799,,200.0,"Contradiction gap E(1/2,T) > 0  (pair zeros impossible)",,2.10829462,,,,1,EQ4.5,,,0.55
+,,1.33127889,0.57438155,,10.0,"Contradiction gap E(1/2,T) > 0  (pair zeros impossible)",,0.85674638,,,,1,EQ4.5,,,0.6
+,,8.31664877,4.40746871,,14.134,"Contradiction gap E(1/2,T) > 0  (pair zeros impossible)",,6.01062659,,,,1,EQ4.5,,,0.6
+,,5.16910093,2.35387046,,21.022,"Contradiction gap E(1/2,T) > 0  (pair zeros impossible)",,3.44887362,,,,1,EQ4.5,,,0.6
+,,2.89955919,1.32333466,,25.0,"Contradiction gap E(1/2,T) > 0  (pair zeros impossible)",,1.94487943,,,,1,EQ4.5,,,0.6
+,,5.13336168,2.71830526,,30.0,"Contradiction gap E(1/2,T) > 0  (pair zeros impossible)",,3.69936822,,,,1,EQ4.5,,,0.6
+,,6.45609292,2.83330393,,50.0,"Contradiction gap E(1/2,T) > 0  (pair zeros impossible)",,4.20024287,,,,1,EQ4.5,,,0.6
+,,0.92876296,0.40176897,,100.0,"Contradiction gap E(1/2,T) > 0  (pair zeros impossible)",,0.60759181,,,,1,EQ4.5,,,0.6
+,,2.62646784,1.74578384,,200.0,"Contradiction gap E(1/2,T) > 0  (pair zeros impossible)",,2.10829462,,,,1,EQ4.5,,,0.6
+,,1.68519351,0.47747993,,10.0,"Contradiction gap E(1/2,T) > 0  (pair zeros impossible)",,0.85674638,,,,1,EQ4.5,,,0.65
+,,9.83800203,3.79390852,,14.134,"Contradiction gap E(1/2,T) > 0  (pair zeros impossible)",,6.01062659,,,,1,EQ4.5,,,0.65
+,,6.38319767,1.96082657,,21.022,"Contradiction gap E(1/2,T) > 0  (pair zeros impossible)",,3.44887362,,,,1,EQ4.5,,,0.65
+,,3.55761342,1.098005,,25.0,"Contradiction gap E(1/2,T) > 0  (pair zeros impossible)",,1.94487943,,,,1,EQ4.5,,,0.65
+,,6.09395914,2.34608347,,30.0,"Contradiction gap E(1/2,T) > 0  (pair zeros impossible)",,3.69936822,,,,1,EQ4.5,,,0.65
+,,8.11804499,2.35697725,,50.0,"Contradiction gap E(1/2,T) > 0  (pair zeros impossible)",,4.20024287,,,,1,EQ4.5,,,0.65
+,,1.1506101,0.32868495,,100.0,"Contradiction gap E(1/2,T) > 0  (pair zeros impossible)",,0.60759181,,,,1,EQ4.5,,,0.65
+,,3.00208543,1.59568138,,200.0,"Contradiction gap E(1/2,T) > 0  (pair zeros impossible)",,2.10829462,,,,1,EQ4.5,,,0.65
+,,2.15505693,0.40087075,,10.0,"Contradiction gap E(1/2,T) > 0  (pair zeros impossible)",,0.85674638,,,,1,EQ4.5,,,0.7
+,,11.68229702,3.27667564,,14.134,"Contradiction gap E(1/2,T) > 0  (pair zeros impossible)",,6.01062659,,,,1,EQ4.5,,,0.7
+,,7.92839853,1.6422517,,21.022,"Contradiction gap E(1/2,T) > 0  (pair zeros impossible)",,3.44887362,,,,1,EQ4.5,,,0.7
+,,4.37792456,0.91483717,,25.0,"Contradiction gap E(1/2,T) > 0  (pair zeros impossible)",,1.94487943,,,,1,EQ4.5,,,0.7
+,,7.27327435,2.03351676,,30.0,"Contradiction gap E(1/2,T) > 0  (pair zeros impossible)",,3.69936822,,,,1,EQ4.5,,,0.7
+,,10.30598448,1.97650071,,50.0,"Contradiction gap E(1/2,T) > 0  (pair zeros impossible)",,4.20024287,,,,1,EQ4.5,,,0.7
+,,1.42584621,0.27026818,,100.0,"Contradiction gap E(1/2,T) > 0  (pair zeros impossible)",,0.60759181,,,,1,EQ4.5,,,0.7
+,,3.51874544,1.45990226,,200.0,"Contradiction gap E(1/2,T) > 0  (pair zeros impossible)",,2.10829462,,,,1,EQ4.5,,,0.7

@@ -1,0 +1,11 @@
+step,kind,ok,info,desc
+PSS_1,FINITE,True,"13rows,0fail","AXIOMS ground: sech²(x) certified, PSS CSV loaded"
+PSS_2,FINITE,True,"9rows,0fail",PSS micro-vectors: 9D states from PSS observables
+PSS_3,FINITE,True,"8rows,0fail",DEF_1–DEF_8 verified in PSS context
+PSS_4,FINITE,True,"9rows,0fail",σ*=½ from PSS EQ4: argmin|E_PSS(σ)−E_PSS(½)|
+PSS_5,FINITE,True,"6rows,0fail",mu_abs z-score singularity at γ₁ detected
+PSS_6,FINITE,True,"6rows,0fail",PSS 9D coord ‖x*(PSS)‖₂ ≈ NORM_X_STAR
+PSS_7,FINITE,True,"6rows,0fail","ρ(PSS, prime) ≈ 0 — structural independence"
+PSS_8,FINITE+CONJ,True,"9rows,0fail",B7 reconstructed (CONJ); B9 amplitude (OPEN)
+PSS_9,FINITE,True,"5rows,0fail",Dual convergence: both paths peak at γ₁
+PSS_10,SKELETON,True,self,PSS proof skeleton assembled

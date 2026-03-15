@@ -1,0 +1,7 @@
+band,is_convex,min_C,violations
+1,True,0.000000e+00,0
+2,True,0.000000e+00,0
+3,False,-7.107503e+01,1
+4,False,-9.063022e+01,3
+5,False,-2.770559e-01,12
+6,False,-4.837876e-10,1

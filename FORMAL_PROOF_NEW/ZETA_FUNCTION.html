@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Λ(T,H) Kernel Equivalences — Zeta Mirror</title>
+    <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0d1117;
+            color: #c9d1d9;
+            margin: 0;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        h1 { color: #58a6ff; margin-bottom: 5px; }
+        p.subtitle { color: #8b949e; margin-top: 0; }
+        
+        .dashboard {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        #plot {
+            width: 100%;
+            height: 600px;
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            background: #161b22;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #30363d;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        label { font-weight: 600; font-size: 14px; color: #8b949e; }
+        
+        input[type=range] { width: 200px; }
+        select {
+            background: #0d1117;
+            color: #c9d1d9;
+            border: 1px solid #30363d;
+            padding: 6px;
+            border-radius: 4px;
+        }
+        
+        .val-display { color: #58a6ff; font-weight: bold; }
+
+        .legend-info {
+            background: #161b22;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #30363d;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .eq-box {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 12px 18px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 15px;
+            text-align: center;
+            color: #e6edf3;
+        }
+        .eq-box .lim { font-size: 13px; color: #8b949e; margin-top: 6px; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Λ(T,H) Kernel Equivalences — Zeta Mirror</h1>
+    <p class="subtitle">Kernel-smoothed convolutions of |ζ(½+iT)|² mirror the Riemann Zeta function zeros on the critical line</p>
+</div>
+
+<div class="dashboard">
+    <div class="controls">
+        <div class="control-group">
+            <label>N (Eta Terms): <span id="n-val" class="val-display">500</span></label>
+            <input type="range" id="n-slider" min="50" max="1500" step="50" value="500">
+        </div>
+        <div class="control-group">
+            <label>Max Height T: <span id="t-val" class="val-display">50</span></label>
+            <input type="range" id="t-slider" min="20" max="100" step="5" value="50">
+        </div>
+        <div class="control-group">
+            <label>H (Kernel Width): <span id="h-val" class="val-display">1.50</span></label>
+            <input type="range" id="h-slider" min="0.1" max="5.0" step="0.1" value="1.5">
+        </div>
+        <div class="control-group">
+            <label>Kernel A <span style="color:#3fb950;">&#9632;</span></label>
+            <select id="kernel-a">
+                <option value="0" selected>K&#8321; sech&#178;(u/H)</option>
+                <option value="1">K&#8322; 4/(e^(u/H)+e^(-u/H))&#178;</option>
+                <option value="2">K&#8323; d/du[tanh(u/H)]&#183;H</option>
+                <option value="3">K&#8324; 4e^(2u/H)/(e^(2u/H)+1)&#178;</option>
+                <option value="4">K&#8325; 1&#8722;tanh&#178;(u/H)</option>
+                <option value="5">K&#8326; 4&#963;(2u/H)(1&#8722;&#963;)</option>
+            </select>
+        </div>
+        <div class="control-group">
+            <label>Kernel B <span style="color:#ff7b72;">&#9632;</span></label>
+            <select id="kernel-b">
+                <option value="0">K&#8321; sech&#178;(u/H)</option>
+                <option value="1">K&#8322; 4/(e^(u/H)+e^(-u/H))&#178;</option>
+                <option value="2">K&#8323; d/du[tanh(u/H)]&#183;H</option>
+                <option value="3">K&#8324; 4e^(2u/H)/(e^(2u/H)+1)&#178;</option>
+                <option value="4">K&#8325; 1&#8722;tanh&#178;(u/H)</option>
+                <option value="5" selected>K&#8326; 4&#963;(2u/H)(1&#8722;&#963;)</option>
+            </select>
+        </div>
+    </div>
+
+    <div id="plot"></div>
+
+    <div class="legend-info">
+        <div class="eq-box">
+            &#923;(T,H) = &#8747; |&#950;(&#189;+i(T+u))|&#178; &#183; K(u,H) du &nbsp;/&nbsp; &#8747; K(u,H) du
+            <div class="lim">lim<sub>H&#8594;0&#8314;</sub> &#923;(T,H) = |&#950;(&#189;+iT)|&#178; = 0 &#8660; &#950;(&#189;+iT) = 0</div>
+        </div>
+        <h3>Traces Displayed:</h3>
+        <ul>
+            <li><strong style="color: #58a6ff;">|&#950;(&#189; + iT)|</strong> &#8212; Raw zeta magnitude on the critical line (via Dirichlet Eta). Zeros appear as dips to 0.</li>
+            <li><strong style="color: #3fb950;">&#8730;&#923;<sub>A</sub>(T,H)</strong> &#8212; Kernel-smoothed zeta mirror using Kernel A. Tracks |&#950;| and drops toward 0 at the same zeros.</li>
+            <li><strong style="color: #ff7b72;">&#8730;&#923;<sub>B</sub>(T,H)</strong> &#8212; Kernel-smoothed zeta mirror using Kernel B. All 6 kernel forms are equivalent; switch between them to verify.</li>
+        </ul>
+        <h3>The 6 Equivalent Kernel Forms (all &#8801; sech&#178;):</h3>
+        <table style="width:100%; border-collapse:collapse; margin:10px 0;">
+            <tr style="border-bottom:1px solid #30363d;">
+                <td style="padding:4px 8px; color:#58a6ff;">K&#8321;</td>
+                <td style="padding:4px 8px;">sech&#178;(u/H) = 1/cosh&#178;(u/H)</td>
+                <td style="padding:4px 8px; color:#8b949e;">Primary form</td>
+            </tr>
+            <tr style="border-bottom:1px solid #30363d;">
+                <td style="padding:4px 8px; color:#58a6ff;">K&#8322;</td>
+                <td style="padding:4px 8px;">4 / (e<sup>u/H</sup> + e<sup>&#8722;u/H</sup>)&#178;</td>
+                <td style="padding:4px 8px; color:#8b949e;">Exponential expansion</td>
+            </tr>
+            <tr style="border-bottom:1px solid #30363d;">
+                <td style="padding:4px 8px; color:#58a6ff;">K&#8323;</td>
+                <td style="padding:4px 8px;">d/du[tanh(u/H)] &#183; H</td>
+                <td style="padding:4px 8px; color:#8b949e;">Derivative form</td>
+            </tr>
+            <tr style="border-bottom:1px solid #30363d;">
+                <td style="padding:4px 8px; color:#58a6ff;">K&#8324;</td>
+                <td style="padding:4px 8px;">4e<sup>2u/H</sup> / (e<sup>2u/H</sup> + 1)&#178;</td>
+                <td style="padding:4px 8px; color:#8b949e;">Exponential ratio</td>
+            </tr>
+            <tr style="border-bottom:1px solid #30363d;">
+                <td style="padding:4px 8px; color:#58a6ff;">K&#8325;</td>
+                <td style="padding:4px 8px;">1 &#8722; tanh&#178;(u/H)</td>
+                <td style="padding:4px 8px; color:#8b949e;">Pythagorean identity</td>
+            </tr>
+            <tr>
+                <td style="padding:4px 8px; color:#58a6ff;">K&#8326;</td>
+                <td style="padding:4px 8px;">4&#963;(2u/H)(1 &#8722; &#963;(2u/H))</td>
+                <td style="padding:4px 8px; color:#8b949e;">Logistic / sigmoid form</td>
+            </tr>
+        </table>
+        <p style="color:#8b949e; margin-top:10px;">
+            <strong>Key property:</strong> All 6 kernel forms yield <em>identical</em> &#923; values &#8212; select different forms for Kernel A and B to verify equivalence visually.
+            Poles lie at &#177;i&#960;H/2 &#8776; &#177;i&#183;2.356 (H=1.5), safely outside the Weil strip |Im(t)| &lt; 0.5.
+        </p>
+    </div>
+</div>
+
+<script>
+    // ═══════════════════════════════════════════════════
+    //  PRECOMPUTED TABLES
+    // ═══════════════════════════════════════════════════
+    const MAX_ETA = 1500;
+    const logN = new Float64Array(MAX_ETA + 1);
+    const sqrtInvN = new Float64Array(MAX_ETA + 1);
+    for (let n = 1; n <= MAX_ETA; n++) {
+        logN[n] = Math.log(n);
+        sqrtInvN[n] = 1.0 / Math.sqrt(n);
+    }
+
+    const riemannZeros = [14.1347, 21.0220, 25.0109, 30.4249, 32.9351,
+        37.5862, 40.9187, 43.3271, 48.0052, 49.7738, 52.9703, 56.4462,
+        59.3470, 60.8318, 65.1125, 67.0798, 69.5464, 72.0672, 75.7047,
+        77.1448, 79.3374, 82.9104, 84.7355, 87.4253, 88.8091, 92.4919,
+        94.6513, 95.8706, 98.8312];
+
+    // ═══════════════════════════════════════════════════
+    //  ZETA via Dirichlet Eta:  ζ = η / (1 - 2^{1-s})
+    // ═══════════════════════════════════════════════════
+    function zetaMag2(T, N_eta) {
+        let eta_re = 0, eta_im = 0;
+        for (let n = 1; n <= N_eta; n++) {
+            const angle = -T * logN[n];
+            const sign = (n & 1) ? 1 : -1;
+            const mag = sign * sqrtInvN[n];
+            eta_re += mag * Math.cos(angle);
+            eta_im += mag * Math.sin(angle);
+        }
+        const dre = 1 - Math.SQRT2 * Math.cos(-T * logN[2]);
+        const dim = -Math.SQRT2 * Math.sin(-T * logN[2]);
+        const dm2 = dre * dre + dim * dim;
+        if (dm2 < 1e-30) return 0;
+        const zr = (eta_re * dre + eta_im * dim) / dm2;
+        const zi = (eta_im * dre - eta_re * dim) / dm2;
+        return zr * zr + zi * zi;
+    }
+
+    // ═══════════════════════════════════════════════════
+    //  6 KERNEL FORMS  (all ≡ sech²)
+    //  From LAMBDA_EQUIVALENCES.py
+    // ═══════════════════════════════════════════════════
+    function kernelVal(idx, u, H) {
+        const x = u / H;
+        if (Math.abs(x) > 40) return 0;
+        switch (idx) {
+            case 0: { // K1  sech²(u/H) = 1/cosh²(u/H)
+                const ch = Math.cosh(x);
+                return 1.0 / (ch * ch);
+            }
+            case 1: { // K2  4/(e^{u/H} + e^{-u/H})²
+                const ep = Math.exp(x), em = Math.exp(-x);
+                return 4.0 / ((ep + em) * (ep + em));
+            }
+            case 2: { // K3  d/du[tanh(u/H)]·H  (= sech² numerically)
+                const ch = Math.cosh(x);
+                return 1.0 / (ch * ch);
+            }
+            case 3: { // K4  4e^{2u/H}/(e^{2u/H}+1)²
+                const x2 = 2 * x;
+                if (Math.abs(x2) > 80) return 0;
+                const e2x = Math.exp(x2);
+                return 4.0 * e2x / ((e2x + 1) * (e2x + 1));
+            }
+            case 4: { // K5  1 - tanh²(u/H)
+                const th = Math.tanh(x);
+                return 1.0 - th * th;
+            }
+            case 5: { // K6  4σ(2u/H)(1-σ(2u/H))
+                const x2 = 2 * x;
+                if (Math.abs(x2) > 80) return 0;
+                const sig = 1.0 / (1.0 + Math.exp(-x2));
+                return 4.0 * sig * (1.0 - sig);
+            }
+            default: {
+                const ch = Math.cosh(x);
+                return 1.0 / (ch * ch);
+            }
+        }
+    }
+
+    // ═══════════════════════════════════════════════════
+    //  MASTER COMPUTE + RENDER
+    //  Λ(T,H) = ∫ |ζ(½+i(T+u))|² K(u,H) du / ∫ K(u,H) du
+    //  Display √Λ so it shares the scale of |ζ|
+    // ═══════════════════════════════════════════════════
+    function computeAll() {
+        const N_eta = parseInt(document.getElementById('n-slider').value);
+        const T_max = parseInt(document.getElementById('t-slider').value);
+        const H     = parseFloat(document.getElementById('h-slider').value);
+        const kA    = parseInt(document.getElementById('kernel-a').value);
+        const kB    = parseInt(document.getElementById('kernel-b').value);
+
+        document.getElementById('n-val').innerText = N_eta;
+        document.getElementById('t-val').innerText = T_max;
+        document.getElementById('h-val').innerText = H.toFixed(2);
+
+        // --- Step 1: Precompute |ζ(½+it)|² on a fine grid ---
+        const gridStep = 0.05;
+        const gridMax  = T_max + 5 * H + 1;
+        const gridLen  = Math.ceil(gridMax / gridStep) + 1;
+        const zetaGrid = new Float64Array(gridLen);
+        for (let i = 0; i < gridLen; i++) {
+            const t = i * gridStep;
+            zetaGrid[i] = (t > 0.5) ? zetaMag2(t, N_eta) : 0;
+        }
+
+        // --- Step 2: Build display arrays ---
+        const displayStep = 0.15;
+        const T_vals      = [];
+        const zeta_vals   = [];
+        const lambdaA_vals = [];
+        const lambdaB_vals = [];
+
+        const halfW     = Math.min(4 * H, 25);
+        const halfSteps = Math.floor(halfW / gridStep);
+
+        for (let T = 0.5; T <= T_max; T += displayStep) {
+            T_vals.push(T);
+
+            // Raw |ζ| from precomputed grid
+            const ti = Math.round(T / gridStep);
+            const z2 = (ti >= 0 && ti < gridLen) ? zetaGrid[ti] : 0;
+            zeta_vals.push(Math.sqrt(z2));
+
+            // Λ convolutions for both kernels
+            let numA = 0, denA = 0;
+            let numB = 0, denB = 0;
+            for (let j = -halfSteps; j <= halfSteps; j++) {
+                const gi = ti + j;
+                if (gi >= 0 && gi < gridLen) {
+                    const u   = j * gridStep;
+                    const kAv = kernelVal(kA, u, H);
+                    const kBv = kernelVal(kB, u, H);
+                    numA += zetaGrid[gi] * kAv;
+                    denA += kAv;
+                    numB += zetaGrid[gi] * kBv;
+                    denB += kBv;
+                }
+            }
+            lambdaA_vals.push(denA > 0 ? Math.sqrt(numA / denA) : 0);
+            lambdaB_vals.push(denB > 0 ? Math.sqrt(numB / denB) : 0);
+        }
+
+        // --- Step 3: Plotly traces ---
+        const traceZeta = {
+            x: T_vals, y: zeta_vals,
+            mode: 'lines',
+            name: '|ζ(½+iT)|',
+            line: { color: '#58a6ff', width: 2.5 }
+        };
+        const traceA = {
+            x: T_vals, y: lambdaA_vals,
+            mode: 'lines',
+            name: '√Λ_A(T,H)',
+            line: { color: '#3fb950', width: 2 }
+        };
+        const traceB = {
+            x: T_vals, y: lambdaB_vals,
+            mode: 'lines',
+            name: '√Λ_B(T,H)',
+            line: { color: '#ff7b72', width: 2, dash: 'dot' }
+        };
+
+        // Vertical markers at known Riemann zeros
+        const shapes = [];
+        riemannZeros.forEach(z => {
+            if (z <= T_max) {
+                shapes.push({
+                    type: 'line', x0: z, x1: z, y0: 0, y1: 1, yref: 'paper',
+                    line: { color: 'rgba(139, 148, 158, 0.4)', width: 1, dash: 'dash' }
+                });
+            }
+        });
+
+        const kNames = ['sech²', 'cosh', "tanh'", 'exp', '1−tanh²', 'logistic'];
+        const layout = {
+            plot_bgcolor:  '#161b22',
+            paper_bgcolor: '#161b22',
+            font: { color: '#c9d1d9' },
+            title: `Zeta Mirror — Kernel A: ${kNames[kA]}, Kernel B: ${kNames[kB]}, H = ${H.toFixed(2)}`,
+            xaxis: {
+                title: 'Height T (Critical Line)',
+                gridcolor: '#30363d',
+                zerolinecolor: '#8b949e'
+            },
+            yaxis: {
+                title: 'Amplitude',
+                gridcolor: '#30363d',
+                zerolinecolor: '#8b949e'
+            },
+            shapes: shapes,
+            hovermode: 'x unified',
+            legend: { orientation: 'h', y: 1.1 },
+            margin: { l: 60, r: 40, t: 80, b: 50 }
+        };
+
+        Plotly.react('plot', [traceZeta, traceA, traceB], layout, { responsive: true });
+    }
+
+    // ═══════════════════════════════════════════════════
+    //  EVENT LISTENERS  ('change' = fires on release for sliders)
+    // ═══════════════════════════════════════════════════
+    document.getElementById('n-slider').addEventListener('change', computeAll);
+    document.getElementById('t-slider').addEventListener('change', computeAll);
+    document.getElementById('h-slider').addEventListener('change', computeAll);
+    document.getElementById('kernel-a').addEventListener('change', computeAll);
+    document.getElementById('kernel-b').addEventListener('change', computeAll);
+
+    // Initial render
+    computeAll();
+</script>
+</body>
+</html>

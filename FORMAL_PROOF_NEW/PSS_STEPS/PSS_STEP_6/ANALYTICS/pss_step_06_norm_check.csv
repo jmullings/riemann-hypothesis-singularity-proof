@@ -1,0 +1,7 @@
+check,value,status
+norm_euclidean,0.5224692233592366,PASS
+norm_NORM_X_STAR,0.342260671137479,PASS
+norm_ratio,1.5265242764319,PASS
+norm_riemannian,4.736776259339181,PASS
+dominant_k,1,PASS
+dominant_fraction,0.4642489708694002,PASS

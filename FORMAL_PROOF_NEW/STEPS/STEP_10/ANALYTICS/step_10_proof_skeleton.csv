@@ -1,0 +1,11 @@
+step,kind,ok,info,desc
+1,FINITE,True,12 rows,AXIOMS ground: energy conservation
+2,FINITE,True,14 rows,Prime weights: StateFactory 9D states
+3,FINITE,True,27 rows,EQ kernel: 10 functionals well-defined
+4,FINITE,True,9 rows,sigma*(T) ~ 0.5 via EQ variance min
+5,FINITE,True,9 rows,"Curvature F2(0.5,Tk) > 0"
+6,FINITE,True,9 rows,10-EQ SVD consensus at sigma=0.5
+7,FINITE,True,9 rows,EQ singularity ~ AXIOMS 9D geometry
+8,FINITE,True,44 rows,DEF 1-8 hold over zero heights
+9,FINITE+CONJ,True,13 rows,"Bridges B1,B2 finite; B3 CONJECTURAL"
+10,SKELETON,True,self,Global proof skeleton assembled

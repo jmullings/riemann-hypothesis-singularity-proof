@@ -1,0 +1,8 @@
+step,pss_ok,prime_ok,auth,csv
+1,True,True,✓ BOTH,step_01_axiom_report.csv
+2,True,True,✓ BOTH,step_02_prime_weights.csv
+4,True,True,✓ BOTH,step_04_sigma_star.csv
+5,True,True,✓ BOTH,step_05_curvature_spectrum.csv
+6,True,True,✓ BOTH,step_06_eq_matrix.csv
+8,True,True,✓ BOTH,step_08_def_validation.csv
+10,True,True,✓ BOTH,step_10_proof_skeleton.csv

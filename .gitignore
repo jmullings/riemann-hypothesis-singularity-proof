@@ -21,6 +21,10 @@
 !TEST_SUITE/
 !TEST_SUITE/**
 
+# Include FORMAL_PROOF_NEW folder and its contents
+!FORMAL_PROOF_NEW/
+!FORMAL_PROOF_NEW/**
+
 # But exclude Python cache files and OS files everywhere
 __pycache__/
 *.pyc

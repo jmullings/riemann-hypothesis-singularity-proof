@@ -1,0 +1,45 @@
+check,value,status,note
+DEF3_conservation_max_err,2.2737e-13,PASS,FactoredState9D energy conservation
+DEF5_S_avg,2.191620,PASS,BitsizeScaleFunctional.S(T) mean
+DEF5_S_min,1.169154,PASS,S(T) minimum over T-grid
+DEF5_S_max,4.562693,PASS,S(T) maximum over T-grid
+DEF6_eig_1,4.632442e+00,PASS,Leading eigenvalue NormalizedBridgeOperator
+DEF6_eig_2,2.282191e-02,PASS,2nd eigenvalue
+DEF6_eig_3,3.883509e-07,PASS,3rd eigenvalue
+DEF6_eig_4,1.638049e-17,PASS,4th eigenvalue
+DEF6_Tr_A,4.655265e+00,PASS,Tr(Ã)
+DEF6_Tr_A2,2.146004e+01,PASS,Tr(Ã²)
+DEF8_checks_total,171,INFO,U1 bandwise convexity checks
+DEF8_violations,0,PASS,U1 violations — catalogued for STEP_9
+ZEROS_UBE_pass,27/27,PASS,"EQ4 UBE at γ₁…γ₉, h ∈ {0.01,0.05,0.10}"
+ZEROS_UBE_rate,1.0000,PASS,UBE convexity rate at zeros
+REF_lambda_star_err,0.00e+00,PASS,vs STEP_2 50-decimal reference
+REF_norm_x_star_err,0.00e+00,PASS,vs STEP_2 50-decimal reference
+BS4_coupling_ok,0.002675,PASS,"k ∈ [0.0010, 0.0050]"
+UBE_gamma_14.1347_h_0.010,5.121438e-06,PASS,E(½+h)+E(½-h)-2E(½) at γ=14.1347
+UBE_gamma_14.1347_h_0.050,1.284278e-04,PASS,E(½+h)+E(½-h)-2E(½) at γ=14.1347
+UBE_gamma_14.1347_h_0.100,5.186390e-04,PASS,E(½+h)+E(½-h)-2E(½) at γ=14.1347
+UBE_gamma_21.0220_h_0.010,5.121438e-06,PASS,E(½+h)+E(½-h)-2E(½) at γ=21.0220
+UBE_gamma_21.0220_h_0.050,1.284278e-04,PASS,E(½+h)+E(½-h)-2E(½) at γ=21.0220
+UBE_gamma_21.0220_h_0.100,5.186390e-04,PASS,E(½+h)+E(½-h)-2E(½) at γ=21.0220
+UBE_gamma_25.0109_h_0.010,5.121438e-06,PASS,E(½+h)+E(½-h)-2E(½) at γ=25.0109
+UBE_gamma_25.0109_h_0.050,1.284278e-04,PASS,E(½+h)+E(½-h)-2E(½) at γ=25.0109
+UBE_gamma_25.0109_h_0.100,5.186390e-04,PASS,E(½+h)+E(½-h)-2E(½) at γ=25.0109
+UBE_gamma_30.4249_h_0.010,5.121438e-06,PASS,E(½+h)+E(½-h)-2E(½) at γ=30.4249
+UBE_gamma_30.4249_h_0.050,1.284278e-04,PASS,E(½+h)+E(½-h)-2E(½) at γ=30.4249
+UBE_gamma_30.4249_h_0.100,5.186390e-04,PASS,E(½+h)+E(½-h)-2E(½) at γ=30.4249
+UBE_gamma_32.9351_h_0.010,5.121438e-06,PASS,E(½+h)+E(½-h)-2E(½) at γ=32.9351
+UBE_gamma_32.9351_h_0.050,1.284278e-04,PASS,E(½+h)+E(½-h)-2E(½) at γ=32.9351
+UBE_gamma_32.9351_h_0.100,5.186390e-04,PASS,E(½+h)+E(½-h)-2E(½) at γ=32.9351
+UBE_gamma_37.5862_h_0.010,5.121438e-06,PASS,E(½+h)+E(½-h)-2E(½) at γ=37.5862
+UBE_gamma_37.5862_h_0.050,1.284278e-04,PASS,E(½+h)+E(½-h)-2E(½) at γ=37.5862
+UBE_gamma_37.5862_h_0.100,5.186390e-04,PASS,E(½+h)+E(½-h)-2E(½) at γ=37.5862
+UBE_gamma_40.9187_h_0.010,5.121438e-06,PASS,E(½+h)+E(½-h)-2E(½) at γ=40.9187
+UBE_gamma_40.9187_h_0.050,1.284278e-04,PASS,E(½+h)+E(½-h)-2E(½) at γ=40.9187
+UBE_gamma_40.9187_h_0.100,5.186390e-04,PASS,E(½+h)+E(½-h)-2E(½) at γ=40.9187
+UBE_gamma_43.3271_h_0.010,5.121438e-06,PASS,E(½+h)+E(½-h)-2E(½) at γ=43.3271
+UBE_gamma_43.3271_h_0.050,1.284278e-04,PASS,E(½+h)+E(½-h)-2E(½) at γ=43.3271
+UBE_gamma_43.3271_h_0.100,5.186390e-04,PASS,E(½+h)+E(½-h)-2E(½) at γ=43.3271
+UBE_gamma_48.0052_h_0.010,5.121438e-06,PASS,E(½+h)+E(½-h)-2E(½) at γ=48.0052
+UBE_gamma_48.0052_h_0.050,1.284278e-04,PASS,E(½+h)+E(½-h)-2E(½) at γ=48.0052
+UBE_gamma_48.0052_h_0.100,5.186390e-04,PASS,E(½+h)+E(½-h)-2E(½) at γ=48.0052

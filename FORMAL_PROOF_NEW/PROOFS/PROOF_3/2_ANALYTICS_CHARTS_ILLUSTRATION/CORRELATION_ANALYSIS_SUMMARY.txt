@@ -1,0 +1,40 @@
+════════════════════════════════════════════════════════════════════════════════
+UNIFIED SIDE A / SIDE B CORRELATION ANALYSIS
+════════════════════════════════════════════════════════════════════════════════
+
+KEY CORRELATIONS (|r| > 0.5):
+----------------------------------------
+c_phi_6d ↔ c_phi_9d: +1.0000
+c_phi_9d ↔ convexity_9d_6d_diff: +1.0000
+c_phi_6d ↔ convexity_9d_6d_diff: +1.0000
+ellipsoid_6d_norm ↔ ellipsoid_9d_norm: +1.0000
+convexity_9d_6d_diff ↔ ellipsoid_9d_norm: -0.9330
+c_phi_6d ↔ ellipsoid_9d_norm: -0.9330
+c_phi_9d ↔ ellipsoid_9d_norm: -0.9330
+convexity_9d_6d_diff ↔ ellipsoid_6d_norm: -0.9320
+c_phi_6d ↔ ellipsoid_6d_norm: -0.9320
+c_phi_9d ↔ ellipsoid_6d_norm: -0.9320
+ellipsoid_9d_norm ↔ phi_move: +0.5181
+ellipsoid_6d_norm ↔ phi_move: +0.5163
+
+
+BRIDGE OPERATION ANALYSIS:
+----------------------------------------
+Gap ↔ φ-move: +0.0000
+UBE ↔ Ellipsoid: -0.9330
+Convexity Diff ↔ Gap: +0.0000
+6D ↔ 9D Ellipsoid: +1.0000
+
+
+ZERO VICINITY ANALYSIS:
+----------------------------------------
+Points near zeros: 3
+Points away from zeros: 21
+
+Near zeros - Avg gap: 0.000000e+00
+Near zeros - Avg convexity diff: 2.637352e-01
+Near zeros - Avg φ-move: -0.959329
+
+Away zeros - Avg gap: 0.000000e+00
+Away zeros - Avg convexity diff: 1.080571e-01
+Away zeros - Avg φ-move: -0.126965

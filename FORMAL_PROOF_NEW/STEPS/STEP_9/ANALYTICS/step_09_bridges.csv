@@ -1,0 +1,14 @@
+bridge,value,status,note
+B1_Trace_1,4.6552647106e+00,PASS,Tr(Ã) > 0
+B1_Trace_2,2.1460043505e+01,PASS,Tr(Ã²) > 0
+B2_norm_eigs_6D,4.6324986244e+00,PASS,‖eigs_6D‖
+B2_rel_err_norm,1.2535e+01,WARN,vs NORM_X_STAR
+B2_cross_norm,100.619001,INFO,Gap B6 catalogue
+B2_cross_ratio,0.146118,INFO,micro↔macro coupling
+B3_recon_err,9.8942e-01,CONJECTURAL,Axiom 8 open
+B3_coupling_k,0.002675,OK,BS-4
+REF_NORM_X_STAR,3.4226067114e-01,PASS,STEP_2 cross-check
+REF_LAMBDA_STAR,4.9405895556e+02,PASS,STEP_2 cross-check
+OPEN_GAP_B6,UNRESOLVED,OPEN,Infinity Lemma X→∞
+OPEN_GAP_B7,UNRESOLVED,OPEN,Bridge 9 Lemma
+OPEN_GAP_A3,UNRESOLVED,OPEN,Bridge Theorem Mellin/Weil

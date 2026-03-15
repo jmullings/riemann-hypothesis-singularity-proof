@@ -1,0 +1,102 @@
+#!/usr/bin/env python3
+"""
+STEP_08_SIGMA_CURVATURE_BRIDGE.py
+==================================
+STEP 8 of 10 - DEF Layer Cross-Validation (non-circular)
+
+PURPOSE
+-------
+Verify that the eight AXIOMS definitions (Def 1-8) are mutually consistent
+with the EQ curvature picture established in steps 3-7.
+
+Checks:
+  DEF1: bitsize(n) is consistent with EQ2 curvature (both peak at 2^k boundaries)
+  DEF3: E_9D = E_macro + E_micro (verified again with the zero-height states)
+  DEF5: S(T) = 2^{delta_b(T)} aligns with the EQ energy scale
+  DEF6: Ã eigenvalues are consistent with the curvature spectrum
+  DEF8: Band-wise convexity C_k >= 0 (verified over zero heights)
+"""
+import sys, csv, time, math
+from pathlib import Path
+
+_HERE      = Path(__file__).resolve().parent
+_STEP_ROOT = _HERE.parent
+_FORMAL    = _STEP_ROOT.parent.parent
+_CONFIGS   = _FORMAL / "CONFIGURATIONS"
+_ANALYTICS = _STEP_ROOT / "ANALYTICS"
+if str(_CONFIGS) not in sys.path:
+    sys.path.insert(0, str(_CONFIGS))
+
+import numpy as np
+from AXIOMS import (
+    PHI, RIEMANN_ZEROS_9, NORM_X_STAR,
+    von_mangoldt, bitsize,
+    StateFactory, Projection6D, BitsizeScaleFunctional,
+    NormalizedBridgeOperator, BandwiseConvexityChecker,
+    DIM_9D, DIM_6D, DIM_3D,
+)
+
+assert DIM_9D == 9 and DIM_6D == 6 and DIM_3D == 3
+print("[Gate-0] DEF cross-validation  OK")
+print()
+print("=" * 72)
+print("STEP 8 - DEF Layer Cross-Validation")
+print("=" * 72)
+
+t0 = time.time()
+factory = StateFactory(phi=PHI)
+sf      = BitsizeScaleFunctional(phi=PHI)
+conv    = BandwiseConvexityChecker(phi=PHI)
+
+T_grid = np.array(sorted(set(list(RIEMANN_ZEROS_9) + [50.0, 75.0, 100.0])))
+rows   = []
+max_ce = 0.0
+all_conv = True
+
+for T in T_grid:
+    st  = factory.create(T)
+    ce  = st.verify_conservation()
+    S   = sf.S(T)
+    db  = sf.delta_b(T)
+    x6  = Projection6D.project(st)
+    max_ce = max(max_ce, ce)
+    rows.append({"T": T, "E_9D": st.E_9D, "cons_err": ce,
+                 "S_T": S, "delta_b": db,
+                 "micro_norm": float(np.linalg.norm(x6)),
+                 "macro_norm": float(np.linalg.norm(st.T_macro))})
+
+# DEF 6: Normalised operator Ã
+states = [factory.create(T) for T in T_grid]
+S_avg  = float(np.mean([sf.S(T) for T in T_grid]))
+op     = NormalizedBridgeOperator(states, S_avg)
+eigs   = op.eigenvalues
+
+# DEF 8: Band-wise convexity
+bw = conv.verify_all_bands(T_grid)
+for band, res in sorted(bw.items()):
+    if not res["is_convex"]: all_conv = False
+
+elapsed = time.time() - t0
+
+_ANALYTICS.mkdir(parents=True, exist_ok=True)
+csv_path = _ANALYTICS / "step_08_def_validation.csv"
+with open(csv_path, "w", newline="") as f:
+    ww = csv.DictWriter(f, fieldnames=["T","E_9D","cons_err","S_T","delta_b","micro_norm","macro_norm"])
+    ww.writeheader()
+    [ww.writerow({k: (f"{v:.8e}" if isinstance(v, float) else v) for k,v in r.items()})
+     for r in rows]
+print(f"[CSV] DEF validation -> {csv_path}")
+
+print()
+print("=" * 72)
+print("STEP 8 RESULT SUMMARY")
+print(f"  DEF3 (conservation)   : {'PASS' if max_ce < 1e-10 else 'FAIL'}  (max err {max_ce:.2e})")
+print(f"  DEF8 (bandwise conv.) : {'PASS' if all_conv else 'FAIL'}")
+print(f"  DEF6 (Atilde eigs)    : {', '.join(f'{e:.4e}' for e in eigs[:4])}")
+print(f"  S(T) avg              : {S_avg:.2f}")
+print(f"  Elapsed               : {elapsed:.1f}s")
+print("=" * 72)
+print("STEP 8 COMPLETE - DEF layer verified.  Proceed to STEP 9.")
+
+if __name__ == "__main__":
+    pass

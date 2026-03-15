@@ -1,0 +1,7 @@
+check,value,status
+C1_z_ge_2p5,5.9030,PASS
+C2_gamma1_peak,k=1,PASS
+C3_z_ge_5,5.9030,PASS
+C4_isolated_peak,gap=2.9979,PASS
+C5_above_p90,mu=0.6657,PASS
+VERDICT,STRONG_SINGULARITY,STRONG_SINGULARITY

@@ -1,0 +1,7 @@
+test,match_rate,tautology_caught,pass,notes,wdb_match_rate,identity_match_rate,circa_delta,n_candidates,ube_match_rate,score,tautological,wdb_caught,ube_cleared
+TEST_1_IDENTITY_PREDICTOR,1.0,True,1,"Baseline: predict inputs, trivially 100%",,,,,,,,,
+TEST_2_WDB_CIRCULARITY,,True,1,CIRCA criterion: |WDB − Id_Z| < 5% → tautology,1.0,1.0,0.0,,,,,,
+TEST_3_UBE_ZKZ_NON_TAUTOLOGICAL,,False,1,ZKZ: prime-only predictions; circa_delta >> 5% → non-tautological,,1.0,1.0,0,0.0,,,,
+TEST_4_CIRCULARITY_SCORE_WDB,,,1,WDB score≥0.9 → caught as tautological,,,,,,1.0,True,,
+TEST_4_CIRCULARITY_SCORE_UBE,,,1,UBE score<0.9 → non-tautological (genuine prime signal),,,,,,-1.5164,False,,
+OVERALL,,,1,"CIRCA Tautology Trap — WDB caught, UBE cleared",,,,,,,,True,True

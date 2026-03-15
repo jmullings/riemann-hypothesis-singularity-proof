@@ -1,0 +1,13 @@
+check,value,status
+path_a_complete,10,PASS
+path_b_complete,10,PASS
+path_a_no_fails,0,PASS
+path_b_no_fails,0,PASS
+independence_rho,0.167307,PASS
+pss_zscore_gamma1,5.90301287679552,PASS
+dual_verdict,DUAL_SINGULARITY_STRONGLY_CONFIRMED,DUAL_SINGULARITY_STRONGLY_CONFIRMED
+axiom8_gap,CONJECTURAL,OPEN
+hilbert_polya_gap,OPEN,OPEN
+LAMBDA_STAR,494.0589555580202,VERIFIED
+NORM_X_STAR,0.342260671137479,VERIFIED
+OVERALL_GRADE,A  — Both paths verified; singularity confirmed; independence confirmed,✓✓ DUAL-PATH AUTHENTICATION COMPLETE

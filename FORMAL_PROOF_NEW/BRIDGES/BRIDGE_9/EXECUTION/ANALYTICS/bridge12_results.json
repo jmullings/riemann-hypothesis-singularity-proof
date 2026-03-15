@@ -1,0 +1,27 @@
+{
+  "bridge": "BRIDGE_12_SPIRAL_GEOMETRY",
+  "date": "March 11, 2026",
+  "P_max": 150,
+  "n_zeros": 9,
+  "sigma_grid": [
+    0.4,
+    0.45,
+    0.5,
+    0.55,
+    0.6
+  ],
+  "spiral_tightness": {
+    "near_zero_sigma=1/2": -1.7119231637785224,
+    "near_zero_sigma<>1/2": -1.7442062623793686,
+    "off_zero_sigma=1/2": 0.0507727757830269,
+    "off_zero_sigma<>1/2": 0.04103526667605865,
+    "zero_half_vs_other_contrast": 0.032283098600846216
+  },
+  "bridge_claim": "At T\u2248\u03b3\u2099, \u03c3=\u00bd spiral is tighter (tightness -1.7119) than \u03c3\u2260\u00bd (tightness -1.7442), contrast = 0.0323. Gonek-Montgomery spiral geometry provides geometric evidence for \u03c3-selectivity, independent of Dirichlet energy minimum analysis.",
+  "zkz_compliant": true,
+  "gap_statement": "EMPIRICAL ONLY: Finite P_max=150 model. The \u03c3-selectivity of the spiral is NOT yet proved for P\u2192\u221e. Proving tightening iff T\u2248\u03b3\u2099 requires the X\u2192\u221e analytic limit (Bridge 9 lemma).",
+  "output_files": {
+    "spiral_summary": "/Users/jmullings/PersonalProjects/RH_SING_PROOF/riemann-hypothesis-singularity-proof/FORMAL_PROOF_NEW/BRIDGES/BRIDGE_9/EXECUTION/ANALYTICS/bridge12_spiral_summary.csv",
+    "sample_path": "/Users/jmullings/PersonalProjects/RH_SING_PROOF/riemann-hypothesis-singularity-proof/FORMAL_PROOF_NEW/BRIDGES/BRIDGE_9/EXECUTION/ANALYTICS/bridge12_sample_path.csv"
+  }
+}

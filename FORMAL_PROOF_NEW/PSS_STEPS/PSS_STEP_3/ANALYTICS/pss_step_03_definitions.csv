@@ -1,0 +1,9 @@
+def,claim,status,note
+DEF_1,b(n)=floor(log2(n)),PASS,Bitsize for all 9 gamma values
+DEF_2,X = X_macro(3D) ⊕ X_micro(6D),PASS,9D factorisation verified for all 9 zeros
+DEF_3,E_9D = E_macro + E_micro (Euclidean split),PASS,Max cross-coupling fraction: 0.0000
+DEF_4,P₆X = X_micro in ℝ⁶,PASS,6D projection of PSS observables
+DEF_5,S(T)=2^{Δb(T)} > 0,PASS,"S range: [1.0000, 4.0000]"
+DEF_6,Ã = (1/S)P₆AP₆ᵀ well-defined,PASS,‖Ã‖₂ = 9.1698e+05
+DEF_7,X^(k)(T) band-restricted via b(γ),PASS,All 9 gamma values in bitsize bands 3–8
+DEF_8,"C_k(T,h)≥0 band-wise convexity [U1*]",CONJECTURAL,PSS convexity fraction: 0.71 (not gating)

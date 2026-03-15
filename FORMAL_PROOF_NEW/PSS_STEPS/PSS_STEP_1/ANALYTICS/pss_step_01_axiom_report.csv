@@ -1,0 +1,14 @@
+check,value,status,note
+Gate-0_dim_9D,9,PASS,ambient dimension = 9
+Gate-0_dim_6D,6,PASS,micro sector = 6
+Gate-0_dim_3D,3,PASS,macro sector = 3
+P1_sech2_formula,verified,PASS,sech²(x) = 4e^(2x)/(e^(2x)+1)²
+P1_boundary_sech2_0,1.0,PASS,sech²(0)=1
+P4_coupling_positive,0.002675,PASS,E=COUPLING_K·sech²(shift) > 0 for all 9 zeros
+CSV_accessible,100000,PASS,rows in PSS CSV
+CSV_N_eff_500,500,PASS,N_eff=500 (PSS protocol)
+CSV_gamma1_match,14.134725142,PASS,AXIOMS γ₁=14.134725
+U1star_convexity,0.808,CONJECTURAL,Monotone fraction (not gating)
+SIGMA_FIXED,0.5,PASS,critical line σ=½
+LAMBDA_STAR,494.05895556,PASS,50-decimal singularity constant
+NORM_X_STAR,0.342260671137479,PASS,50-decimal geometric anchor norm
