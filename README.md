@@ -6,7 +6,7 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19038824.svg)](https://doi.org/10.5281/zenodo.19038824)
 ## The Central Equation
 
-$$\Lambda(T, H) = \frac{\displaystyle\int_{-\infty}^{\infty} Z(T+u)^2 \;\operatorname{sech}^2\!\left(\frac{u}{H}\right) du}{\displaystyle\int_{-\infty}^{\infty} \operatorname{sech}^2\!\left(\frac{u}{H}\right) du}$$
+$$\Lambda(T, H) = \frac{\displaystyle\int_{-\infty}^{\infty} Z(T+u)^2 \;\text{sech}^2\!\left(\frac{u}{H}\right) du}{\displaystyle\int_{-\infty}^{\infty} \text{sech}^2\!\left(\frac{u}{H}\right) du}$$
 
 $$\lim_{H \to 0^+} \Lambda(T, H) = 0 \quad \Longleftrightarrow \quad \zeta\!\left(\tfrac{1}{2} + iT\right) = 0$$
 
@@ -14,18 +14,18 @@ The kernel-smoothed functional $\Lambda(T,H)$ mirrors the Riemann Zeta function 
 
 ### The 6 Equivalent Kernel Forms
 
-All six forms are algebraically identical to $\operatorname{sech}^2(u/H)$ and yield the same $\Lambda(T,H)$:
+All six forms are algebraically identical to $\text{sech}^2(u/H)$ and yield the same $\Lambda(T,H)$:
 
 | Kernel | Expression | Identity |
 |--------|-----------|----------|
-| $K_1$ | $\operatorname{sech}^2(u/H) = 1/\cosh^2(u/H)$ | Primary form |
+| $K_1$ | $\text{sech}^2(u/H) = 1/\cosh^2(u/H)$ | Primary form |
 | $K_2$ | $4\,/\,(e^{u/H} + e^{-u/H})^2$ | Exponential expansion |
 | $K_3$ | $H \cdot \frac{d}{du}\tanh(u/H)$ | Derivative form |
 | $K_4$ | $4\,e^{2u/H}\,/\,(e^{2u/H} + 1)^2$ | Exponential ratio |
 | $K_5$ | $1 - \tanh^2(u/H)$ | Pythagorean identity |
 | $K_6$ | $4\,\sigma(2u/H)\,(1 - \sigma(2u/H))$ | Logistic / sigmoid form |
 
-With $H = 3/2$, poles lie at $\pm i\pi H/2 \approx \pm 2.356i$ — safely outside the Weil strip $|\operatorname{Im}(t)| < 0.5$.
+With $H = 3/2$, poles lie at $\pm i\pi H/2 \approx \pm 2.356i$ — safely outside the Weil strip $|\text{Im}(t)| < 0.5$.
 
 Six equivalent representations provide **six independent numerical checks** on every computation and ensure no single algebraic form can harbour a hidden error. The equivalence is verified in [`FORMAL_PROOF_NEW/LAMBDA_EQUIVALENCES.py`](FORMAL_PROOF_NEW/LAMBDA_EQUIVALENCES.py) and visualised interactively in [`FORMAL_PROOF_NEW/ZETA_FUNCTION.html`](FORMAL_PROOF_NEW/ZETA_FUNCTION.html).
 
@@ -39,7 +39,7 @@ Many proof strategies for the Riemann Hypothesis exist; however, several classic
 
 ### 1. The log() operator discards 9D geometric information
 
-Classical analytic number theory operates through $\log\zeta(s) = \sum p^{-s}/1 + \ldots$ and the von Mangoldt function $\Lambda(n) = \log p$. The logarithm collapses the multiplicative prime structure into an additive scalar, discarding the **9-dimensional Riemannian geometry** ($g_{jk} = \varphi^{j+k}$, the golden metric tensor) that encodes inter-prime correlations. The sech² framework operates **log-free**: the kernel $\operatorname{sech}^2(u/H)$ acts directly on $|Z(T+u)|^2$ without logarithmic reduction, preserving the full spectral content of the zeta function.
+Classical analytic number theory operates through $\log\zeta(s) = \sum p^{-s}/1 + \ldots$ and the von Mangoldt function $\Lambda(n) = \log p$. The logarithm collapses the multiplicative prime structure into an additive scalar, discarding the **9-dimensional Riemannian geometry** ($g_{jk} = \varphi^{j+k}$, the golden metric tensor) that encodes inter-prime correlations. The sech² framework operates **log-free**: the kernel $\text{sech}^2(u/H)$ acts directly on $|Z(T+u)|^2$ without logarithmic reduction, preserving the full spectral content of the zeta function.
 
 ### 2. Inability to manage bitsize variance
 
