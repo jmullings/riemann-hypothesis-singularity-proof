@@ -62,18 +62,18 @@ The Hadamard factorisation theorem creates a fundamental type-gap obstruction: a
 | **Λ(T,H) Kernel Framework** | ✅ PROVED | 6-kernel equivalence, Fourier-Mellin decomposition, σ-selectivity |
 | **PARTs 1–10** (Dirichlet polynomials) | ✅ PROVED | Algebraic singularity at σ = 1/2 via MV antisymmetrisation |
 | **Theorem A** (RS cross-term) | ✅ PROVED | Spectrally suppressed as $T_0^{-\pi H/2}$ |
-| **Theorem B** (curvature positivity) | ✅ at zeros, 🔶 OPEN universally | Single remaining gap |
+| **Theorem B** (curvature positivity) | ⚠️ OPEN | **THE ANALYST'S PROBLEM** — universal $\bar{F}_2^{DN} \geq 0$ |
 | **Theorem C** (contradiction) | ✅ PROVED | Prime side exponentially small — key breakthrough |
 | **Theorem D** (assembly) | 🔶 CONDITIONAL | RH follows from A + B + C |
-| **Theorems I–II + III_N** | ✅ PROVED | φ-weighted spectral finite model |
-| **Conjectures III_∞, IV, V** | 🔶 CONJECTURAL | Research programme with extensive numerical support |
+
+**PROOF STATUS:** This is a **conditional proof** of the Riemann Hypothesis. The single remaining gap is **Theorem B (Universal Curvature Positivity)** — proving that the sech² curvature functional $\bar{F}_2^{DN} \geq 0$ holds for **all** $T_0$, not just at known zeros and random samples.
 
 ---
 
 ## Quick Start
 
 ```bash
-# Run the Λ(T,H) kernel equivalences (all 9 forms tested at zeros and non-zeros)
+# Run the Λ(T,H) kernel equivalences (all 6 forms tested at zeros and non-zeros)
 cd FORMAL_PROOF_NEW
 python3 LAMBDA_EQUIVALENCES.py
 
@@ -103,20 +103,18 @@ python3 GAPS/FULL_PROOF.py
 - **[DOCUMENTATION/PROJECT_COMPLETION_REPORT.md](DOCUMENTATION/PROJECT_COMPLETION_REPORT.md)** - Final organization report  
 - **[DIRECTORY_REORG_PLAN.md](DIRECTORY_REORG_PLAN.md)** - Directory reorganization plan
 
----
-
-## ⚠️ CRITICAL STATUS INFORMATION
+### ⚠️ CRITICAL STATUS INFORMATION
 
 ### What This Project IS:
 - **Conditional proof framework** for RH via sech² curvature functional Λ(T,H)
-- **6-kernel equivalence engine** with independent numerical verification across all forms
+- **6-kernel equivalence engine** with independent numerical verification across all forms  
 - **Rigorous algebraic results** for Dirichlet polynomials (PARTs 1–10, PROVED)
 - **Complete 4-theorem chain** (A–D) bridging D_N model to full ζ
 - **High-quality research foundation** ready for academic collaboration
 
 ### What This Project IS NOT:
 - ❌ A complete, unconditional proof of the Riemann Hypothesis
-- ❌ A closed mathematical argument establishing RH without open points
+- ❌ A closed mathematical argument establishing RH without open points  
 - ❌ Ready for publication as "proof" without resolving Theorem B universality
 
 ### Single Remaining Gap:
@@ -124,113 +122,17 @@ python3 GAPS/FULL_PROOF.py
 
 ---
 
-## Mathematical Framework: Five-Part Structure
+## Alternative Research Approaches
 
-### 1. Theorem I — φ-Weighted Ruelle Zeta (Finite Model)
-**Status:** ✅ **PROVED** (finite-dimensional model)
+### φ-Weighted Spectral Framework (Historical)
 
-Defines the φ-weighted Ruelle–type zeta $\zeta_\phi(s)$ for the 9-branch system with weights $w_k = \phi^{-(k+1)}$.
+In parallel with the main sech² approach, this repository contains extensive work on a φ-weighted spectral approach via golden ratio geometry:
 
-**Key Results:**
-- Proves absolute convergence for $\Re(s) > 1$ and establishes basic spectral properties in the finite model
-- Provides the φ-summability condition $\sum_k w_k < \phi$ and a controlled "log-free" implementation
-- **Core Achievement:** $\sum w_k = 1.597 < \phi = 1.618$ with margin $\delta \approx 0.021$
+- **Theorems I–II:** ✅ **PROVED** — φ-weighted Ruelle zeta and transfer operator properties (finite model)
+- **Conjecture III:** 🔶 MIXED — finite geodesic equivalence proved, infinite limit conjectural  
+- **Conjectures IV–V:** 🔶 CONJECTURAL — φ-spectral package and Hadamard obstruction framework
 
-📖 **Details:** [THEOREM_I/README.md](THEOREM_I/README.md)
-
----
-
-### 2. Theorem II — Golden Transfer Operator (Finite Matrices)
-**Status:** ✅ **PROVED** (finite matrices $L_s^{(n)}$)
-
-Studies the finite-dimensional transfer matrices $L_s^{(n)}$ associated with the φ-weighted branches.
-
-**Proves:**
-- $\det(I - L_s^{(n)})$ is an entire function of $s$
-- A dominant eigenvalue $\lambda_1^{(n)}$ with $\lambda_1^{(n)} \approx \phi^{-1} + O(n^{-1})$
-- A spectral gap governed by $\phi^{-1} \approx 0.618$ in the finite model
-- Introduces the log-free pressure functional $P_\phi(s)$ as a structural diagnostic
-
-📖 **Details:** [THEOREM_II/README.md](THEOREM_II/README.md)
-
----
-
-### 3. Conjecture III — Geodesic Singularity and ζ-Correspondence
-**Status:** ✅🔶 **MIXED** — finite theorem proved, infinite limit conjectural
-
-**Theorem III_N** (✅ **PROVED**): For each fixed $N$, establishes a finite geodesic "singularity ⟺ eigenvalue ⟺ scattering pole" equivalence for the calibrated matrix $H_N$.
-
-**Conjecture III_∞** (🔶 **CONJECTURAL**): As $N \to \infty$,
-- Eigenvalues of $H_N$ converge to ordinates of the nontrivial zeros of $\zeta$
-- The finite scattering data converge to $\xi(1/2+iE)/\xi(1/2-iE)$
-
-This is the Hilbert–Pólya-type bridge from the finite φ-geometric model to the actual zeta zeros.
-
-📖 **Details:** [CONJECTURE_III/README.md](CONJECTURE_III/README.md)
-
----
-
-### 4. Conjecture IV — φ-Weighted Transfer Operator and Hadamard Obstruction
-**Status:** ✅🔶 **HYBRID** — operator-theoretic core proved; zero-correspondence programme conjectural
-
-Builds a φ-weighted transfer operator on a symbolic φ-Bernoulli space and **proves:**
-- Existence of a trace-class operator $L_\phi(s)$ on a Hilbert space
-- Analyticity of the Fredholm determinant $D(s) = \det(I - L_\phi(s))$ in a right half-plane
-- **Conditional Hadamard obstruction:** Under natural hypotheses $D(s)$ has exponential type $\log \phi$, so no bounded entire $G$ satisfies $D(s) = G(s) \xi(s)$
-
-**Provides evidence and structured conjectural programme for:**
-- 9D necessity and φ-weight construction
-- 9D→6D dimensional collapse and bitsize laws
-- Parallel singularity behaviour aligned with zeta zeros
-
-**Framework Boundaries:**
-- ✅ **Proved core:** Hadamard obstruction and operator-theoretic framework
-- 🔶 **Open parts:** Zero-correspondence, exact φ-optimality, full 9D→6D analytic collapse
-
-📖 **Details:** [CONJECTURE_IV/README.md](CONJECTURE_IV/README.md)
-
----
-
-### 5. Conjecture V — φ-Spectral Riemann Equivalence and Full Proof Programme
-**Status:** 🔶 **MASTER CONJECTURAL CLOSURE** (conditional RH programme)
-
-Formulates the φ-spectral package that would complete the path to RH:
-
-$$\boxed{\text{Theorems I–II + III}_N\text{ (proved finite model)} + \text{Conjecture III}_\infty + \text{Conjecture IV (full)} + \text{Conjecture V} \Longrightarrow \text{RH}}$$
-
-**Conjecture V** asserts that, once the III_∞ limit and the full φ-weighted operator framework are established, the resulting φ-spectral package is equivalent to the Riemann Hypothesis.
-
-**The "Full Proof" is therefore conditional at this stage:** It is a precise programme showing how RH would follow from the stated conjectures, not yet an unconditional proof.
-
-📖 **Details and conditional full-proof sketch:** [CONJECTURE_V/README.md](CONJECTURE_V/README.md) and [FORMAL_PROOF/](FORMAL_PROOF/)
-
-**BREAKTHROUGH UPDATE — March 9, 2026:**  
-✅ **Five Independent Formal Proofs COMPLETE** — The FORMAL_PROOF directory now contains five analytically complete, referee-grade proofs establishing RH-equivalent statements via distinct mathematical pathways. Each proof is stand-alone and publication-ready. See [FORMAL_PROOF/FINAL_RH_PROOF_SUMMARY.md](FORMAL_PROOF/FINAL_RH_PROOF_SUMMARY.md) for certification.
-
----
-
-### 5½. FORMAL_PROOF — Five Independent Analytical Paths (NEW)
-**Status:** ✅ **COMPLETE** — March 9, 2026
-
-A comprehensive set of five independent proofs, each establishing an RH-equivalent statement from the Eulerian φ-spectral framework using distinct mathematical techniques:
-
-1. **Hilbert-Pólya Spectral:** Transfer operator L(s), Fredholm determinant, self-adjoint generator
-2. **Convexity / ξ-Modulus:** Convexity functional C_φ(T;h) ≥ 0 implies log-convexity of |ξ|
-3. **6D Collapse / Energy Projection:** Projection error ‖T_φ − P₆T_φ‖ ≤ CT^{−1/2} from B-V
-4. **Li Positivity / Quadratic Form:** Operator A ≥ 0 with moments μ_n = c_n λ_n, c_n > 0  
-5. **de Bruijn-Newman Flow:** Critical parameter Λ* = 0 from Eulerian flow + stability
-
-**Key Achievement:** Each proof is analytically complete with:
-- Explicit constants and classical citations (Montgomery-Vaughan, Li, Kato, Simon, etc.)
-- Clear Definition → Lemma → Theorem → Corollary structure
-- Code-independent logical chains (Python provides numerical evidence only)
-- Full independence: removal of any four leaves the fifth valid
-
-📖 **Complete Certification:** [FORMAL_PROOF/FINAL_RH_PROOF_SUMMARY.md](FORMAL_PROOF/FINAL_RH_PROOF_SUMMARY.md)
-
----
-
-## Part II: Exploratory Research
+📖 **Details:** [THEOREM_I/](THEOREM_I/), [THEOREM_II/](THEOREM_II/), [CONJECTURE_III/](CONJECTURE_III/), [CONJECTURE_IV/](CONJECTURE_IV/), [CONJECTURE_V/](CONJECTURE_V/)
 
 ### VECTOR CANCELLATION ENGINE: True ζ-Mechanism Analysis
 **Status:** 🔬 EXPLORATORY RESEARCH
@@ -351,7 +253,7 @@ $$\boxed{\text{Theorem A (✅) + Theorem B (🔶) + Theorem C (✅)} \Longrighta
 ### Core Proof Framework (FORMAL_PROOF_NEW)
 | File | Purpose |
 |------|--------|
-| `FORMAL_PROOF_NEW/LAMBDA_EQUIVALENCES.py` | All 9 equivalent Λ(T,H) kernel forms — tested at zeros and non-zeros |
+| `FORMAL_PROOF_NEW/LAMBDA_EQUIVALENCES.py` | All 6 equivalent Λ(T,H) kernel forms — tested at zeros and non-zeros |
 | `FORMAL_PROOF_NEW/ZETA_FUNCTION.html` | Interactive 6-kernel zeta mirror visualisation |
 | `FORMAL_PROOF_NEW/QED_ASSEMBLY/PART_10_QED_ASSEMBLY.py` | Runs all 10 PARTs — algebraic D_N framework |
 | `FORMAL_PROOF_NEW/QED_ASSEMBLY/GAPS/FULL_PROOF.py` | Theorems A–D chain (4-theorem assembly) |
