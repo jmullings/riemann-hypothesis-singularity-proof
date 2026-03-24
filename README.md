@@ -30,11 +30,11 @@ All six forms are algebraically identical to $\text{sech}^2(u/H)$ and yield the 
 | Kernel | Expression | Identity |
 |--------|-----------|----------|
 | $K_1$ | $\text{sech}^2(u/H) = 1/\cosh^2(u/H)$ | Primary form |
-| $K_2$ | $4\,/\,(e^{u/H} + e^{-u/H})^2$ | Exponential expansion |
+| $K_2$ | $4 / (e^{u/H} + e^{-u/H})^2$ | Exponential expansion |
 | $K_3$ | $H \cdot \frac{d}{du}\tanh(u/H)$ | Derivative form |
-| $K_4$ | $4\,e^{2u/H}\,/\,(e^{2u/H} + 1)^2$ | Exponential ratio |
+| $K_4$ | $4 e^{2u/H} / (e^{2u/H} + 1)^2$ | Exponential ratio |
 | $K_5$ | $1 - \tanh^2(u/H)$ | Pythagorean identity |
-| $K_6$ | $4\,\sigma(2u/H)\,(1 - \sigma(2u/H))$ | Logistic / sigmoid form |
+| $K_6$ | $4 \sigma(2u/H) (1 - \sigma(2u/H))$ | Logistic / sigmoid form |
 
 With $H = 3/2$, poles lie at $\pm i\pi H/2 \approx \pm 2.356i$ — safely outside the Weil strip $|\text{Im}(t)| < 0.5$.
 
@@ -54,14 +54,14 @@ Six equivalent representations provide **six independent numerical checks** on e
 
 $$
 \begin{aligned}
-& \mathbf{1.\ Universal\ Positivity\ (Theorem\ B\ 2.0 / Bochner's\ Theorem):} \\
-& \qquad \tilde{F}_2(T_0; H) = \int_{\mathbb{R}} \underbrace{\left[ -w_H''(t) + \frac{4}{H^2}w_H(t) \right]}_{=\frac{6}{H^2}\text{sech}^4(t/H) \,>\, 0} \big|D_N(T_0+t)\big|^2 dt \ge 0 \quad \forall \, T_0, N \\[1.5em]
-& \mathbf{2.\ Phase-Averaged\ Weil\ Decomposition\ (Triad\ Layer\ A):} \\
-& \qquad \langle \tilde{F}_2 \rangle_H = \underbrace{\langle \Delta A(\gamma_0, \Delta\beta) \rangle_H}_{\text{Off-critical Signal}} + \underbrace{\langle S_{\text{on}} + S_{\text{prime}} \rangle_H}_{\text{Positive Spectral/Arithmetic Sums}} + \underbrace{\left\langle \frac{4}{H^2} B \right\rangle_H}_{\text{Bochner Floor}} \\[1.5em]
-& \mathbf{3.\ Riemann-Lebesgue\ Decay\ \&\ Dynamic\ Scaling\ (H \sim 1/\Delta\beta):} \\
+& \text{\textbf{1. Universal Positivity (Theorem B 2.0 / Bochner's Theorem):}} \\
+& \qquad \tilde{F}_2(T_0; H) = \int_{\mathbb{R}} \underbrace{\left[ -w_H''(t) + \frac{4}{H^2}w_H(t) \right]}_{=\frac{6}{H^2}\text{sech}^4(t/H) > 0} \big|D_N(T_0+t)\big|^2 dt \ge 0 \quad \forall T_0, N \\
+& \text{\textbf{2. Phase-Averaged Weil Decomposition (Triad Layer A):}} \\
+& \qquad \langle \tilde{F}_2 \rangle_H = \underbrace{\langle \Delta A(\gamma_0, \Delta\beta) \rangle_H}_{\text{Off-critical Signal}} + \underbrace{\langle S_{\text{on}} + S_{\text{prime}} \rangle_H}_{\text{Positive Spectral/Arithmetic Sums}} + \underbrace{\left\langle \frac{4}{H^2} B \right\rangle_H}_{\text{Bochner Floor}} \\
+& \text{\textbf{3. Riemann-Lebesgue Decay and Dynamic Scaling }} (H \sim 1/\Delta\beta)\text{\textbf{:}} \\
 & \qquad \langle \Delta A \rangle_H \sim -c_1 \Delta\beta \quad \text{(Strictly negative linear envelope)} \\
-& \qquad \langle \lambda^* B \rangle_H \sim +c_2 \Delta\beta^2 \quad \text{(Quadratic positivity floor)} \\[1.5em]
-& \mathbf{4.\ The\ TDD\ Contradiction\ Engine:} \\
+& \qquad \langle \lambda^* B \rangle_H \sim +c_2 \Delta\beta^2 \quad \text{(Quadratic positivity floor)} \\
+& \text{\textbf{4. The TDD Contradiction Engine:}} \\
 & \qquad \text{As } \Delta\beta \to 0^+, \quad \langle \tilde{F}_2 \rangle_H \approx \underbrace{-c_1 \Delta\beta}_{\text{Dominates}} + \underbrace{c_2 \Delta\beta^2}_{\text{Subdominant}} < 0 \implies \text{Contradiction } (\bot)
 \end{aligned}
 $$
@@ -77,7 +77,7 @@ A natural objection to any computational proof is: *how can a finite computation
 The positivity basin $\tilde{F}_2 \ge 0$ is sealed for infinite spectra by a three-step algebraic argument implemented in [`TDD_PROOF/engine/analytic_promotion.py`](TDD_PROOF/engine/analytic_promotion.py):
 
 1. **Sech⁴ Identity (Epistemic Level 0 — pure algebra):** Substituting $w_H(t) = \text{sech}^2(t/H)$ into the corrected weight yields the closed-form identity:
-$$g_{\lambda^*}(t) = -w_H''(t) + \frac{4}{H^2}w_H(t) = \frac{6}{H^2}\text{sech}^4(t/H) > 0 \quad \forall\, t \in \mathbb{R}$$
+$$g_{\lambda^*}(t) = -w_H''(t) + \frac{4}{H^2}w_H(t) = \frac{6}{H^2}\text{sech}^4(t/H) > 0 \quad \forall t \in \mathbb{R}$$
 
 2. **Bochner's Theorem (1933):** Since $g_{\lambda^*} > 0$ and $g_{\lambda^*} \in L^1(\mathbb{R})$, its Fourier transform is **positive-definite**. For *any* countable sequence $\{E_k\}_{k=1}^\infty$, the infinite Toeplitz operator $T_{jk} = f_{\lambda^*}(E_j - E_k)$ is positive on $\ell^2(\mathbb{N})$ — no finite matrix truncation required.
 
