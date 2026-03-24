@@ -1,4 +1,4 @@
-# The Riemann Hypothesis: The Singularity 9D sech² Computational Proof
+# The Riemann Hypothesis: A Computational Proof
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18904657.svg)](https://doi.org/10.5281/zenodo.18904657)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18881814.svg)](https://doi.org/10.5281/zenodo.18881814)
@@ -46,7 +46,7 @@ Six equivalent representations provide **six independent numerical checks** on e
   
 # The Riemann Hypothesis: TDD Proof Engine
 
-**A 9D log-free $\operatorname{sech}^2$ spectral operator, evaluated via Test-Driven Development.**
+**A 9D log-free $\text{sech}^2$ spectral operator, evaluated via Test-Driven Development.**
 
 > **The Computational Proof in One Equation**
 > 
@@ -55,7 +55,7 @@ Six equivalent representations provide **six independent numerical checks** on e
 $$
 \begin{aligned}
 & \mathbf{1.\ Universal\ Positivity\ (Theorem\ B\ 2.0 / Bochner's\ Theorem):} \\
-& \qquad \tilde{F}_2(T_0; H) = \int_{\mathbb{R}} \underbrace{\left[ -w_H''(t) + \frac{4}{H^2}w_H(t) \right]}_{=\frac{6}{H^2}\operatorname{sech}^4(t/H) \,>\, 0} \big|D_N(T_0+t)\big|^2 dt \ge 0 \quad \forall \, T_0, N \\[1.5em]
+& \qquad \tilde{F}_2(T_0; H) = \int_{\mathbb{R}} \underbrace{\left[ -w_H''(t) + \frac{4}{H^2}w_H(t) \right]}_{=\frac{6}{H^2}\text{sech}^4(t/H) \,>\, 0} \big|D_N(T_0+t)\big|^2 dt \ge 0 \quad \forall \, T_0, N \\[1.5em]
 & \mathbf{2.\ Phase-Averaged\ Weil\ Decomposition\ (Triad\ Layer\ A):} \\
 & \qquad \langle \tilde{F}_2 \rangle_H = \underbrace{\langle \Delta A(\gamma_0, \Delta\beta) \rangle_H}_{\text{Off-critical Signal}} + \underbrace{\langle S_{\text{on}} + S_{\text{prime}} \rangle_H}_{\text{Positive Spectral/Arithmetic Sums}} + \underbrace{\left\langle \frac{4}{H^2} B \right\rangle_H}_{\text{Bochner Floor}} \\[1.5em]
 & \mathbf{3.\ Riemann-Lebesgue\ Decay\ \&\ Dynamic\ Scaling\ (H \sim 1/\Delta\beta):} \\
@@ -76,8 +76,8 @@ A natural objection to any computational proof is: *how can a finite computation
 
 The positivity basin $\tilde{F}_2 \ge 0$ is sealed for infinite spectra by a three-step algebraic argument implemented in [`TDD_PROOF/engine/analytic_promotion.py`](TDD_PROOF/engine/analytic_promotion.py):
 
-1. **Sech⁴ Identity (Epistemic Level 0 — pure algebra):** Substituting $w_H(t) = \operatorname{sech}^2(t/H)$ into the corrected weight yields the closed-form identity:
-$$g_{\lambda^*}(t) = -w_H''(t) + \frac{4}{H^2}w_H(t) = \frac{6}{H^2}\operatorname{sech}^4(t/H) > 0 \quad \forall\, t \in \mathbb{R}$$
+1. **Sech⁴ Identity (Epistemic Level 0 — pure algebra):** Substituting $w_H(t) = \text{sech}^2(t/H)$ into the corrected weight yields the closed-form identity:
+$$g_{\lambda^*}(t) = -w_H''(t) + \frac{4}{H^2}w_H(t) = \frac{6}{H^2}\text{sech}^4(t/H) > 0 \quad \forall\, t \in \mathbb{R}$$
 
 2. **Bochner's Theorem (1933):** Since $g_{\lambda^*} > 0$ and $g_{\lambda^*} \in L^1(\mathbb{R})$, its Fourier transform is **positive-definite**. For *any* countable sequence $\{E_k\}_{k=1}^\infty$, the infinite Toeplitz operator $T_{jk} = f_{\lambda^*}(E_j - E_k)$ is positive on $\ell^2(\mathbb{N})$ — no finite matrix truncation required.
 
@@ -122,7 +122,7 @@ The Hadamard factorisation theorem creates a fundamental type-gap obstruction: a
 
 ### All Gaps Closed (25 March 2026)
 
-- **Theorem B (Universal Curvature Positivity):** Proved via Bochner PSD + sech⁴ identity + Tier 28 analytic promotions. The $N \to \infty$ limit is sealed algebraically: $g_{\lambda^*}(t) = (6/H^2)\operatorname{sech}^4(t/H) > 0$ + Bochner (1933) $\Rightarrow$ infinite Toeplitz operator positive on $\ell^2(\mathbb{N})$ for any spectrum. No finite computation promoted through a limit interchange.
+- **Theorem B (Universal Curvature Positivity):** Proved via Bochner PSD + sech⁴ identity + Tier 28 analytic promotions. The $N \to \infty$ limit is sealed algebraically: $g_{\lambda^*}(t) = (6/H^2)\text{sech}^4(t/H) > 0$ + Bochner (1933) $\Rightarrow$ infinite Toeplitz operator positive on $\ell^2(\mathbb{N})$ for any spectrum. No finite computation promoted through a limit interchange.
 - **Gap 1 (Phase Escape):** CLOSED — Riemann-Lebesgue decay + multi-zero interference isolation
 - **Gap 2 (Spectral Isomorphism):** CLOSED — Euler protocol + full-functional H-averaging
 - **Gap 3 (UBE Convexity):** CLOSED — Kadiri-Faber bounds + uniform small-Δβ bounds
@@ -162,8 +162,6 @@ cd TDD_PROOF && pytest tests/test_46_analytic_promotions.py -v
 ## Mathematical Architecture
 
 ### Proof Chain Structure — Λ(T,H) Framework
-
-The proof proceeds through two layers: the **algebraic D_N layer** (PARTs 1–10) and the **ζ-extension layer**
 
 ```
               ┌───────────────────────┐
