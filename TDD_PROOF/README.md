@@ -1,8 +1,8 @@
 # Singularity 9D sech² Riemann Hypothesis Computational Proof
 
-> **A kernel-specific, prime-structured, 9D spectral and gravitational computational proof for the Riemann zeros: a $\operatorname{sech}^2$ guard functional coupled to a polymeric Hilbert–Pólya "gravity well" operator, embedded into the classical RH equivalence landscape.**
+> **A kernel-specific, prime-structured, 9D spectral and gravitational computational proof for the Riemann zeros: a $\mathrm{sech}^2$ guard functional coupled to a polymeric Hilbert–Pólya "gravity well" operator, embedded into the classical RH equivalence landscape.**
 
-This repository contains a **Test-Driven Development (TDD)** mathematical proof aimed at the Riemann Hypothesis (RH). Originating from the fractorz project (modeling diffusive random-walk behavior in character sums), this proof analytically lifts the diffusion boundary into a rigorous functional analysis domain using a $\operatorname{sech}^2$ test function, Bochner's Theorem, and an overarching Hilbert–Pólya structural constraint.
+This repository contains a **Test-Driven Development (TDD)** mathematical proof aimed at the Riemann Hypothesis (RH). Originating from the fractorz project (modeling diffusive random-walk behavior in character sums), this proof analytically lifts the diffusion boundary into a rigorous functional analysis domain using a $\mathrm{sech}^2$ test function, Bochner's Theorem, and an overarching Hilbert–Pólya structural constraint.
 
 With **2052 tests passing, zero failures, and zero warnings**, this self-contained computational proof verifies a continuous chain of mathematical lemmas across three rigorously classified levels: **Level A** (pure kernel / harmonic analysis), **Level B** (finite-$N$ Dirichlet polynomial dynamics), and **Level C** (promotion to $\zeta(s)$ via limit interchange). The core contradiction chain (Lemmas 1–3, Barriers 1–3) is **PROVED**. It uses a **gravity-well** contradiction architecture — governed by the PHO-Representability Gate — with all four analytic gaps **CLOSED** (25 March 2026). The **Three-Regime Closure** (holy_grail module) uses a Polymeric Hilbert–Pólya operator with coupling $\varepsilon$ derived via the rigorous Montgomery-Vaughan large-sieve factor `mv_large_sieve_factor(N)` (engine/montgomery_vaughan.py), and $B_{HP}$ bounded by the MV Dirichlet L² bound. The **CIRCA anti-tautology guard** rejects circular bridges. The **UBE analytic inequality** track (Lemma 6.2) provides an independent prime-side diagnostic pathway, with convexity proven via Kadiri-Faber bounds (Gap 3 CLOSED). The **Contradiction Engine** (`contradiction_engine` / `contradiction_scan` in `triad_governor.py`) acts as an automated theorem prover: given any hypothetical off-critical zero $(\gamma_0, \Delta\beta)$, it produces a formal 6-step contradiction certificate by showing $\Delta A_{\mathrm{avg}} < 0$ (Gap 1), validating UBE convexity (Gap 3), and cross-checking the analytic bounds (Kadiri-Faber decay).
 
@@ -85,7 +85,7 @@ The functional can **only** remain in the basin if it is non-negative everywhere
 
 ### Layer 4: Kernel Correction (sech² + λ-Correction)
 The curvature weight is:
-$$W_{\text{curv}}(t) = -w_H''(t) = \frac{2}{H^2}\bigl(1 - 3\tanh^2(t/H)\bigr)\operatorname{sech}^2(t/H)$$
+$$W_{\text{curv}}(t) = -w_H''(t) = \frac{2}{H^2}\bigl(1 - 3\tanh^2(t/H)\bigr)\mathrm{sech}^2(t/H)$$
 The uncorrected kernel is **indefinite** because $W_{\text{curv}}(t)$ changes sign for $|t| \gtrsim 0.66H$. We restore positivity with a λ-correction:
 $$\tilde{W}(t;\lambda) = W_{\text{curv}}(t) + \lambda\,w_H(t), \qquad \lambda \ge \lambda^*(H) = 4/H^2$$
 Now $\tilde{W}(t;\lambda) \ge 0$ globally. **Status: PROVEN.**
@@ -151,15 +151,15 @@ The cosine factor introduces oscillations that enable sign control: the crack ex
 $$ \Delta A_{\text{avg}}(\gamma_0, \Delta\beta) = -2\pi \Delta\beta^2 \int_{c_1}^{c_2} \frac{u^2}{\sin(\pi u/2)} \cdot \cos\!\left(\frac{2\pi\gamma_0\Delta\beta}{u}\right) \cdot \tilde{w}(u)\, du $$
 
 #### Derivation from Fourier Transform (Transcription Note)
-Both formulas follow from the Fourier transform of the scaled kernel $w_H(t) = \operatorname{sech}^2(t/H)$:
+Both formulas follow from the Fourier transform of the scaled kernel $w_H(t) = \mathrm{sech}^2(t/H)$:
 $$ \hat{w}_H(\omega) = \frac{\pi H^2 \omega}{\sinh(\pi H \omega / 2)} $$
 An off-critical zero at $\rho = \tfrac{1}{2} + \Delta\beta + i\gamma_0$ requires evaluating $\hat{w}_H$ at imaginary frequency $\omega = -i\Delta\beta$. The key identity $\sinh(-i\pi H\Delta\beta/2) = -i\sin(\pi H\Delta\beta/2)$ yields:
 $$ \hat{w}_H(-i\Delta\beta) = \frac{\pi H^2 \Delta\beta}{\sin(\pi H \Delta\beta / 2)} $$
-placing $\sin$ in the **denominator** (cosecant structure, $1/\sin$). This is **not** the $\operatorname{sinc}$ function $\sin(x)/x$ which would place $\sin$ in the numerator. The distinction is critical: the cosecant form gives $O(\Delta\beta^2)$ scaling at small $\Delta\beta$ (via L'Hôpital: $\Delta A \approx -4H\Delta\beta^2$), whereas a sinc form would give $O(\Delta\beta^3)$.
+placing $\sin$ in the **denominator** (cosecant structure, $1/\sin$). This is **not** the $\mathrm{sinc}$ function $\sin(x)/x$ which would place $\sin$ in the numerator. The distinction is critical: the cosecant form gives $O(\Delta\beta^2)$ scaling at small $\Delta\beta$ (via L'Hôpital: $\Delta A \approx -4H\Delta\beta^2$), whereas a sinc form would give $O(\Delta\beta^3)$.
 
 The phase $\gamma_0/H$ (not $\gamma_0 \cdot H$) follows from the change of variables $u = H\Delta\beta$: the cosine argument $2\pi\gamma_0\Delta\beta/u = 2\pi\gamma_0/H$. This is confirmed by dimensional analysis ($\gamma_0/H$ is dimensionless) and by the physical requirement that wider kernels (larger $H$) smooth oscillations (frequency $\propto 1/H$, not $\propto H$).
 
-> **Errata (24 March 2026):** An earlier draft of the manuscript contained two transcription errors: (1) writing $\operatorname{sinc}(\pi H\Delta\beta/2) = \sin(\pi H\Delta\beta/2)/(\pi H\Delta\beta/2)$ (sine in numerator) instead of the correct $1/\sin(\pi H\Delta\beta/2)$ (sine in denominator), and (2) writing the phase as $\cos(2\pi\gamma_0 H)$ instead of the correct $\cos(2\pi\gamma_0/H)$. The engine code has always implemented the correct cosecant/$\gamma_0/H$ form.
+> **Errata (24 March 2026):** An earlier draft of the manuscript contained two transcription errors: (1) writing $\mathrm{sinc}(\pi H\Delta\beta/2) = \sin(\pi H\Delta\beta/2)/(\pi H\Delta\beta/2)$ (sine in numerator) instead of the correct $1/\sin(\pi H\Delta\beta/2)$ (sine in denominator), and (2) writing the phase as $\cos(2\pi\gamma_0 H)$ instead of the correct $\cos(2\pi\gamma_0/H)$. The engine code has always implemented the correct cosecant/$\gamma_0/H$ form.
 
 ### The Rayleigh Quotient (Measuring the Crack Width)
 $$ \lambda^*(\gamma_0) = -\frac{A(T_0)}{B(T_0)} $$
@@ -175,10 +175,10 @@ The contradiction requires $\lambda^*(\gamma_0) > \lambda^*(H) = 4/H^2$. As $\De
 | **Theorem B 2.0** | $\tilde{F}_2 \ge 0$ for all $T_0, N$ when $\lambda \ge 4/H^2$ | `bochner.py` |
 | **Kernel Universality** | $f(\omega) \ge 0 \implies$ PSD for ANY spectrum | `bochner.py` |
 | **Bochner Obstruction** | Uncorrected $W_{\text{curv}}$ Toeplitz is indefinite | `bochner.py` |
-| **Schwartz Class** | $w_H = \operatorname{sech}^2(t/H) \in S(\mathbb{R})$ | `kernel.py` |
+| **Schwartz Class** | $w_H = \mathrm{sech}^2(t/H) \in S(\mathbb{R})$ | `kernel.py` |
 | **PHO-Representability**| HP operators strictly form valid Hilbert-space structures | `hilbert_polya.py` |
 | **Theorem 6.1-6.3** | Asymptotic domination, Mellin non-vanishing, dilation completeness | `weil_density.py` |
-| **Pole-Free Certificate** | $\operatorname{sech}^2(x) \in (0,1]$ for all $x \in \mathbb{R}$ | `reverse_direction.py` |
+| **Pole-Free Certificate** | $\mathrm{sech}^2(x) \in (0,1]$ for all $x \in \mathbb{R}$ | `reverse_direction.py` |
 
 
 ### ✅ CLOSED (TDD-Verified for Finite $N$, $T_0$)
@@ -263,12 +263,12 @@ $$C_\phi(T; h) = N_\phi(T+h) + N_\phi(T-h) - 2N_\phi(T) \geq 0$$
 where $N_\phi(T) = \|P_6 \cdot T_\phi(T)\|$ is the 6D projected norm of the 9D Eulerian state vector, computed exclusively from $\Lambda(n)$ (no $\zeta$, no zeros).
 
 ### 7.2. The Analytic Decomposition (Lemma 6.2)
-$$F_k(T) = e^T M_k - \sum_{\rho} \frac{e^{\rho T}}{|\rho|}\hat{G}_k(\rho) + \operatorname{Err}_k(T)$$
+$$F_k(T) = e^T M_k - \sum_{\rho} \frac{e^{\rho T}}{|\rho|}\hat{G}_k(\rho) + \mathrm{Err}_k(T)$$
 
 The UBE convexity conjecture $C_\phi(T;h) \geq 0$ follows from showing that the PNT main term $e^T M_k \cdot 2(\cosh h - 1) > 0$ dominates the error:
-$$|\operatorname{Err}_k(T)| \leq \theta(T) \cdot e^T M_k \cdot 2(\cosh h - 1), \quad \theta(T) \to 0$$
+$$|\mathrm{Err}_k(T)| \leq \theta(T) \cdot e^T M_k \cdot 2(\cosh h - 1), \quad \theta(T) \to 0$$
 
-**Status: CLOSED.** Convexity verified on $[14, 80]$; analytic ceiling from Kadiri-Faber (Korobov-Vinogradov) form with $B_{VK} = 0.0498$ (Ford 2002) proves $\theta_{\text{ceiling}} \to 0$ monotonically. The $e^T$ cancellation is proven in `theta_ceiling`. Asymptotic vanishing confirmed at calibrated thresholds (T=5000 → 23.5, T=10000 → 1.67, T=50000 → 7×10⁻⁶). PNT residual from `euler_form.py` validated against Kadiri-Faber envelope. The PNT main term dominates the error for all sufficiently large $T$.
+**Status: CLOSED.** Convexity verified on $[14, 80]$; analytic ceiling from Kadiri-Faber (Korobov-Vinogradov) form with $B_{VK} = 0.0498$ (Ford 2002) proves $\theta_{\text{ceiling}} \to 0$ monotonically. The $e^T cancellation is proven in `theta_ceiling`. Asymptotic vanishing confirmed at calibrated thresholds (T=5000 → 23.5, T=10000 → 1.67, T=50000 → 7×10⁻⁶). PNT residual from `euler_form.py` validated against Kadiri-Faber envelope. The PNT main term dominates the error for all sufficiently large $T$.
 
 ### 7.3. ZKZ Protocol (Zero-Knowledge-Zero)
 The UBE enforces strict epistemic separation:
@@ -564,12 +564,12 @@ The critical architectural insight is that the positivity basin $\tilde{F}_2 \ge
 The mechanism lives in `engine/analytic_promotion.py` (§1 and §4) and is tested in `tests/test_46_analytic_promotions.py`:
 
 **Step 1 — The Algebraic Identity (Epistemic Level 0):**
-By substituting $w_H(t) = \operatorname{sech}^2(t/H)$ into the corrected weight $g_{\lambda^*}(t) = -w_H''(t) + \frac{4}{H^2}w_H(t)$, the expression simplifies strictly algebraically to:
-$$g_{\lambda^*}(t) = \frac{6}{H^2}\operatorname{sech}^4(t/H)$$
+By substituting $w_H(t) = \mathrm{sech}^2(t/H)$ into the corrected weight $g_{\lambda^*}(t) = -w_H''(t) + \frac{4}{H^2}w_H(t)$, the expression simplifies strictly algebraically to:
+$$g_{\lambda^*}(t) = \frac{6}{H^2}\mathrm{sech}^4(t/H)$$
 This is a closed-form identity verified in `sech4_identity()` and `verify_sech4_identity()` — no numerics required.
 
 **Step 2 — The Bochner Guarantee (1933):**
-Because $\operatorname{sech}^4(x) > 0$ for all real $x$, the function $g_{\lambda^*}(t)$ is strictly positive and in $L^1(\mathbb{R})$. By Bochner's Theorem, its Fourier transform $f_{\lambda^*}(\omega)$ is a **positive-definite function**. This is proved analytically in `bochner_psd_infinite_analytic()`.
+Because $\mathrm{sech}^4(x) > 0$ for all real $x$, the function $g_{\lambda^*}(t)$ is strictly positive and in $L^1(\mathbb{R})$. By Bochner's Theorem, its Fourier transform $f_{\lambda^*}(\omega)$ is a **positive-definite function**. This is proved analytically in `bochner_psd_infinite_analytic()`.
 
 **Step 3 — Infinite-Dimensional PSD ($\ell^2$):**
 If $f(\omega)$ is positive-definite, then for *any* countable sequence of real numbers $\{E_k\}_{k=1}^\infty$, the infinite Toeplitz operator $T_{jk} = f(E_j - E_k)$ is a positive operator on $\ell^2(\mathbb{N})$. No finite matrix truncation is needed — the PSD property holds for infinite spectra by functional analysis.
@@ -585,11 +585,11 @@ is an **exact algebraic law**, not a computational observation.
 
 **Consequence for the Proof Architecture:**
 Because the Positivity Basin is an exact algebraic identity for infinite spectra, the contradiction in `PROOF_MODE_STRICT_WEIL` avoids the "Limit Interchange Circularity" (Fallacy F). The logical chain is:
-1. **Universal Positivity (Algebraic):** $\tilde{F}_2 \ge 0$ for *any* spectrum — via $\operatorname{sech}^4$ and Bochner. No finite-$N$ limit needed.
+1. **Universal Positivity (Algebraic):** $\tilde{F}_2 \ge 0$ for *any* spectrum — via $\mathrm{sech}^4$ and Bochner. No finite-$N$ limit needed.
 2. **Conservation Law (Weil Explicit Formula):** Evaluates $\tilde{F}_2$ exactly for the true Riemann zeros — an unconditionally proven identity.
 3. **The Contradiction:** An off-critical zero injects a strictly negative envelope $\Delta A_{\text{avg}} < 0$ (Gap 1, R-L decay), violating the algebraically proven Universal Positivity.
 
-The `limit_safety.py` module tracks the Dirichlet truncation error for *computational verification* (Level B/C), but the **formal proof spine** (Level A) transcends the computer via the $\operatorname{sech}^4$ identity and Bochner's Theorem.
+The `limit_safety.py` module tracks the Dirichlet truncation error for *computational verification* (Level B/C), but the **formal proof spine** (Level A) transcends the computer via the $\mathrm{sech}^4$ identity and Bochner's Theorem.
 
 ### Key Architectural Decisions
 1. **Core chain is Level A/B only** — The contradiction chain (Lemmas 1-3, Barriers 1-3) operates entirely at Level A/B. It does NOT depend on $D_N \to \zeta$ promotions.
@@ -643,7 +643,7 @@ Ten external mathematical critiques were assessed, addressed, and covered with s
 
 **Fallacy E** — The simplified ΔA cosine formula in `offcritical.py` is an explicit postulation, not a derivation from the Weil formula. The **correct** formula (exponential decay e^{−πHγ₀/2}) exists in `weil_density.off_line_pair_contribution()` and is used by Theorem 6.1 for the low-lying regime (γ₀ < γ₁ ≈ 14.135). The cosine model overestimates the off-critical signal for high-lying zeros. The dynamic H ∼ 1/Δβ floor shrinks as O(Δβ²), but the true signal decays as e^{−πγ₀/(2Δβ)}, which vanishes faster for fixed γ₀ > 0.  **For the high-lying regime** (γ₀ → ∞), see Fallacy J below, which demonstrates that the centered evaluation (T₀ = γ₀) and Theorem C (H = c·log γ₀) resolve the exponential decay concern.
 
-**Fallacy F** — The $N \to \infty$ limit is **sealed algebraically**, not via finite computation promoted through a limit interchange. The corrected weight $g_{\lambda^*}(t) = (6/H^2)\operatorname{sech}^4(t/H) > 0$ is a closed-form identity (Epistemic Level 0). By Bochner's Theorem (1933), its Fourier transform is positive-definite, making the infinite Toeplitz operator on $\ell^2(\mathbb{N})$ positive for *any* spectrum — including the true Riemann zeros. This is analogous to proving $\sum_{n=0}^\infty x^n/n! = e^x$ algebraically rather than computing infinitely many terms. The sub-threshold negativity proof (`sub_threshold_negativity()`) confirms $\lambda^* = 4/H^2$ is the exact infimum via the **Bochner biconditional** (not merely the "converse"): $\hat{g}_\lambda$ is positive-definite $\Leftrightarrow$ its spectral measure $g_\lambda(t)\,dt$ is non-negative. Since $g_\lambda(t)$ serves as the spectral density in Bochner's representation (using evenness), negativity of $g_\lambda$ on a positive-measure set implies failure of PD for $\hat{g}_\lambda$ by uniqueness of the Fourier-Stieltjes representation. **Important:** $\hat{g}_{\lambda^*-\varepsilon}(\omega) > 0$ for all $\omega$ (the function is everywhere non-negative), yet $\hat{g}_{\lambda^*-\varepsilon}$ is NOT positive-definite — non-negativity $\neq$ positive-definiteness. This subtlety is verified computationally by `fourier_domain_tightness_verification()`. The `LimitInterchangeGuard` with `requires_RH_uniformity = True` tracks the *Dirichlet truncation error* for the Level C numerical verification channel, but the **formal proof spine** (Level A) bypasses this entirely through the sech⁴/Bochner algebraic seal. See `engine/analytic_promotion.py` §1/§4 and `tests/test_46_analytic_promotions.py` (71 tests). The proof is not circular — the $N \to \infty$ promotion is algebraic, not numerical.
+**Fallacy F** — The $N \to \infty$ limit is **sealed algebraically**, not via finite computation promoted through a limit interchange. The corrected weight $g_{\lambda^*}(t) = (6/H^2)\mathrm{sech}^4(t/H) > 0$ is a closed-form identity (Epistemic Level 0). By Bochner's Theorem (1933), its Fourier transform is positive-definite, making the infinite Toeplitz operator on $\ell^2(\mathbb{N})$ positive for *any* spectrum — including the true Riemann zeros. This is analogous to proving $\sum_{n=0}^\infty x^n/n! = e^x$ algebraically rather than computing infinitely many terms. The sub-threshold negativity proof (`sub_threshold_negativity()`) confirms $\lambda^* = 4/H^2$ is the exact infimum via the **Bochner biconditional** (not merely the "converse"): $\hat{g}_\lambda$ is positive-definite $\Leftrightarrow$ its spectral measure $g_\lambda(t)\,dt$ is non-negative. Since $g_\lambda(t)$ serves as the spectral density in Bochner's representation (using evenness), negativity of $g_\lambda$ on a positive-measure set implies failure of PD for $\hat{g}_\lambda$ by uniqueness of the Fourier-Stieltjes representation. **Important:** $\hat{g}_{\lambda^*-\varepsilon}(\omega) > 0$ for all $\omega$ (the function is everywhere non-negative), yet $\hat{g}_{\lambda^*-\varepsilon}$ is NOT positive-definite — non-negativity $\neq$ positive-definiteness. This subtlety is verified computationally by `fourier_domain_tightness_verification()`. The `LimitInterchangeGuard` with `requires_RH_uniformity = True` tracks the *Dirichlet truncation error* for the Level C numerical verification channel, but the **formal proof spine** (Level A) bypasses this entirely through the sech⁴/Bochner algebraic seal. See `engine/analytic_promotion.py` §1/§4 and `tests/test_46_analytic_promotions.py` (71 tests). The proof is not circular — the $N \to \infty$ promotion is algebraic, not numerical.
 
 **Fallacy G** — The `calibration_factor = 1.1` exists only in `intrinsic_epsilon_derivation()`, which is called exclusively in `PROOF_MODE_DIAGNOSTIC` — labeled `HP_SCAFFOLD_STATUS = "EXPERIMENTAL SCAFFOLD"`. The production mode `PROOF_MODE_STRICT_WEIL` uses no ε parameter, no HP scaffold, and no calibration constants.
 
