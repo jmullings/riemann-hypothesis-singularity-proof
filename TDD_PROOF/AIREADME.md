@@ -18,7 +18,7 @@ function $\zeta(s)$ have real part $1/2$.
 
 **Proof strategy**: Proof by contradiction via a three-layer cross-consistency engine.
 
-1. **Construct** a globally positive curvature functional $\tilde{F}_2(T_0; H, \lambda)$ using a $\lambda$-corrected $\operatorname{sech}^2$ test kernel (Theorem B 2.0: $\tilde{F}_2 \ge 0$ when $\lambda \ge 4/H^2$).
+1. **Construct** a globally positive curvature functional $\tilde{F}_2(T_0; H, \lambda)$ using a $\mathrm{sech}^2$ test kernel (Theorem B 2.0: $\tilde{F}_2 \ge 0$ when $\lambda \ge 4/H^2$).
 2. **Apply** the Weil explicit formula to connect the spectral (zero) side to the arithmetic (prime) side.
 3. **Show** that any hypothetical off-critical zero ($\beta \neq 1/2$, i.e. $\Delta\beta > 0$) injects a strictly negative contribution $\Delta A_{\mathrm{avg}} < 0$ into the phase-averaged functional — contradicting the positivity basin.
 4. **Cross-validate** via three independent layers: (A) H-averaged $\Delta A$ sign detection with Riemann-Lebesgue decay, (B) Euler-form spectral trace equivalence, (C) UBE prime-side convexity with Kadiri-Faber analytic bounds.
@@ -88,7 +88,7 @@ The proof chain is **computationally complete** for all tested parameters:
 1. ~~**Finite $N$ truncation**: Dirichlet polynomials tested at $N \in \{10, 20, 30, 50\}$. No $N \to \infty$ extrapolation.~~ **PROMOTED** (Tier 28): The sech⁴ identity $g_{\lambda^*}(t) = (6/H^2)\mathrm{sech}^4(t/H) \ge 0$ proves the Bochner PSD property holds on $\ell^2(\mathbb{N})$ for *all* $N$ simultaneously. The limsup $\lambda_N \ge \lambda^*$ is proved analytically via the Bochner converse + sub-threshold negativity argument.
 2. **$T_0$ domain**: Tested on $T_0 \in [0, 400]$. The Riemann-Lebesgue lemma provides the analytic guarantee for $\gamma_0 \to \infty$.
 3. **Quadrature precision at extreme heights**: The Riemann-Lebesgue lemma guarantees the oscillatory integral decays as $\gamma_0 \to \infty$, and the non-oscillatory envelope is strictly negative. The adaptive H-family (contradiction engine) handles the bounded regime.
-4. **Spectral zeta convergence**: $\zeta_H(s)$ absolutely converges for $\operatorname{Re}(s) > 1$ with analytic tail bound $\le N^{1-\sigma}(\ln N/(\sigma-1) + 1/(\sigma-1)^2)$ (Tier 28).
+4. **Spectral zeta convergence**: $\zeta_H(s)$ absolutely converges for $\mathrm{Re}(s) > 1$ with analytic tail bound $\le N^{1-\sigma}(\ln N/(\sigma-1) + 1/(\sigma-1)^2)$ (Tier 28).
 
 All four analytic gaps are **CLOSED** (25 March 2026) — no open items remain.
 
