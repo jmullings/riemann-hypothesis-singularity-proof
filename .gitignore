@@ -17,6 +17,10 @@
 !BETA_PRECISION/
 !BETA_PRECISION/**
 
+# Include TDD_PROOF folder and its contents
+!TDD_PROOF/
+!TDD_PROOF/**
+
 # Include TEST_SUITE folder and its contents
 !TEST_SUITE/
 !TEST_SUITE/**

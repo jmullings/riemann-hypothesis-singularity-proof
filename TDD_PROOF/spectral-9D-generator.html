@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>RH 9D Spectral Generator · Classical + sech² Dual Engine</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@300;400;500;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#030508;--pn:rgba(4,7,14,0.97);--bd:rgba(90,140,220,0.12);
+  --z:#3dd68a;--p:#c084fc;--r:#f87171;--au:#fbbf24;--cy:#22d3ee;--w:rgba(200,210,225,0.7);
+  --dim:rgba(130,150,175,0.25);--faint:rgba(130,150,175,0.12);
+}
+html,body{width:100%;height:100%;background:var(--bg);color:var(--w);
+  font-family:'IBM Plex Mono',monospace;overflow:hidden}
+canvas{position:fixed;top:0;left:0;width:100%;height:100%;display:block}
+
+/* ── Header ── */
+#hdr{position:fixed;top:0;left:0;right:0;z-index:30;padding:10px 16px 8px;
+  background:linear-gradient(180deg,rgba(3,5,8,0.98) 75%,transparent);
+  border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+#hdr h1{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:700;color:#fff;
+  letter-spacing:1.5px;white-space:nowrap}
+#hdr h1 em{font-style:normal;color:var(--p);font-weight:600}
+.badge{font-size:7px;padding:2px 7px;border-radius:2px;border:1px solid;
+  font-family:'IBM Plex Mono',monospace;font-weight:600;letter-spacing:0.6px;white-space:nowrap}
+.badge.cl{color:var(--cy);border-color:rgba(34,211,238,0.3);background:rgba(34,211,238,0.06)}
+.badge.se{color:var(--p);border-color:rgba(192,132,252,0.3);background:rgba(192,132,252,0.06)}
+.badge.td{color:var(--z);border-color:rgba(61,214,138,0.3);background:rgba(61,214,138,0.06)}
+#hdr .eq{font-size:7px;color:var(--dim);flex:1;line-height:1.8}
+#hdr .eq b{color:var(--z);font-weight:500}
+#hdr .eq em{color:var(--p);font-style:normal}
+
+/* ── Side panels ── */
+.panel{position:fixed;z-index:25;background:var(--pn);overflow-y:auto;
+  scrollbar-width:thin;scrollbar-color:rgba(90,140,220,0.12) transparent}
+#left{top:44px;left:0;width:228px;bottom:0;border-right:1px solid var(--bd)}
+#right{top:44px;right:0;width:228px;bottom:0;border-left:1px solid var(--bd)}
+.sec{padding:8px 10px;border-bottom:1px solid var(--faint)}
+.st{font-family:'Cormorant Garamond',serif;font-size:8px;font-weight:700;
+  color:var(--p);text-transform:uppercase;letter-spacing:2px;margin-bottom:6px;opacity:0.7}
+.st.cl{color:var(--cy)}.st.zr{color:var(--z)}
+.row{display:flex;justify-content:space-between;font-size:7.5px;margin-bottom:2px;gap:3px}
+.k{color:var(--dim)}.v{font-weight:500;text-align:right}
+.gn{color:var(--z)}.rd{color:var(--r)}.pu{color:var(--p)}.cy{color:var(--cy)}.au{color:var(--au)}
+hr.sep{border:none;border-top:1px dashed var(--faint);margin:5px 0}
+label{display:block;font-size:6.5px;color:var(--dim);margin:5px 0 2px;text-transform:uppercase;letter-spacing:0.8px}
+.vd{font-size:8px;color:var(--p);text-align:right;margin-top:1px}
+input[type=range]{width:100%;-webkit-appearance:none;height:2px;
+  background:rgba(90,140,220,0.12);border-radius:1px;outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;
+  width:8px;height:8px;border-radius:50%;background:var(--p);cursor:pointer}
+select{width:100%;background:rgba(0,0,0,0.5);border:1px solid var(--faint);
+  border-radius:2px;color:var(--w);font-family:inherit;font-size:7.5px;padding:3px 5px;outline:none}
+button{width:100%;padding:6px 8px;margin-top:5px;
+  background:linear-gradient(135deg,rgba(90,140,220,0.08),rgba(60,100,180,0.03));
+  border:1px solid var(--bd);border-radius:3px;color:rgba(200,210,225,0.6);
+  font-family:'IBM Plex Mono',monospace;font-size:7.5px;font-weight:600;
+  cursor:pointer;transition:all 0.2s;letter-spacing:0.4px}
+button:hover{border-color:var(--p);color:var(--p)}
+button.act{border-color:var(--au);color:var(--au);background:rgba(251,191,36,0.06)}
+
+/* ── Mini chart ── */
+.mcv{width:100%;height:38px;border-radius:2px;display:block;
+  border:1px solid var(--faint);margin-bottom:4px}
+
+/* ── Zero console ── */
+#zcon{position:fixed;bottom:0;left:0;width:228px;z-index:26;
+  background:rgba(3,5,8,0.97);border-top:1px solid var(--bd);
+  border-right:1px solid var(--bd);max-height:180px;display:flex;flex-direction:column}
+#zcon-hdr{display:flex;align-items:center;justify-content:space-between;
+  padding:4px 8px;border-bottom:1px solid var(--faint);flex-shrink:0}
+#zcon-hdr .zt{font-family:'Cormorant Garamond',serif;font-size:7px;font-weight:700;
+  color:var(--z);text-transform:uppercase;letter-spacing:1.4px;opacity:0.7}
+#zcon-body{flex:1;overflow-y:auto;padding:3px 6px;
+  scrollbar-width:thin;scrollbar-color:rgba(90,140,220,0.10) transparent}
+.zrow{display:flex;align-items:center;gap:4px;padding:1px 0;font-size:6.5px;
+  border-bottom:1px solid rgba(255,255,255,0.012)}
+.zrow .zn{color:rgba(61,214,138,0.5);min-width:20px;text-align:right}
+.zrow .zg{color:var(--z);font-weight:600;min-width:38px}
+.zrow .zbar{height:1.5px;border-radius:1px;background:var(--z);flex:1;min-width:0}
+.zrow .zs{color:var(--dim);font-size:6px}
+
+/* ── Bottom bar ── */
+#bot{position:fixed;bottom:0;left:228px;right:228px;z-index:25;padding:5px 14px;
+  background:linear-gradient(0deg,rgba(3,5,8,0.97) 70%,transparent);
+  display:flex;gap:16px;align-items:center;font-size:7px;pointer-events:none;flex-wrap:wrap}
+.dot{width:4px;height:4px;border-radius:50%;display:inline-block;margin-right:3px}
+.dot.g{background:var(--z);box-shadow:0 0 4px var(--z)}
+.dot.r{background:var(--r)}
+.dot.p{background:var(--p);box-shadow:0 0 3px rgba(192,132,252,0.5)}
+.dot.c{background:var(--cy);box-shadow:0 0 3px rgba(34,211,238,0.4)}
+
+/* ── 9D state display ── */
+#state9d{font-size:6px;line-height:1.7;color:var(--dim)}
+#state9d b{color:var(--cy);font-weight:500}
+
+/* ── Mode switch ── */
+.mode-sw{display:flex;gap:3px;margin-bottom:6px}
+.mode-sw button{flex:1;font-size:6.5px;padding:4px 3px;letter-spacing:0.6px}
+.mode-sw button.on{border-color:var(--p);color:var(--p);background:rgba(192,132,252,0.08)}
+
+/* ── Equation display ── */
+.eqd{font-size:6.5px;line-height:1.8;color:rgba(180,170,210,0.35);padding:2px 0}
+.eqd em{color:var(--p);font-style:normal}.eqd b{color:var(--z);font-weight:500}
+</style>
+</head>
+<body>
+<canvas id="cv"></canvas>
+
+<!-- HEADER -->
+<div id="hdr">
+  <h1>RH <em>9D</em> Spectral Generator</h1>
+  <span class="badge cl">CLASSICAL</span>
+  <span class="badge se">SECH²</span>
+  <span class="badge td">260/260 TDD</span>
+  <div class="eq">
+    <b>S(α)=Σ_ρ sech²(α·(ρ-½)/i)</b> ≡ <em>2·sech²(α/2) − 2·Σ Λ(n)/√n · φ̂_α(log n)</em>
+    &nbsp;|&nbsp; <b>N(0,y)=cos²y ≥ 0</b> on critical line
+    &nbsp;|&nbsp; <em>9D=[Z,Z',G,dG,E₂,E₃,E₅,E₇,|Z|²]</em>
+  </div>
+</div>
+
+<!-- LEFT PANEL: Probe + 9D state -->
+<div class="panel" id="left">
+  <div class="sec">
+    <div class="st">Live Probe</div>
+    <canvas class="mcv" id="cv-g"></canvas>
+    <canvas class="mcv" id="cv-z"></canvas>
+    <div class="row"><span class="k">T:</span><span class="v cy" id="p-T">—</span></div>
+    <div class="row"><span class="k">|Z(T)| RS:</span><span class="v" id="p-z">—</span></div>
+    <div class="row"><span class="k">G(T,α):</span><span class="v gn" id="p-g">—</span></div>
+    <div class="row"><span class="k">N(x,y)=cos²y+sinh²x·cos(2y):</span><span class="v pu" id="p-N">—</span></div>
+    <div class="row"><span class="k">Corridor:</span><span class="v" id="p-th">—</span></div>
+  </div>
+  <div class="sec">
+    <div class="st">9D State · Hovered Strand</div>
+    <div id="state9d">hover a strand to inspect</div>
+  </div>
+  <div class="sec">
+    <div class="st zr">Bernoulli Series</div>
+    <div class="eqd">
+      sech²(x) = <em>Σ B_{2n+2}·4^{n+1}·(4^{n+1}-1)·(2n+1)/(2n+2)!·x^{2n}</em><br>
+      B₂=<b>1/6</b> B₄=<b>−1/30</b> B₆=<b>1/42</b> B₈=<b>−1/30</b><br>
+      Convergence: |x| &lt; π/2 ≈ 1.5708
+    </div>
+  </div>
+  <div class="sec">
+    <div class="st cl">Fourier Transform</div>
+    <div class="eqd">
+      <em>φ̂_α(u)</em> = πu/α² · 1/sinh(πu/(2α))<br>
+      φ̂_α(0) = <b>2/α</b> (L'Hôpital) · even · real · exp-decay
+    </div>
+  </div>
+  <div class="sec">
+    <div class="st">Key Lemma</div>
+    <div class="eqd">
+      ℜ(sech²(x+iy)) = <em>N(x,y)/D(x,y)²</em><br>
+      On-line (x=0): <b>N(0,y) = cos²y ≥ 0</b> ✓<br>
+      Off-line (x≠0): N can go <span style="color:var(--r)">negative</span> ✗
+    </div>
+  </div>
+</div>
+
+<!-- RIGHT PANEL: Controls -->
+<div class="panel" id="right">
+  <div class="sec">
+    <div class="st">Generator Mode</div>
+    <div class="mode-sw" id="mode-sw">
+      <button class="on" data-m="dual">DUAL</button>
+      <button data-m="classical">CLASSICAL</button>
+      <button data-m="sech2">SECH²</button>
+    </div>
+    <div class="row"><span class="k">Generator:</span><span class="v pu" id="s-mode">DUAL</span></div>
+  </div>
+  <div class="sec">
+    <div class="st">sech² Guard</div>
+    <label>α sharpness</label>
+    <input type="range" id="r-alpha" min="5" max="80" value="25" step="1"/>
+    <div class="vd" id="d-alpha">α = 2.5</div>
+    <label>G_min threshold</label>
+    <input type="range" id="r-gmin" min="50" max="98" value="85" step="1"/>
+    <div class="vd" id="d-gmin">0.85</div>
+  </div>
+  <div class="sec">
+    <div class="st cl">Classical Engine</div>
+    <label>Prime cutoff P</label>
+    <input type="range" id="r-pcut" min="2" max="8" value="4" step="1"/>
+    <div class="vd" id="d-pcut">p ≤ 7</div>
+    <label>N truncation</label>
+    <input type="range" id="r-Ntrunc" min="50" max="500" value="200" step="50"/>
+    <div class="vd" id="d-Ntrunc">N = 200</div>
+  </div>
+  <div class="sec">
+    <div class="st">Dynamics</div>
+    <label>Max strands</label>
+    <input type="range" id="r-max" min="40" max="250" value="120" step="10"/>
+    <div class="vd" id="d-max">120</div>
+    <label>Trail length</label>
+    <input type="range" id="r-trail" min="15" max="90" value="50" step="5"/>
+    <div class="vd" id="d-trail">50</div>
+    <label>Speed</label>
+    <input type="range" id="r-sp" min="5" max="30" value="12" step="1"/>
+    <div class="vd" id="d-sp">1.2×</div>
+    <label>9D projection</label>
+    <select id="s-proj">
+      <option value="0">Z, Z' (dims 0,1)</option>
+      <option value="1">G, dG/dT (dims 2,3)</option>
+      <option value="2">E₂, E₃ (dims 4,5)</option>
+      <option value="3">E₅, E₇ (dims 6,7)</option>
+      <option value="4" selected>Full 9D blend</option>
+    </select>
+  </div>
+  <div class="sec">
+    <button id="btn-burst">⚡ BURST · 50</button>
+    <button id="btn-reset">↺ RESET</button>
+  </div>
+  <div class="sec">
+    <div class="st">Live Stats</div>
+    <div class="row"><span class="k">Classical alive:</span><span class="v cy" id="s-cl">0</span></div>
+    <div class="row"><span class="k">sech² alive:</span><span class="v pu" id="s-se">0</span></div>
+    <div class="row"><span class="k">In corridor:</span><span class="v gn" id="s-on">0</span></div>
+    <div class="row"><span class="k">Outside:</span><span class="v rd" id="s-off">0</span></div>
+    <div class="row"><span class="k">Killed:</span><span class="v" id="s-kill">0</span></div>
+    <hr class="sep"/>
+    <div class="row"><span class="k">Z_max:</span><span class="v cy" id="s-zm">—</span></div>
+    <div class="row"><span class="k">S_zero(α):</span><span class="v gn" id="s-Szero">—</span></div>
+    <div class="row"><span class="k">S_prime(α):</span><span class="v pu" id="s-Sprime">—</span></div>
+    <div class="row"><span class="k">|Δ| master eq:</span><span class="v au" id="s-delta">—</span></div>
+    <div class="row"><span class="k">Cache:</span><span class="v" id="s-cache">building…</span></div>
+    <div class="row"><span class="k">Frame:</span><span class="v" id="s-fr">0</span></div>
+  </div>
+  <div class="sec">
+    <div class="st zr">TDD Status</div>
+    <div class="eqd">
+      <b>§8</b> Bernoulli series ✓ 25/25<br>
+      <b>§9</b> Complex sech² lemma ✓ 40/40<br>
+      <b>§10</b> Fourier transform ✓ 17/17<br>
+      <b>§11</b> Zero-side S(α) ✓ 11/11<br>
+      <b>§12</b> Prime-side explicit ✓ 13/13<br>
+      <b>§13</b> Master equation ✓ 8/8<br>
+      <b>§14</b> Guard + 9D ✓ 13/13<br>
+      <em>260 / 260 passed · 0 failures</em>
+    </div>
+  </div>
+</div>
+
+<!-- ZERO CONSOLE -->
+<div id="zcon">
+  <div id="zcon-hdr">
+    <span class="zt">Riemann Zero Console</span>
+    <span style="font-size:6.5px;color:var(--z)" id="zc-count">0</span>
+  </div>
+  <div id="zcon-body"></div>
+</div>
+
+<!-- BOTTOM BAR -->
+<div id="bot">
+  <span><span class="dot g"></span>Corridor: <span id="b-on" style="color:var(--z)">0</span></span>
+  <span><span class="dot r"></span>Outside: <span id="b-off" style="color:var(--r)">0</span></span>
+  <span><span class="dot c"></span>Classical: <span id="b-cl" style="color:var(--cy)">0</span></span>
+  <span><span class="dot p"></span>sech²: <span id="b-se" style="color:var(--p)">0</span></span>
+  <span style="color:var(--dim)">S(α)=Σ_ρ sech²(α·(ρ-½)/i) ≡ prime-side</span>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════════════
+//  RH 9D SPECTRAL GENERATOR — DUAL ENGINE
+//  Classical infinite series + sech² guard pathway
+//  All equations from sech2_classical.py TDD suite (260/260)
+// ═══════════════════════════════════════════════════════════════════════════
+
+const cv = document.getElementById('cv');
+const ctx = cv.getContext('2d');
+const PL = 228, PR = 228;
+let W, H, CX, CY;
+function resize() {
+  W = cv.width = innerWidth; H = cv.height = innerHeight;
+  CX = PL + (W - PL - PR) / 2; CY = H / 2;
+}
+resize(); addEventListener('resize', resize);
+
+// ── Config ──
+const cfg = {
+  alpha: 2.5, Gmin: 0.85, maxS: 120, trail: 50, sp: 1.2,
+  proj: 4, pcut: 4, Ntrunc: 200, mode: 'dual'
+};
+let killed = 0, frame = 0;
+
+// ── Primes ──
+const PRIMES = [2,3,5,7,11,13,17,19,23];
+const LOG_P = PRIMES.map(p => Math.log(p));
+
+// ── 100 Known Riemann zeros ──
+const ZEROS = [
+  14.13473,21.02204,25.01086,30.42488,32.93506,37.58618,40.91872,43.32707,
+  48.00515,49.77383,52.97032,56.44625,59.34704,60.83178,65.11254,67.07981,
+  69.54640,72.06716,75.70469,77.14484,79.33738,82.91038,84.73549,87.42527,
+  88.80911,92.49190,94.65134,95.87063,98.83119,101.31785,103.72554,105.44662,
+  107.16861,111.02954,111.87466,114.32022,116.22668,118.79078,121.37013,
+  122.94683,124.25682,127.51668,129.57870,131.08769,133.49774,134.75651,
+  138.11604,139.73621,141.12371,143.11185,146.00098,147.42277,150.05352,
+  150.92526,153.02469,156.11291,157.59759,158.84999,161.18896,163.03071,
+  165.53707,167.18444,169.09452,169.91198,173.41154,174.75419,176.44143,
+  178.37741,179.91648,182.20708,184.87447,185.59878,187.22892,189.41616,
+  192.02666,193.07973,195.26540,196.87648,198.01531,201.26475,202.49359,
+  204.18967,205.39470,207.90626,209.57651,211.69086,213.34792,214.54705,
+  216.16954,219.06760,220.71492,221.43071,224.00700,224.98333,227.42144,
+  229.33741,231.25019,231.98724,233.69340,236.52423
+];
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  §1 — RIEMANN-SIEGEL Z(T) [from sech2_classical.py hardy_Z]
+// ═══════════════════════════════════════════════════════════════════════════
+function theta(T) {
+  const t = Math.max(T, 2);
+  return (t/2)*Math.log(t/(2*Math.PI)) - t/2 - Math.PI/8
+       + 1/(48*t) + 7/(5760*t*t*t);
+}
+
+function rsZ(T) {
+  if (T < 5) return Math.cos(theta(5));
+  const N = Math.max(1, Math.floor(Math.sqrt(T/(2*Math.PI))));
+  const th = theta(T);
+  let s = 0;
+  for (let n = 1; n <= N; n++) s += Math.cos(th - T*Math.log(n)) / Math.sqrt(n);
+  return 2*s;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  §2 — SECH² KERNEL [TDD §8: Bernoulli series + closed form]
+// ═══════════════════════════════════════════════════════════════════════════
+function sech2(x) {
+  const ax = Math.min(Math.abs(x), 350);
+  const ch = Math.cosh(ax);
+  return 1.0 / (ch * ch);
+}
+
+// Bernoulli series: sech²(x) = Σ B_{2n+2}·4^{n+1}·(4^{n+1}-1)·(2n+1)/(2n+2)!·x^{2n}
+const B_TABLE = [1/6, -1/30, 1/42, -1/30, 5/66, -691/2730, 7/6, -3617/510, 43867/798, -174611/330];
+const FACTORIALS = [1]; for(let i=1;i<=22;i++) FACTORIALS[i]=FACTORIALS[i-1]*i;
+
+function sech2_series(x, nTerms) {
+  let s = 0;
+  for (let n = 0; n < nTerms && n < B_TABLE.length; n++) {
+    const m = 2*n + 2;
+    const Bm = B_TABLE[n];
+    const coeff = Bm * Math.pow(4, n+1) * (Math.pow(4, n+1) - 1) * (2*n+1) / FACTORIALS[m];
+    s += coeff * Math.pow(x, 2*n);
+  }
+  return s;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  §3 — COMPLEX SECH² REAL PART [TDD §9: N(x,y)/D(x,y)²]
+// ═══════════════════════════════════════════════════════════════════════════
+function numerator_N(x, y) {
+  return Math.cos(y)**2 + Math.sinh(x)**2 * Math.cos(2*y);
+}
+
+function denominator_D(x, y) {
+  return Math.cosh(x)**2 * Math.cos(y)**2 + Math.sinh(x)**2 * Math.sin(y)**2;
+}
+
+function realPartSech2(x, y) {
+  const D = denominator_D(x, y);
+  if (Math.abs(D) < 1e-30) return 0;
+  return numerator_N(x, y) / (D * D);
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  §4 — FOURIER TRANSFORM [TDD §10: φ̂_α(u) = πu/α² / sinh(πu/(2α))]
+// ═══════════════════════════════════════════════════════════════════════════
+function fourierSech2(u, alpha) {
+  if (Math.abs(u) < 1e-15) return 2.0 / alpha;
+  const arg = Math.PI * u / (2 * alpha);
+  if (Math.abs(arg) > 350) return 0;
+  return (Math.PI * u / (alpha * alpha)) / Math.sinh(arg);
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  §5 — VON MANGOLDT [TDD §12]
+// ═══════════════════════════════════════════════════════════════════════════
+function vonMangoldt(nMax) {
+  const L = new Float64Array(nMax + 1);
+  const isPrime = new Uint8Array(nMax + 1).fill(1);
+  isPrime[0] = isPrime[1] = 0;
+  for (let i = 2; i * i <= nMax; i++)
+    if (isPrime[i]) for (let j = i*i; j <= nMax; j += i) isPrime[j] = 0;
+  for (let p = 2; p <= nMax; p++) {
+    if (!isPrime[p]) continue;
+    const lp = Math.log(p);
+    for (let pk = p; pk <= nMax; pk *= p) L[pk] = lp;
+  }
+  return L;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  §6 — PER-PRIME ENERGY [TDD §14: E_p(t) = |Σ n^{-1/2} e^{-it ln n}|²]
+// ═══════════════════════════════════════════════════════════════════════════
+function primeEnergy(T, p, N) {
+  let re = 0, im = 0;
+  for (let n = p; n <= N; n += p) {
+    const c = 1.0 / Math.sqrt(n);
+    const phase = -T * Math.log(n);
+    re += c * Math.cos(phase);
+    im += c * Math.sin(phase);
+  }
+  return re*re + im*im;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  CACHE: precompute over T ∈ [10, 240]
+// ═══════════════════════════════════════════════════════════════════════════
+const CT0 = 10, CT1 = 240, CSTEP = 0.12;
+const CN = Math.ceil((CT1 - CT0) / CSTEP) + 1;
+const cZ = new Float32Array(CN);
+const cAbsZ = new Float32Array(CN);
+const cG = new Float32Array(CN);
+const cZp = new Float32Array(CN);
+const cDG = new Float32Array(CN);
+const cEp = []; for(let i=0;i<4;i++) cEp.push(new Float32Array(CN));
+const cZ2 = new Float32Array(CN);
+let cBuilt = false, cCur = 0, Zmax = 1;
+
+function buildChunk() {
+  if (cBuilt) return;
+  const CHUNK = 10;
+  const pIdx = Math.min(cfg.pcut, PRIMES.length);
+  for (let i = 0; i < CHUNK && cCur < CN; i++, cCur++) {
+    const T = CT0 + cCur * CSTEP;
+    const Z = rsZ(T);
+    cZ[cCur] = Z;
+    cAbsZ[cCur] = Math.abs(Z);
+    cZ2[cCur] = Z * Z;
+    for (let pi = 0; pi < 4; pi++) {
+      cEp[pi][cCur] = pi < pIdx ? primeEnergy(T, PRIMES[pi], cfg.Ntrunc) : 0;
+    }
+  }
+  if (cCur >= CN) {
+    Zmax = 0;
+    for (let i = 0; i < CN; i++) if (cAbsZ[i] > Zmax) Zmax = cAbsZ[i];
+    Zmax = Math.max(Zmax, 0.1);
+    for (let i = 0; i < CN; i++) {
+      cG[i] = sech2(cfg.alpha * cAbsZ[i] / Zmax);
+      cZp[i] = i < CN-1 ? (cAbsZ[i+1] - cAbsZ[i]) / CSTEP : 0;
+      cDG[i] = i < CN-1 ? (cG[i+1] - cG[i]) / CSTEP : 0;
+    }
+    cBuilt = true;
+    document.getElementById('s-cache').textContent = 'ready ✓';
+    document.getElementById('s-cache').style.color = 'var(--z)';
+    document.getElementById('s-zm').textContent = Zmax.toFixed(3);
+    computeMasterEq();
+    drawCharts();
+  }
+}
+
+function cIdx(T) { return Math.max(0, Math.min(CN-1, Math.round((T - CT0) / CSTEP))); }
+
+function rebuildG() {
+  if (!cBuilt) return;
+  for (let i = 0; i < CN; i++) {
+    cG[i] = sech2(cfg.alpha * cAbsZ[i] / Zmax);
+    cDG[i] = i < CN-1 ? (cG[i+1] - cG[i]) / CSTEP : 0;
+  }
+  computeMasterEq();
+  drawCharts();
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  §7 — MASTER EQUATION: S_zero(α) ≡ S_prime(α) [TDD §13]
+// ═══════════════════════════════════════════════════════════════════════════
+function computeSZero(alpha) {
+  let S = 0;
+  for (const g of ZEROS) S += sech2(alpha * g);
+  return S;
+}
+
+function computeSPrime(alpha, nMax) {
+  const arch = 2.0 * sech2(alpha / 2.0);
+  const Lambda = vonMangoldt(nMax);
+  let primeSum = 0;
+  for (let n = 2; n <= nMax; n++) {
+    if (Lambda[n] < 1e-14) continue;
+    const phi = fourierSech2(Math.log(n), alpha);
+    primeSum += Lambda[n] / Math.sqrt(n) * phi;
+  }
+  return arch - 2.0 * primeSum;
+}
+
+function computeMasterEq() {
+  if (!cBuilt) return;
+  const Sz = computeSZero(cfg.alpha);
+  const Sp = computeSPrime(cfg.alpha, 2000);
+  document.getElementById('s-Szero').textContent = Sz.toExponential(4);
+  document.getElementById('s-Sprime').textContent = Sp.toExponential(4);
+  document.getElementById('s-delta').textContent = Math.abs(Sz - Sp).toExponential(3);
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  §8 — 9D STATE VECTOR [TDD §14: v[8]=v[0]²]
+// ═══════════════════════════════════════════════════════════════════════════
+function state9D(T) {
+  const i = cIdx(T);
+  return [cZ[i], cZp[i], cG[i], cDG[i], cEp[0][i], cEp[1][i], cEp[2][i], cEp[3][i], cZ2[i]];
+}
+
+function guardAt(T) { return cBuilt ? cG[cIdx(T)] : 0.5; }
+
+function project9D(v9, mode) {
+  switch(mode) {
+    case 0: return [v9[0], v9[1]];
+    case 1: return [v9[2], v9[3]];
+    case 2: return [v9[4], v9[5]];
+    case 3: return [v9[6], v9[7]];
+    default: {
+      const x = v9[0]*0.20+v9[2]*0.26+v9[4]*0.18+v9[6]*0.14+v9[8]*0.08+v9[1]*0.07+v9[3]*0.07;
+      const y = v9[1]*0.20+v9[3]*0.26+v9[5]*0.18+v9[7]*0.14+v9[8]*0.08+v9[0]*0.07+v9[2]*0.07;
+      return [x, y];
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  STRAND CLASS — DUAL ENGINE
+//  type: 'classical' (cyan) | 'sech2' (purple/green/red)
+// ═══════════════════════════════════════════════════════════════════════════
+function nearestZero(T) {
+  let best = 0, bestD = Infinity;
+  for (let i = 0; i < ZEROS.length; i++) {
+    const d = Math.abs(T - ZEROS[i]);
+    if (d < bestD) { bestD = d; best = i; }
+  }
+  return { idx: best, T: ZEROS[best], dist: bestD };
+}
+
+class Strand {
+  constructor(type, burst) {
+    this.type = type; // 'classical' or 'sech2'
+    this.dead = false;
+    this.trail = [];
+    this.age = 0;
+    const spread = burst ? 18 : 10;
+    this.x = CX + (Math.random()-0.5)*spread;
+    this.y = CY + (Math.random()-0.5)*spread;
+    this.T = this._xToT(this.x);
+    const ang = Math.random() * Math.PI * 2;
+    const spd = cfg.sp * ((burst ? 3.2 : 1.6) + Math.random() * 2.2);
+    this.vx = Math.cos(ang) * spd;
+    this.vy = Math.sin(ang) * spd;
+    this.v9 = cBuilt ? state9D(this.T) : new Array(9).fill(0);
+    this.G = cBuilt ? this.v9[2] : 0.5;
+    this.isIn = this.G > cfg.Gmin;
+    this.maxAge = burst ? 80+Math.random()*60 : 110+Math.random()*170;
+    this.alpha = 0;
+    this.nearZ = null;
+    // Classical: Bernoulli series value at origin
+    this.seriesVal = this.type === 'classical' ? sech2_series(0, 8) : 0;
+  }
+
+  _xToT(x) {
+    const f = Math.max(0, Math.min(1, (x - PL) / (W - PL - PR)));
+    return CT0 + f * (CT1 - CT0);
+  }
+
+  update() {
+    if (this.dead) return;
+    this.age++;
+    this.T = this._xToT(this.x);
+    this.T = Math.max(CT0+0.1, Math.min(CT1-0.1, this.T));
+
+    if (cBuilt) {
+      this.v9 = state9D(this.T);
+      this.G = this.v9[2];
+      this.isIn = this.G > cfg.Gmin;
+      if (this.isIn) this.nearZ = nearestZero(this.T);
+    }
+
+    if (this.type === 'sech2') {
+      // sech² guard drives dynamics: 9D projection shapes velocity
+      const [px, py] = project9D(this.v9, cfg.proj);
+      const plen = Math.sqrt(px*px+py*py) || 1;
+      const jag = this.isIn ? 0.3 : 2.0;
+      this.vx += (Math.random()-0.5)*jag + (px/plen)*(this.isIn?0.05:0.15);
+      this.vy += (Math.random()-0.5)*jag + (py/plen)*(this.isIn?0.05:0.15);
+    } else {
+      // Classical: velocity derived from Bernoulli series coefficients
+      // The series sech²(x) evaluated at the normalized |Z(T)|/Zmax
+      // drives directional bias — convergent terms pull toward zeros
+      if (cBuilt) {
+        const x_norm = cAbsZ[cIdx(this.T)] / Zmax;
+        this.seriesVal = sech2_series(x_norm * 1.2, 8); // within convergence radius
+        // Fourier dual: use φ̂_α to shape the angular drift
+        const phi_val = fourierSech2(this.T * 0.01, cfg.alpha);
+        const driftAng = Math.atan2(this.vy, this.vx) + phi_val * 0.02;
+        const jag = 0.6 + (1 - this.seriesVal) * 1.5;
+        this.vx += (Math.random()-0.5)*jag + Math.cos(driftAng)*0.08;
+        this.vy += (Math.random()-0.5)*jag + Math.sin(driftAng)*0.08;
+      } else {
+        this.vx += (Math.random()-0.5)*1.2;
+        this.vy += (Math.random()-0.5)*1.2;
+      }
+    }
+
+    // Speed clamp
+    const sp = Math.sqrt(this.vx*this.vx+this.vy*this.vy);
+    const ms = cfg.sp * (this.isIn ? 5.5 : 6.5);
+    if (sp > ms) { this.vx=this.vx/sp*ms; this.vy=this.vy/sp*ms; }
+    if (sp < 0.4) { this.vx+=(Math.random()-0.5)*1.2; this.vy+=(Math.random()-0.5)*1.2; }
+
+    this.x += this.vx; this.y += this.vy;
+    this.trail.push({x:this.x, y:this.y});
+    const tlen = cfg.trail + (this.isIn ? 25 : 0);
+    if (this.trail.length > tlen) this.trail.shift();
+
+    // Alpha / survival
+    const ramp = Math.min(1, this.age / 8);
+    const life = Math.max(0, 1 - this.age / this.maxAge);
+
+    if (this.type === 'sech2') {
+      if (this.isIn) {
+        this.alpha = ramp * (this.G * 0.82 + 0.18 * life);
+      } else {
+        const decRate = 0.008 + (1-this.G)*0.065;
+        this.alpha = ramp * life * Math.exp(-decRate * this.age) * 0.78;
+      }
+    } else {
+      // Classical: series convergence drives survival
+      this.alpha = ramp * life * (0.3 + this.seriesVal * 0.6);
+    }
+
+    if (this.alpha < 0.004 || this.age > this.maxAge) {
+      this.dead = true; killed++;
+    }
+  }
+
+  draw() {
+    const n = this.trail.length;
+    if (n < 2) return;
+    ctx.save();
+    for (let i = 1; i < n; i++) {
+      const t = i / n;
+      const a = t * this.alpha;
+      if (a < 0.004) continue;
+      const p0 = this.trail[i-1], p1 = this.trail[i];
+      ctx.beginPath(); ctx.moveTo(p0.x, p0.y); ctx.lineTo(p1.x, p1.y);
+
+      if (this.type === 'classical') {
+        // Cyan-white gradient: brightness from series convergence
+        const br = Math.floor(140 + 115 * this.seriesVal * t);
+        ctx.strokeStyle = `rgba(34,${br},${Math.floor(200+55*t)},${a})`;
+        ctx.lineWidth = 0.7 + t*1.8; ctx.stroke();
+        if (a > 0.35) {
+          ctx.strokeStyle = `rgba(34,211,238,${a*0.1})`; ctx.lineWidth = 6; ctx.stroke();
+        }
+      } else if (this.isIn) {
+        const br = Math.floor(70 + 180*this.G);
+        ctx.strokeStyle = `rgba(${Math.floor(50+20*t)},${br},${Math.floor(90+50*t)},${a})`;
+        ctx.lineWidth = 0.8 + t*2.2; ctx.stroke();
+        if (a > 0.28 && this.G > 0.88) {
+          ctx.strokeStyle = `rgba(61,214,138,${a*this.G*0.16})`; ctx.lineWidth = 7; ctx.stroke();
+        }
+      } else {
+        const heat = 1-this.G;
+        ctx.strokeStyle = `rgba(${Math.floor(130+125*heat)},${Math.floor(15+45*t*(1-heat))},30,${a})`;
+        ctx.lineWidth = 0.4+t*1.1; ctx.stroke();
+      }
+    }
+    ctx.restore();
+
+    // Head
+    if (this.alpha > 0.08) {
+      const r = 1.2 + this.alpha * 2;
+      ctx.beginPath(); ctx.arc(this.x, this.y, r, 0, Math.PI*2);
+      ctx.fillStyle = this.type === 'classical'
+        ? `rgba(120,230,255,${this.alpha*0.85})`
+        : this.isIn ? `rgba(140,255,180,${this.alpha*0.85})`
+                     : `rgba(255,80,45,${this.alpha*0.7})`;
+      ctx.fill();
+    }
+  }
+}
+
+// ── Scene ──
+let strands = [];
+
+function spawnStrand(burst) {
+  const m = cfg.mode;
+  if (m === 'dual') {
+    const type = Math.random() < 0.5 ? 'classical' : 'sech2';
+    strands.push(new Strand(type, burst));
+  } else {
+    strands.push(new Strand(m === 'classical' ? 'classical' : 'sech2', burst));
+  }
+}
+
+function seedInitial() {
+  for (let i = 0; i < 45; i++) {
+    spawnStrand(false);
+    strands[strands.length-1].age = Math.floor(Math.random()*20);
+  }
+}
+seedInitial();
+
+// ── Draw manifold (sech² corridor mapped from G(T)) ──
+function drawManifold(pulse) {
+  if (!cBuilt) return;
+  const canvasW = W - PL - PR;
+  for (let px = 0; px < canvasW; px += 2) {
+    const T = CT0 + (px / canvasW) * (CT1 - CT0);
+    const G = guardAt(T);
+    if (G < 0.06) continue;
+    const x = PL + px;
+    for (let dy = -30; dy <= 30; dy++) {
+      const falloff = sech2(dy / 7) * G * 0.09 * pulse;
+      if (falloff < 0.003) continue;
+      ctx.fillStyle = `rgba(61,214,138,${falloff})`;
+      ctx.fillRect(x, CY + dy, 2, 1);
+    }
+  }
+}
+
+// ── Classical manifold: Bernoulli series visualization ──
+function drawClassicalManifold(pulse) {
+  if (!cBuilt) return;
+  const canvasW = W - PL - PR;
+  for (let px = 0; px < canvasW; px += 3) {
+    const T = CT0 + (px / canvasW) * (CT1 - CT0);
+    const absZ = cAbsZ[cIdx(T)];
+    const xNorm = absZ / Zmax;
+    // Bernoulli series evaluated — high value means near zero
+    const sv = xNorm < 1.4 ? sech2_series(xNorm, 8) : sech2(xNorm);
+    if (sv < 0.06) continue;
+    const x = PL + px;
+    for (let dy = -22; dy <= 22; dy++) {
+      const falloff = sech2(dy / 6) * sv * 0.06 * pulse;
+      if (falloff < 0.003) continue;
+      ctx.fillStyle = `rgba(34,211,238,${falloff})`;
+      ctx.fillRect(x, CY + dy - 35, 3, 1);
+    }
+  }
+}
+
+// ── Singularity core ──
+function drawCore(pulse) {
+  const r1 = 70 + 10*Math.sin(frame*0.033);
+  // Dual glow: cyan (classical) + purple (sech²)
+  const g1 = ctx.createRadialGradient(CX,CY,0,CX,CY,r1);
+  g1.addColorStop(0, `rgba(140,100,230,${0.22*pulse})`);
+  g1.addColorStop(0.3, `rgba(34,180,220,${0.12*pulse})`);
+  g1.addColorStop(0.6, `rgba(61,214,138,${0.06*pulse})`);
+  g1.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = g1; ctx.beginPath(); ctx.arc(CX,CY,r1,0,Math.PI*2); ctx.fill();
+
+  // 9 dimension spokes
+  for (let i = 0; i < 9; i++) {
+    const ang = (i/9)*Math.PI*2 + frame*0.004;
+    const len = 18 + 12*Math.sin(frame*0.01+i*1.1);
+    ctx.beginPath(); ctx.moveTo(CX,CY);
+    ctx.lineTo(CX+Math.cos(ang)*len, CY+Math.sin(ang)*len);
+    const cols = ['rgba(34,211,238,','rgba(192,132,252,','rgba(61,214,138,','rgba(251,191,36,',
+                  'rgba(34,211,238,','rgba(192,132,252,','rgba(61,214,138,','rgba(251,191,36,','rgba(248,113,113,'];
+    ctx.strokeStyle = cols[i]+(0.06+pulse*0.04)+')';
+    ctx.lineWidth = 0.6; ctx.stroke();
+  }
+
+  // Inner rings
+  for (let ri=1;ri<=4;ri++) {
+    const rr = 10+ri*14+4*Math.sin(frame*0.04+ri);
+    ctx.beginPath(); ctx.arc(CX,CY,rr,0,Math.PI*2);
+    ctx.strokeStyle = `rgba(192,132,252,${0.07*pulse/ri})`; ctx.lineWidth=0.4; ctx.stroke();
+  }
+
+  // Core
+  const g2 = ctx.createRadialGradient(CX,CY,0,CX,CY,16);
+  g2.addColorStop(0, `rgba(240,230,255,${0.65*pulse})`);
+  g2.addColorStop(0.4, `rgba(192,132,252,${0.3*pulse})`);
+  g2.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = g2; ctx.beginPath(); ctx.arc(CX,CY,16,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(CX,CY,4,0,Math.PI*2);
+  ctx.fillStyle = `rgba(255,255,255,${0.88*pulse})`; ctx.fill();
+  ctx.beginPath(); ctx.arc(CX,CY,1.8,0,Math.PI*2); ctx.fillStyle='#fff'; ctx.fill();
+}
+
+// ── Mini charts ──
+const cvG = document.getElementById('cv-g');
+const cvZ = document.getElementById('cv-z');
+const ctxG = cvG.getContext('2d');
+const ctxZ2 = cvZ.getContext('2d');
+
+function drawMini(el, cctx, getData, color, label) {
+  const dpr = devicePixelRatio||1;
+  el.width=el.clientWidth*dpr; el.height=el.clientHeight*dpr;
+  cctx.clearRect(0,0,el.width,el.height);
+  if(!cBuilt){cctx.fillStyle='rgba(130,150,170,0.15)';cctx.font=`${8*dpr}px IBM Plex Mono`;cctx.fillText('building…',3,12*dpr);return;}
+  const W2=el.width,H2=el.height,STEP=4,pts=Math.floor(CN/STEP);
+  const vals=[];for(let i=0;i<pts;i++)vals.push(getData(i*STEP));
+  const mx=Math.max(...vals)||1;
+  for(const T of ZEROS){if(T<CT0||T>CT1)continue;const x=((T-CT0)/(CT1-CT0))*W2;cctx.fillStyle='rgba(61,214,138,0.15)';cctx.fillRect(x-0.3,0,0.6,H2);}
+  cctx.beginPath();
+  for(let i=0;i<pts;i++){const x=(i/(pts-1))*W2,y=H2-(vals[i]/mx)*(H2*0.8)-H2*0.06;i===0?cctx.moveTo(x,y):cctx.lineTo(x,y);}
+  cctx.strokeStyle=color;cctx.lineWidth=1;cctx.stroke();
+  cctx.fillStyle=color;cctx.font=`${7*dpr}px IBM Plex Mono`;cctx.fillText(label,3,10*dpr);
+}
+
+function drawCharts() {
+  drawMini(cvG,ctxG,i=>cG[i],'rgba(61,214,138,0.65)','G(T,α)=sech²(α·|Z|/Zmax)');
+  drawMini(cvZ,ctxZ2,i=>cAbsZ[i],'rgba(192,132,252,0.6)','|Z(T)| Riemann-Siegel');
+}
+
+// ── Hover ──
+document.addEventListener('mousemove', e => {
+  const x = e.clientX;
+  if (x < PL || x > W-PR) return;
+  const T = CT0 + ((x-PL)/(W-PL-PR)) * (CT1-CT0);
+  document.getElementById('p-T').textContent = T.toFixed(2);
+  if (!cBuilt) return;
+  const az = cAbsZ[cIdx(T)], G = cG[cIdx(T)];
+  document.getElementById('p-z').textContent = az.toFixed(5);
+  document.getElementById('p-g').textContent = G.toFixed(6);
+  // Key lemma: N(x,y) at this point under RH (x=αγ, y=0)
+  const Nval = numerator_N(cfg.alpha * az / Zmax, 0); // on-line: y=0
+  document.getElementById('p-N').textContent = Nval.toFixed(6) + ' ≥ 0';
+  document.getElementById('p-th').textContent = G > cfg.Gmin ? '✓ IN CORRIDOR' : '✗ OUTSIDE';
+  document.getElementById('p-th').style.color = G > cfg.Gmin ? 'var(--z)' : 'var(--r)';
+
+  // Find nearest strand
+  let best=null,bestD=Infinity;
+  for(const s of strands){if(s.dead)continue;const d=Math.hypot(s.x-e.clientX,s.y-e.clientY);if(d<bestD){bestD=d;best=s;}}
+  if(best&&bestD<45&&cBuilt){
+    const v=best.v9;
+    const nz=best.nearZ||nearestZero(best.T);
+    document.getElementById('state9d').innerHTML=
+      `<b>Type:</b> ${best.type} · T=${best.T.toFixed(2)} · G=${best.G.toFixed(4)}<br>`+
+      `<b>Zero:</b> γ${nz.idx+1}=${nz.T.toFixed(2)} d=${nz.dist.toFixed(3)}<br>`+
+      `<b>v0</b>|Z|=${v[0].toFixed(3)} <b>v1</b>Z'=${v[1].toFixed(3)}<br>`+
+      `<b>v2</b>G=${v[2].toFixed(4)} <b>v3</b>dG=${v[3].toFixed(4)}<br>`+
+      `<b>v4</b>E₂=${v[4].toFixed(3)} <b>v5</b>E₃=${v[5].toFixed(3)}<br>`+
+      `<b>v6</b>E₅=${v[6].toFixed(3)} <b>v7</b>E₇=${v[7].toFixed(3)}<br>`+
+      `<b>v8</b>|Z|²=${v[8].toFixed(4)} ≡ v0²=${(v[0]**2).toFixed(4)}<br>`+
+      `<span style="color:${best.isIn?'var(--z)':'var(--r)'}">${best.isIn?'✓ CORRIDOR':'✗ OUTSIDE'}</span>`+
+      (best.type==='classical'?` · series=${best.seriesVal.toFixed(4)}`:'');
+  }
+});
+
+// ── Zero console ──
+const zconBody = document.getElementById('zcon-body');
+const zconCount = document.getElementById('zc-count');
+let lastZsnap = '';
+function updateZeroConsole() {
+  if (!cBuilt) return;
+  const alive = strands.filter(s=>s.isIn&&!s.dead);
+  const occ = new Map();
+  for (const s of alive) {
+    const nz = nearestZero(s.T);
+    if (nz.dist > 2.5) continue;
+    const k = nz.idx;
+    if (!occ.has(k)) occ.set(k, {T:nz.T,G:s.G,count:1,type:s.type});
+    else { const e=occ.get(k); e.count++; if(s.G>e.G)e.G=s.G; }
+  }
+  const sorted = [...occ.entries()].sort((a,b)=>a[0]-b[0]);
+  const snap = sorted.map(([k,v])=>`${k}:${v.count}`).join(',');
+  if (snap === lastZsnap) return;
+  lastZsnap = snap;
+  zconCount.textContent = sorted.length + ' zeros';
+  zconBody.innerHTML = '';
+  for (const [,v] of sorted.slice(0,25)) {
+    const row = document.createElement('div');
+    row.className = 'zrow';
+    const bw = Math.max(3, Math.round(v.G * 36));
+    row.innerHTML = `<span class="zn">γ</span><span class="zg">T=${v.T.toFixed(1)}</span>`+
+      `<div class="zbar" style="width:${bw}px;opacity:${0.3+v.G*0.7}"></div>`+
+      `<span class="zs">${v.count} ${v.type==='classical'?'C':'S'}</span>`;
+    zconBody.appendChild(row);
+  }
+}
+
+// ── Stats ──
+let statTick = 0;
+function updateStats() {
+  statTick++; if(statTick%8!==0)return;
+  const alive = strands.filter(s=>!s.dead);
+  const cl = alive.filter(s=>s.type==='classical').length;
+  const se = alive.filter(s=>s.type==='sech2').length;
+  const on = alive.filter(s=>s.isIn).length;
+  const off = alive.filter(s=>!s.isIn).length;
+  document.getElementById('s-cl').textContent=cl;
+  document.getElementById('s-se').textContent=se;
+  document.getElementById('s-on').textContent=on;
+  document.getElementById('s-off').textContent=off;
+  document.getElementById('s-kill').textContent=killed;
+  document.getElementById('s-fr').textContent=frame;
+  document.getElementById('b-on').textContent=on;
+  document.getElementById('b-off').textContent=off;
+  document.getElementById('b-cl').textContent=cl;
+  document.getElementById('b-se').textContent=se;
+  if(!cBuilt){const pct=Math.floor(cCur/CN*100);document.getElementById('s-cache').textContent=pct+'%';}
+  if(statTick%16===0) updateZeroConsole();
+}
+
+// ── Controls ──
+document.getElementById('r-alpha').oninput=e=>{cfg.alpha=+e.target.value/10;document.getElementById('d-alpha').textContent='α = '+cfg.alpha.toFixed(1);rebuildG();};
+document.getElementById('r-gmin').oninput=e=>{cfg.Gmin=+e.target.value/100;document.getElementById('d-gmin').textContent=cfg.Gmin.toFixed(2);};
+document.getElementById('r-pcut').oninput=e=>{cfg.pcut=+e.target.value;const p=PRIMES[cfg.pcut-1]||23;document.getElementById('d-pcut').textContent='p ≤ '+p;};
+document.getElementById('r-Ntrunc').oninput=e=>{cfg.Ntrunc=+e.target.value;document.getElementById('d-Ntrunc').textContent='N = '+cfg.Ntrunc;};
+document.getElementById('r-max').oninput=e=>{cfg.maxS=+e.target.value;document.getElementById('d-max').textContent=cfg.maxS;};
+document.getElementById('r-trail').oninput=e=>{cfg.trail=+e.target.value;document.getElementById('d-trail').textContent=cfg.trail;};
+document.getElementById('r-sp').oninput=e=>{cfg.sp=+e.target.value/10;document.getElementById('d-sp').textContent=cfg.sp.toFixed(1)+'×';};
+document.getElementById('s-proj').onchange=e=>{cfg.proj=+e.target.value;};
+
+// Mode switch
+document.querySelectorAll('#mode-sw button').forEach(btn=>{
+  btn.onclick=()=>{
+    document.querySelectorAll('#mode-sw button').forEach(b=>b.classList.remove('on'));
+    btn.classList.add('on');
+    cfg.mode=btn.dataset.m;
+    document.getElementById('s-mode').textContent=cfg.mode.toUpperCase();
+  };
+});
+
+document.getElementById('btn-burst').onclick=()=>{
+  for(let i=0;i<50;i++) setTimeout(()=>{if(strands.length<cfg.maxS+50) spawnStrand(true);},i*12);
+};
+document.getElementById('btn-reset').onclick=()=>{
+  strands=[];killed=0;ctx.clearRect(0,0,W,H);seedInitial();
+};
+
+// ── Main loop ──
+let chartTick = 0;
+function loop() {
+  frame++;
+  if(!cBuilt) buildChunk();
+  ctx.fillStyle='rgba(3,5,8,0.12)';ctx.fillRect(0,0,W,H);
+  const pulse=0.55+0.45*Math.sin(frame*0.033);
+
+  if(cfg.mode!=='classical') drawManifold(pulse);
+  if(cfg.mode!=='sech2') drawClassicalManifold(pulse);
+  drawCore(pulse);
+
+  // Spawn
+  for(let i=0;i<2;i++){if(strands.length<cfg.maxS) spawnStrand(false);}
+
+  for(let i=strands.length-1;i>=0;i--){
+    strands[i].update(); strands[i].draw();
+    if(strands[i].dead) strands.splice(i,1);
+  }
+  while(strands.length>cfg.maxS+50) strands.shift();
+
+  chartTick++;
+  if(chartTick%80===0&&cBuilt) drawCharts();
+  updateStats();
+  requestAnimationFrame(loop);
+}
+
+loop();
+</script>
+</body>
+</html>

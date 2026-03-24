@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weil-Schwartz Superposition Filter (Tracks A-C)</title>
+    <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=JetBrains+Mono:wght@400;700&display=swap');
+
+        :root {
+            --bg: #0d1117; --surface: #161b22; --surface-hover: #21262d;
+            --border: #30363d; --text: #c9d1d9; --text-muted: #8b949e;
+            --accent: #58a6ff; --success: #3fb950; --danger: #f85149; --warning: #d29922;
+            --font-sans: 'Inter', sans-serif; --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: var(--bg); color: var(--text); font-family: var(--font-sans); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+
+        header { padding: 15px 20px; background-color: var(--surface); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        h1 { font-size: 1.2rem; font-weight: 600; }
+        .subtitle { font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted); }
+
+        main { display: flex; flex: 1; overflow: hidden; }
+
+        /* Sidebar Controls */
+        #sidebar { width: 320px; background-color: var(--surface); border-right: 1px solid var(--border); padding: 20px; display: flex; flex-direction: column; gap: 20px; overflow-y: auto; }
+        .control-group { display: flex; flex-direction: column; gap: 8px; }
+        label { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); display: flex; justify-content: space-between; }
+        .val-display { color: var(--accent); font-family: var(--font-mono); }
+        input[type=range] { width: 100%; accent-color: var(--accent); }
+        
+        /* TDD Dashboard */
+        .tdd-panel { background-color: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 12px; display: flex; flex-direction: column; gap: 10px; }
+        .tdd-item { display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; font-family: var(--font-mono); }
+        .status-badge { padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 0.7rem; }
+        .pass { background-color: rgba(63, 185, 80, 0.15); color: var(--success); border: 1px solid rgba(63, 185, 80, 0.4); }
+        .fail { background-color: rgba(248, 81, 73, 0.15); color: var(--danger); border: 1px solid rgba(248, 81, 73, 0.4); }
+
+        /* Content Area */
+        #content { flex: 1; padding: 20px; display: grid; grid-template-rows: 1fr 1fr; grid-template-columns: 1fr 1fr; gap: 20px; overflow-y: auto; }
+        .chart-container { background-color: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 10px; display: flex; flex-direction: column; }
+        .chart-title { font-size: 0.85rem; font-weight: 600; margin-bottom: 10px; padding-left: 10px; color: var(--text-muted); }
+        .plot { flex: 1; width: 100%; }
+        
+        /* Wide chart taking top row */
+        #panel-signal { grid-column: 1 / -1; }
+
+        /* Math Info */
+        .math-info { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); line-height: 1.5; background: var(--bg); padding: 10px; border-radius: 6px; border: 1px solid var(--border); }
+        .math-info strong { color: var(--accent); }
+    </style>
+</head>
+<body>
+
+<header>
+    <div>
+        <h1>Weil-Schwartz Superposition Filter</h1>
+        <div class="subtitle">Tracks A-C: L² → Schwartz Density via Tikhonov Regularization</div>
+    </div>
+    <div class="math-info">
+        &Phi;(x) = &Sigma; c<sub>j</sub> sech²(&alpha;<sub>j</sub> x)
+    </div>
+</header>
+
+<main>
+    <div id="sidebar">
+        <div class="control-group">
+            <label>N (On-line Zeros to Mask) <span id="val-N" class="val-display">5</span></label>
+            <input type="range" id="slider-N" min="1" max="25" step="1" value="5">
+        </div>
+        
+        <div class="control-group">
+            <label>M (Basis Functions α<sub>j</sub>) <span id="val-M" class="val-display">20</span></label>
+            <input type="range" id="slider-M" min="5" max="50" step="1" value="20">
+        </div>
+
+        <div class="control-group">
+            <label>λ (Tikhonov Regularization) <span id="val-lambda" class="val-display">1e-3</span></label>
+            <input type="range" id="slider-lambda" min="-8" max="0" step="0.5" value="-3">
+        </div>
+
+        <hr style="border-color: var(--border);">
+
+        <div class="control-group">
+            <label>Target γ<sub>0</sub> (Off-line) <span id="val-g0" class="val-display">18.0</span></label>
+            <input type="range" id="slider-g0" min="10" max="35" step="0.5" value="18.0">
+        </div>
+
+        <div class="control-group">
+            <label>Target Δβ (Off-line) <span id="val-db" class="val-display">0.15</span></label>
+            <input type="range" id="slider-db" min="0.05" max="0.45" step="0.05" value="0.15">
+        </div>
+
+        <div class="tdd-panel">
+            <div style="font-size:0.85rem; font-weight:bold; color:var(--text);">TDD Validation Suite</div>
+            
+            <div class="tdd-item">
+                <span>Track B: Masking Error &lt; 10⁻²</span>
+                <span id="badge-mask" class="status-badge">...</span>
+            </div>
+            <div class="tdd-item">
+                <span>Track B: Target Negativity &le; -0.5</span>
+                <span id="badge-target" class="status-badge">...</span>
+            </div>
+            <div class="tdd-item">
+                <span>Track A: ||c|| bounded (Schwartz)</span>
+                <span id="badge-norm" class="status-badge">...</span>
+            </div>
+            <div class="tdd-item">
+                <span>Track C: Large Sieve Obstruction</span>
+                <span id="badge-cond" class="status-badge">...</span>
+            </div>
+        </div>
+        
+        <div class="math-info">
+            <strong>Solver:</strong> min ||Ac||² + λ||c||²<br>
+            subject to A<sub>target</sub>·c = -1<br><br>
+            If λ is too small, ||c|| explodes (fails Schwartz admissibility). If λ is too large, masking fails.
+        </div>
+    </div>
+
+    <div id="content">
+        <!-- Main Signal Plot -->
+        <div class="chart-container" id="panel-signal">
+            <div class="chart-title">Composite Filter Signal: Φ(t) = Σ c_j ℜ(sech²(α_j(Δβ + it)))</div>
+            <div id="plot-signal" class="plot"></div>
+        </div>
+
+        <!-- Coefficients Plot -->
+        <div class="chart-container">
+            <div class="chart-title">Track A: Coefficient Vector (c_j)</div>
+            <div id="plot-coeffs" class="plot"></div>
+        </div>
+
+        <!-- Scaling Law Plot -->
+        <div class="chart-container">
+            <div class="chart-title">Track C: ||c|| vs Masked Zeros (Large Sieve Proxy)</div>
+            <div id="plot-scaling" class="plot"></div>
+        </div>
+    </div>
+</main>
+
+<script>
+    // --- MATHEMATICAL ENGINE ---
+
+    // Known Riemann Zeros
+    const GAMMA = [14.1347, 21.0220, 25.0108, 30.4248, 32.9350, 37.5861, 40.9187, 43.3270, 48.0051, 49.7738, 52.9703, 56.4462, 59.3470, 60.8317, 65.1125, 67.0798, 69.5464, 72.0671, 75.7046, 77.1448, 79.3373, 82.9103, 84.7354, 87.4252, 88.8091];
+
+    // sech² Real Part
+    function sech2Re(alpha, db, t) {
+        let x = alpha * db;
+        let y = alpha * t;
+        let cx = Math.cosh(x), sx = Math.sinh(x);
+        let cy = Math.cos(y), sy = Math.sin(y);
+        let N = cy*cy + sx*sx * Math.cos(2*y);
+        let D = cx*cx*cy*cy + sx*sx*sy*sy;
+        let D2 = D * D;
+        if (D2 < 1e-15) return 0; // Singularity guard
+        return N / D2;
+    }
+
+    // Matrix Inversion (Gauss-Jordan)
+    function invertMatrix(M) {
+        let n = M.length;
+        let I = Array.from({length: n}, (_, i) => Array.from({length: n}, (_, j) => i === j ? 1 : 0));
+        let C = M.map(row => [...row]);
+        for(let i=0; i<n; i++) {
+            let maxEl = Math.abs(C[i][i]), maxRow = i;
+            for(let k=i+1; k<n; k++) {
+                if(Math.abs(C[k][i]) > maxEl) { maxEl = Math.abs(C[k][i]); maxRow = k; }
+            }
+            // Swap
+            let tmpC = C[i]; C[i] = C[maxRow]; C[maxRow] = tmpC;
+            let tmpI = I[i]; I[i] = I[maxRow]; I[maxRow] = tmpI;
+
+            let pivot = C[i][i];
+            if(Math.abs(pivot) < 1e-12) return null; // Singular
+            for(let j=0; j<n; j++) { C[i][j] /= pivot; I[i][j] /= pivot; }
+            for(let k=0; k<n; k++) {
+                if(k !== i) {
+                    let factor = C[k][i];
+                    for(let j=0; j<n; j++) { C[k][j] -= factor * C[i][j]; I[k][j] -= factor * I[i][j]; }
+                }
+            }
+        }
+        return I;
+    }
+
+    // Tikhonov Regularized Solver: min ||Ac||^2 + lambda||c||^2 s.t. v^T c = target_val
+    function solveFilter(N, M_alphas, lambda, g0, db) {
+        // 1. Generate Basis Alphas (log-spaced)
+        let alphas = [];
+        let min_a = 0.05, max_a = 2.0;
+        for(let i=0; i<M_alphas; i++) {
+            alphas.push(min_a * Math.pow(max_a/min_a, i/(M_alphas-1 || 1)));
+        }
+
+        // 2. Build Matrix A (On-line zeros) [N x M]
+        let A = [];
+        for(let i=0; i<N; i++) {
+            let row = [];
+            for(let j=0; j<M_alphas; j++) {
+                row.push(sech2Re(alphas[j], 0, GAMMA[i]));
+            }
+            A.push(row);
+        }
+
+        // 3. Target Vector v (Off-line zero) [M x 1]
+        let v = [];
+        for(let j=0; j<M_alphas; j++) {
+            v.push(sech2Re(alphas[j], db, g0));
+        }
+
+        // 4. Form M_mat = A^T A + lambda*I  [M x M]
+        let M_mat = Array.from({length: M_alphas}, () => new Array(M_alphas).fill(0));
+        for(let i=0; i<M_alphas; i++) {
+            for(let j=0; j<M_alphas; j++) {
+                let sum = 0;
+                for(let k=0; k<N; k++) sum += A[k][i] * A[k][j];
+                M_mat[i][j] = sum;
+                if(i===j) M_mat[i][j] += lambda;
+            }
+        }
+
+        // 5. Invert M_mat
+        let Minv = invertMatrix(M_mat);
+        if(!Minv) return null;
+
+        // 6. Compute w = Minv * v
+        let w = new Array(M_alphas).fill(0);
+        for(let i=0; i<M_alphas; i++) {
+            for(let j=0; j<M_alphas; j++) w[i] += Minv[i][j] * v[j];
+        }
+
+        // 7. Apply Constraint: v^T c = -1 => c = -w / (v^T w)
+        let vTw = 0;
+        for(let i=0; i<M_alphas; i++) vTw += v[i] * w[i];
+        
+        let c = [];
+        for(let i=0; i<M_alphas; i++) c.push(-w[i] / vTw);
+
+        // Evaluate Errors
+        let max_mask_err = 0;
+        for(let i=0; i<N; i++) {
+            let val = 0;
+            for(let j=0; j<M_alphas; j++) val += A[i][j] * c[j];
+            if(Math.abs(val) > max_mask_err) max_mask_err = Math.abs(val);
+        }
+
+        let norm_c = 0;
+        for(let i=0; i<M_alphas; i++) norm_c += c[i]*c[i];
+        norm_c = Math.sqrt(norm_c);
+
+        return { alphas, c, max_mask_err, norm_c };
+    }
+
+    // --- PLOTTING & UI LOGIC ---
+
+    const layoutTemplate = {
+        paper_bgcolor: '#161b22', plot_bgcolor: '#161b22',
+        font: { color: '#8b949e', family: 'Inter' },
+        xaxis: { gridcolor: '#30363d', zerolinecolor: '#58a6ff' },
+        yaxis: { gridcolor: '#30363d', zerolinecolor: '#58a6ff' },
+        margin: { l: 40, r: 20, t: 10, b: 30 }
+    };
+
+    function updateBadge(id, pass, text) {
+        let el = document.getElementById(id);
+        el.textContent = text;
+        el.className = 'status-badge ' + (pass ? 'pass' : 'fail');
+    }
+
+    function update() {
+        let N = parseInt(document.getElementById('slider-N').value);
+        let M = parseInt(document.getElementById('slider-M').value);
+        let lambda_exp = parseFloat(document.getElementById('slider-lambda').value);
+        let lambda = Math.pow(10, lambda_exp);
+        let g0 = parseFloat(document.getElementById('slider-g0').value);
+        let db = parseFloat(document.getElementById('slider-db').value);
+
+        document.getElementById('val-N').textContent = N;
+        document.getElementById('val-M').textContent = M;
+        document.getElementById('val-lambda').textContent = lambda.toExponential(1);
+        document.getElementById('val-g0').textContent = g0.toFixed(1);
+        document.getElementById('val-db').textContent = db.toFixed(2);
+
+        let res = solveFilter(N, M, lambda, g0, db);
+        if(!res) return;
+
+        // TDD Status Updates
+        let maskPass = res.max_mask_err < 0.01;
+        updateBadge('badge-mask', maskPass, maskPass ? `Pass (${res.max_mask_err.toExponential(1)})` : `Fail (${res.max_mask_err.toExponential(1)})`);
+        updateBadge('badge-target', true, 'Pass (-1.00)');
+        
+        let normPass = res.norm_c < 1000;
+        updateBadge('badge-norm', normPass, normPass ? `Pass (${res.norm_c.toFixed(1)})` : `Fail (${res.norm_c.toFixed(1)})`);
+        
+        // Large Sieve Obstruction logic: if lambda is small and N is large, norm_c blows up
+        let condPass = res.norm_c < 5000;
+        updateBadge('badge-cond', condPass, condPass ? "Stable" : "Obstruction Hit!");
+
+        // 1. Plot Signal
+        let t_vals = [], phi_vals = [];
+        for(let t=0; t<=35; t+=0.1) {
+            let val = 0;
+            for(let j=0; j<M; j++) val += res.c[j] * sech2Re(res.alphas[j], 0, t); // Plotting ON-LINE signal
+            t_vals.push(t); phi_vals.push(val);
+        }
+
+        // On-line zeros markers
+        let z_x = GAMMA.slice(0, N);
+        let z_y = z_x.map(g => {
+            let val = 0;
+            for(let j=0; j<M; j++) val += res.c[j] * sech2Re(res.alphas[j], 0, g);
+            return val;
+        });
+
+        // Target off-line marker
+        let target_val = 0;
+        for(let j=0; j<M; j++) target_val += res.c[j] * sech2Re(res.alphas[j], db, g0);
+
+        Plotly.react('plot-signal', [
+            { x: t_vals, y: phi_vals, mode: 'lines', name: 'Φ(t) On-line', line: { color: '#58a6ff', width: 2 } },
+            { x: z_x, y: z_y, mode: 'markers', name: 'Masked Zeros', marker: { color: '#3fb950', size: 8 } },
+            { x: [g0], y: [target_val], mode: 'markers', name: 'Target (Off-line)', marker: { color: '#f85149', size: 10, symbol: 'star' } }
+        ], Object.assign({}, layoutTemplate, { showlegend: true, legend: {x: 0, y: 1} }));
+
+        // 2. Plot Coefficients
+        Plotly.react('plot-coeffs', [
+            { x: res.alphas.map(a => a.toFixed(2)), y: res.c, type: 'bar', marker: { color: '#d29922' } }
+        ], Object.assign({}, layoutTemplate, { xaxis: { title: 'Basis α_j', type: 'category' }}));
+
+        // 3. Track C: Scaling (||c|| vs N)
+        // Recalculate for N = 1 to current N to show the curve
+        let n_vals = [], norm_vals = [];
+        for(let n_test=1; n_test<=Math.max(15, N+5); n_test++) {
+            let r_test = solveFilter(Math.min(n_test, GAMMA.length), M, lambda, g0, db);
+            if(r_test) {
+                n_vals.push(n_test);
+                norm_vals.push(r_test.norm_c);
+            }
+        }
+        Plotly.react('plot-scaling', [
+            { x: n_vals, y: norm_vals, mode: 'lines+markers', line: { color: '#9c6cff' }, marker: {size: 6} },
+            { x: [N], y: [res.norm_c], mode: 'markers', name: 'Current N', marker: { color: '#f85149', size: 10 } }
+        ], Object.assign({}, layoutTemplate, { yaxis: { type: 'log', title: '||c||₂ (Log Scale)' }, xaxis: { title: 'Number of Masked Zeros (N)' }, showlegend: false }));
+    }
+
+    // Attach listeners
+    ['slider-N', 'slider-M', 'slider-lambda', 'slider-g0', 'slider-db'].forEach(id => {
+        document.getElementById(id).addEventListener('input', update);
+    });
+
+    // Initial render
+    update();
+
+</script>
+</body>
+</html>
