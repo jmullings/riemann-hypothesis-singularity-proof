@@ -70,7 +70,7 @@ The proof operates under a **Gravity-Well Directive**: all spectral objects must
 8. **Gap 3 — Uniform Small-Δβ CLOSED**: Uniform small-Δβ bounds via γ₀-independent envelope analysis. `lambda_eff` uses `abs(envelope)/Δβ²`. Kadiri-Faber bound proves $\theta_{\mathrm{ceiling}} \to 0$. — `uniform_delta_beta.py`: `uniform_delta_beta_certificate`; `analytic_bounds.py`: `theta_ceiling`.
 9. **Gap 4 — Contradiction Witness CLOSED**: Explicit $(T_0^*, H^*)$ witness construction with multi-regime strategy: large Δβ direct, low-lying Theorem 6.1, high-lying H-averaging. — `contradiction_witness.py`: `gap4_contradiction_witness_certificate`.
 10. **Contradiction Engine**: For every tested $(\gamma_0, \Delta\beta > 0)$, the 6-step proof chain fires: positivity basin → $\tilde{F}_2$ decomposition → $\Delta A_{\mathrm{avg}} < 0$ → UBE convexity → envelope negative → contradiction certificate. — `triad_governor.py`: `contradiction_engine`.
-11. **Analytic Promotions (∞-Dimensional)**: Finite-N results lifted to global theorems: (a) sech⁴ identity proves Bochner PSD on $\ell^2(\mathbb{N})$ for all $N$; (b) R-L envelope + adaptive H-family ensures negativity; (c) spectral zeta $\zeta_H(s)$ absolutely converges for $\operatorname{Re}(s) > 1$; (d) $\limsup_{N\to\infty} \lambda_N \ge \lambda^*$ proved analytically via Bochner converse. — `analytic_promotion.py`: `bochner_psd_infinite`, `limsup_lambda_N_ge_lambda_star`.
+11. **Analytic Promotions (∞-Dimensional)**: Finite-N results lifted to global theorems: (a) sech⁴ identity proves Bochner PSD on $\ell^2(\mathbb{N})$ for all $N$; (b) R-L envelope + adaptive H-family ensures negativity; (c) spectral zeta $\zeta_H(s)$ absolutely converges for $\mathrm{Re}(s) > 1$; (d) $\limsup_{N\to\infty} \lambda_N \ge \lambda^*$ proved analytically via Bochner converse. — `analytic_promotion.py`: `bochner_psd_infinite`, `limsup_lambda_N_ge_lambda_star`.
 12. **Parseval/Convolution Identity Bridge (Fallacy I — PROVED)**: The conflation between Object 1 (Bochner positivity basin, Toeplitz quadratic form) and Object 2 (Weil explicit formula, linear functional) is resolved: $\tilde{F}_2^{(\text{integral})} \equiv \tilde{F}_2^{(\text{Toeplitz})}$ exactly for all finite $N$, verified to $10^{-14}$ precision. `SECOND_MOMENT_BRIDGE_PROVED = True` and `chain_complete = True` in strict Weil mode. — `sech2_second_moment.py`, `second_moment_bounds.py`.
 13. **High-Lying Zero Decay Defense (Fallacy J)**: Three-layer rebuttal to the claim that exponential Weil signal decay at $\gamma_0 \gg 1$ renders the contradiction powerless: (1) centered evaluation at $T_0 = \gamma_0$ eliminates exponential decay, (2) R-L envelope is $\gamma_0$-independent and strictly negative, (3) Theorem C with $H = c\log\gamma_0$ gives MAIN/TAIL $\to \infty$. — `fallacy_coverage.py`: `high_lying_zero_decay_certificate()`.
 
@@ -85,7 +85,7 @@ The proof operates under a **Gravity-Well Directive**: all spectral objects must
 
 ### 2.3 Computational Proof Coverage:
 The proof chain is **computationally complete** for all tested parameters:
-1. ~~**Finite $N$ truncation**: Dirichlet polynomials tested at $N \in \{10, 20, 30, 50\}$. No $N \to \infty$ extrapolation.~~ **PROMOTED** (Tier 28): The sech⁴ identity $g_{\lambda^*}(t) = (6/H^2)\operatorname{sech}^4(t/H) \ge 0$ proves the Bochner PSD property holds on $\ell^2(\mathbb{N})$ for *all* $N$ simultaneously. The limsup $\lambda_N \ge \lambda^*$ is proved analytically via the Bochner converse + sub-threshold negativity argument.
+1. ~~**Finite $N$ truncation**: Dirichlet polynomials tested at $N \in \{10, 20, 30, 50\}$. No $N \to \infty$ extrapolation.~~ **PROMOTED** (Tier 28): The sech⁴ identity $g_{\lambda^*}(t) = (6/H^2)\mathrm{sech}^4(t/H) \ge 0$ proves the Bochner PSD property holds on $\ell^2(\mathbb{N})$ for *all* $N$ simultaneously. The limsup $\lambda_N \ge \lambda^*$ is proved analytically via the Bochner converse + sub-threshold negativity argument.
 2. **$T_0$ domain**: Tested on $T_0 \in [0, 400]$. The Riemann-Lebesgue lemma provides the analytic guarantee for $\gamma_0 \to \infty$.
 3. **Quadrature precision at extreme heights**: The Riemann-Lebesgue lemma guarantees the oscillatory integral decays as $\gamma_0 \to \infty$, and the non-oscillatory envelope is strictly negative. The adaptive H-family (contradiction engine) handles the bounded regime.
 4. **Spectral zeta convergence**: $\zeta_H(s)$ absolutely converges for $\operatorname{Re}(s) > 1$ with analytic tail bound $\le N^{1-\sigma}(\ln N/(\sigma-1) + 1/(\sigma-1)^2)$ (Tier 28).
@@ -98,7 +98,7 @@ All four analytic gaps are **CLOSED** (25 March 2026) — no open items remain.
 
 | Component | Formula / Rule | Enforcement Module | Verification |
 |-----------|----------------|--------------------|--------------|
-| **Kernel** | $w_H(t) = \operatorname{sech}^2(t/H)$ | `kernel.py` | `test_01` |
+| **Kernel** | $w_H(t) = \mathrm{sech}^2(t/H)$ | `kernel.py` | `test_01` |
 | **Correction** | $\lambda^* = 4/H^2$ | `bochner.py` | `test_02` |
 | **Bochner PSD** | $f(\omega) = (\omega^2+4/H^2)\hat{w}_H(\omega) \ge 0$ | `bochner.py` | `test_02`, `test_05` |
 | **Off-Critical Signal**| $\Delta A(\Delta\beta, H) = -2\pi H^2 \Delta\beta^3 / \sin(\pi H \Delta\beta/2)$ | `offcritical.py` | `test_04`, `test_07` |

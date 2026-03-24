@@ -81,7 +81,7 @@ $$g_{\lambda^*}(t) = -w_H''(t) + \frac{4}{H^2}w_H(t) = \frac{6}{H^2}\operatornam
 
 2. **Bochner's Theorem (1933):** Since $g_{\lambda^*} > 0$ and $g_{\lambda^*} \in L^1(\mathbb{R})$, its Fourier transform is **positive-definite**. For *any* countable sequence $\{E_k\}_{k=1}^\infty$, the infinite Toeplitz operator $T_{jk} = f_{\lambda^*}(E_j - E_k)$ is positive on $\ell^2(\mathbb{N})$ — no finite matrix truncation required.
 
-3. **Tightness via Bochner Converse:** For any $\varepsilon > 0$, the sub-threshold weight $g_{\lambda^*-\varepsilon}(t)$ is negative for $|t/H| > \operatorname{arccosh}(\sqrt{6/(\varepsilon H^2)})$, proving $\lambda^* = 4/H^2$ is the **exact** infimum — not a numerical observation, but an algebraic law.
+3. **Tightness via Bochner Converse:** For any $\varepsilon > 0$, the sub-threshold weight $g_{\lambda^*-\varepsilon}(t)$ is negative for $|t/H| > \mathrm{arccosh}(\sqrt{6/(\varepsilon H^2)})$, proving $\lambda^* = 4/H^2$ is the **exact** infimum — not a numerical observation, but an algebraic law.
 
 This means the contradiction chain does not depend on $D_N \to \zeta$ limit interchange. The Weil Explicit Formula (an unconditional identity) evaluates $\tilde{F}_2$ for the true zeros, and an off-critical zero forces $\tilde{F}_2 < 0$, violating the algebraically proven positivity. See [TDD_PROOF/README.md §11](TDD_PROOF/README.md) for the full treatment and [TDD_PROOF/tests/test_46_analytic_promotions.py](TDD_PROOF/tests/) for 71 tests covering the sech⁴ identity, Bochner PSD, and Rayleigh tightness.
 
