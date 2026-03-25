@@ -2,7 +2,7 @@ name: TDD Proof Qualification
 
 on:
   pull_request_target:
-    branches: [ main ]
+    branches: [ develop ]
 
 jobs:
   qualify_and_merge:
@@ -23,9 +23,9 @@ jobs:
       # 2. Immutable Test Enforcement (The Anti-Tamper Lock)
       - name: Enforce Immutable Test Suite
         run: |
-          git fetch origin main
-          git checkout origin/main -- tests/
-          git checkout origin/main -- requirements.txt
+          git fetch origin develop
+          git checkout origin/develop -- tests/
+          git checkout origin/develop -- requirements.txt
 
       # 3. Setup Python Environment
       - name: Set up Python 3.9
