@@ -2,7 +2,7 @@ name: TDD Proof Qualification
 
 on:
   pull_request_target:
-    branches: [ main ]
+    branches: [ develop ]
 
 jobs:
   qualify_and_merge:
@@ -28,22 +28,22 @@ jobs:
           git checkout origin/develop -- TDD_PROOF/requirements.txt
 
       # 3. Setup Python Environment
-      - name: Set up Python 3.9
+      - name: Set up Python 3.11
         uses: actions/setup-python@v5
         with:
-          python-version: '3.9'
+          python-version: '3.11'
           cache: 'pip'
 
       # 4. Install Dependencies
       - name: Install Math Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install -r TDD_PROOF/requirements.txt
 
       # 5. Execute 9D Spectral Proof Engine (Strict Mode)
       - name: Execute 2052-Test Riemann Suite
         run: |
-          pytest tests/ -q --tb=short -W error
+          pytest TDD_PROOF/tests/ -q --tb=short -W error
 
       # 6. Autonomous Merge (Only executes if Step 5 passes flawlessly)
       - name: Autonomous Pull Request Merge
