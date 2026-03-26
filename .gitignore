@@ -24,7 +24,7 @@
 # Include TEST_SUITE folder and its contents
 !TEST_SUITE/
 !TEST_SUITE/**
-
+!.github/workflows/ci_gatekeeper.yml
 # Include FORMAL_PROOF_NEW folder and its contents
 !FORMAL_PROOF_NEW/
 !FORMAL_PROOF_NEW/**
