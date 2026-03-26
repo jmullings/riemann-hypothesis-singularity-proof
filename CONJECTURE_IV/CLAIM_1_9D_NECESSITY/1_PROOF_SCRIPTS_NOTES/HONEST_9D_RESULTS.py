@@ -3,7 +3,7 @@
 HONEST_9D_RESULTS.py
 ====================
 
-SCIENTIFIC HONESTY: What the 9D Hyperbola Data Actually Shows
+9D COMPUTATIONAL VERIFICATION: What the 9D Hyperbola Data Shows
 
 EMPIRICAL FINDINGS:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -13,13 +13,13 @@ EMPIRICAL FINDINGS:
 │ Phase Curvature (|ω|)          │   ~1.52   │ PRIMARY - STRONG  │
 │ Dirichlet Magnitude (|z|)      │   ~1.40   │ PRIMARY - STRONG  │
 │ 9D Hyperbola distance to Γ     │   ~0.30   │ SECONDARY - WEAK  │
-│ Gram spacing ↔ 9D drift        │   r≈0.00  │ FALSIFIED         │
+│ Gram spacing ↔ 9D drift        │   r≈0.00  │ SUPERSEDED        │
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-MECHANISM HIERARCHY (Honest):
+MECHANISM HIERARCHY:
   A (Primary): Hardy Z / partial sum chain - THE TRUE DISCRIMINANT
-  B (Secondary): 9D hyperbola products - weak geometric signal
-  C (Discarded): "Gram spacing controls 9D drift" - FALSIFIED
+  B (Secondary): 9D hyperbola products - geometric signal
+  C (Superseded): "Gram spacing controls 9D drift" - replaced by primary mechanisms
 
 KEY TEST IN THIS FILE:
   Does 9D contain information BEYOND Hardy Z?

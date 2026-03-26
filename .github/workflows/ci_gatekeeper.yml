@@ -2,7 +2,7 @@ name: TDD Proof Qualification
 
 on:
   pull_request_target:
-    branches: [ main ]
+    branches: [ develop ]
 
 jobs:
   qualify_and_merge:
@@ -40,10 +40,21 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # 5. Execute 9D Spectral Proof Engine (Strict Mode)
+
+      # 5. Debug directory and command
+      - name: Debug directory and command
+        run: |
+          echo "Current working directory:"
+          pwd
+          echo "---"
+          echo "Recursive directory listing:"
+          ls -R
+          echo "---"
+
+      # 6. Execute 9D Spectral Proof Engine (Strict Mode)
       - name: Execute 2052-Test Riemann Suite
         run: |
-          pytest tests/ -q --tb=short -W error
+          pytest TDD_PROOF/tests/ -q --tb=short -W error
 
       # 6. Autonomous Merge (Only executes if Step 5 passes flawlessly)
       - name: Autonomous Pull Request Merge
