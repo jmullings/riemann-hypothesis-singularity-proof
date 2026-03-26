@@ -40,7 +40,18 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # 5. Execute 9D Spectral Proof Engine (Strict Mode)
+
+      # 5. Debug directory and command
+      - name: Debug directory and command
+        run: |
+          echo "Current working directory:"
+          pwd
+          echo "---"
+          echo "Recursive directory listing:"
+          ls -R
+          echo "---"
+
+      # 6. Execute 9D Spectral Proof Engine (Strict Mode)
       - name: Execute 2052-Test Riemann Suite
         run: |
           pytest TDD_PROOF/tests/ -q --tb=short -W error
