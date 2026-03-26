@@ -205,7 +205,15 @@ def T_phi_9D(T: float, lam: np.ndarray) -> np.ndarray:
     - Law B: Chebyshev bounds constrain magnitude
     - Law E: B-V determines trailing mode scale
     """
-    N = min(int(np.exp(T)) + 1, len(lam) - 1)
+    # Safely compute N to avoid overflow with large T values
+    try:
+        if T > 700:  # exp(700) is close to machine overflow
+            N = len(lam) - 1  # Use maximum available
+        else:
+            N = min(int(np.exp(T)) + 1, len(lam) - 1)
+    except (OverflowError, ValueError):
+        N = len(lam) - 1  # Fallback to maximum available
+        
     if N < 2:
         return np.zeros(NUM_BRANCHES)
     

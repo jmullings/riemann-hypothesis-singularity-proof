@@ -99,7 +99,7 @@ The **9D curvature collapse** emerges from ψ(T) analysis:
 - **Precision**: ~2.65% — 404 out of 415 singularities are false positives
 - **F1 Score**: ~5% — indicates significant work needed for exact correspondence
 
-**Honest Assessment**:
+**Computational Assessment**:
 - **⇒ Direction Supported**: Every zero ⇒ nearby singularity (empirically verified)
 - **⇐ Direction Not Established**: Most singularities ↛ zeros (precision problem)
 - **Exact Bi-implication**: Requires analytical completion of Conjecture IV 5.3 + Conjecture V
