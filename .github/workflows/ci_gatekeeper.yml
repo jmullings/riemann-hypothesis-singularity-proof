@@ -24,8 +24,8 @@ jobs:
       - name: Enforce Immutable Test Suite
         run: |
           git fetch origin develop
-          git checkout origin/develop -- tests/
-          git checkout origin/develop -- requirements.txt
+          git checkout origin/develop -- TDD_PROOF/tests/
+          git checkout origin/develop -- TDD_PROOF/requirements.txt
 
       # 3. Setup Python Environment
       - name: Set up Python 3.9
@@ -43,7 +43,7 @@ jobs:
       # 5. Execute 9D Spectral Proof Engine (Strict Mode)
       - name: Execute 2052-Test Riemann Suite
         run: |
-          pytest tests/ -q --tb=short -W error
+          pytest TDD_PROOF/tests/ -q --tb=short -W error
 
       # 6. Autonomous Merge (Only executes if Step 5 passes flawlessly)
       - name: Autonomous Pull Request Merge
