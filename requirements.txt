@@ -1,0 +1,5 @@
+# Proxy requirements.txt for CI compatibility
+# This file ensures the root requirements.txt exists for CI workflows.
+# It delegates to the actual requirements file in TDD_PROOF/requirements.txt
+
+-r TDD_PROOF/requirements.txt
