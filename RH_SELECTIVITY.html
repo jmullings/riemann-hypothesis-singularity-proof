@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>σ-Selectivity Framework — Mullings 2026</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Spectral:wght@300;400;600&display=swap');
+
+:root {
+  --ink: #0e0f14;
+  --paper: #f5f2eb;
+  --rule: #c8c2b4;
+  --faint: #e8e3d8;
+  --accent: #c0392b;
+  --gold: #b8860b;
+  --safe: #1a6b3a;
+  --mono: 'DM Mono', monospace;
+  --serif: 'Spectral', Georgia, serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 15px; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  line-height: 1.65;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header {
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.header h1 {
+  font-family: var(--serif);
+  font-size: 28px;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+}
+
+.header .subtitle {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: #888;
+  letter-spacing: 0.05em;
+}
+
+.section {
+  margin-bottom: 3rem;
+}
+
+.section-title {
+  font-family: var(--serif);
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--faint);
+}
+
+.theorem-box {
+  border: 1px solid var(--gold);
+  padding: 1.25rem 1.5rem;
+  margin: 1.25rem 0;
+  position: relative;
+  background: rgba(184, 134, 11, 0.03);
+}
+
+.theorem-box::before {
+  content: attr(data-label);
+  position: absolute;
+  top: -9px;
+  left: 12px;
+  background: var(--paper);
+  padding: 0 6px;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.eq {
+  display: block;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 13px;
+  padding: 0.75rem 0;
+  color: var(--ink);
+  letter-spacing: 0.02em;
+  margin: 0.5rem 0;
+}
+
+.controls {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+  padding: 1rem;
+  background: var(--faint);
+  border: 1px solid var(--rule);
+}
+
+.ctrl-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ctrl-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #888;
+}
+
+.ctrl-label span {
+  color: var(--ink);
+  font-size: 10px;
+  font-weight: 500;
+}
+
+input[type=range] {
+  width: 140px;
+  accent-color: var(--accent);
+}
+
+.btn {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 7px 14px;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+  margin-bottom: 1.5rem;
+}
+
+.metric {
+  background: white;
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.metric-label {
+  font-family: var(--mono);
+  font-size: 8.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #999;
+}
+
+.metric-value {
+  font-family: var(--mono);
+  font-size: 18px;
+  font-weight: 300;
+  color: var(--ink);
+}
+
+.metric-value.green { color: var(--safe); }
+.metric-value.red { color: var(--accent); }
+.metric-value.gold { color: var(--gold); }
+
+.canvas-wrap {
+  border: 1px solid var(--rule);
+  background: white;
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.canvas-wrap canvas {
+  display: block;
+  width: 100%;
+}
+
+.canvas-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #999;
+  padding: 5px 10px;
+  border-top: 1px solid var(--faint);
+  background: var(--faint);
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--mono);
+  font-size: 11px;
+  margin-bottom: 1.5rem;
+}
+
+.data-table th {
+  text-align: left;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #888;
+  padding: 6px 10px;
+  border-bottom: 2px solid var(--rule);
+}
+
+.data-table td {
+  padding: 5px 10px;
+  border-bottom: 1px solid var(--faint);
+}
+
+.data-table tr:hover td {
+  background: var(--faint);
+}
+
+@media (max-width: 760px) {
+  body { padding: 1rem; }
+  .controls { flex-direction: column; align-items: stretch; }
+  .ctrl-group { width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>A σ-Selectivity Framework via sech²-Weighted Curvature</h1>
+  <div class="subtitle">Jason Mullings BSc (2026) · Algebraic singularity at σ = 1/2 · Implementation of Section 3</div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════ -->
+<!-- SECTION 1: σ-SELECTOR Q_N(σ) -->
+<!-- ════════════════════════════════════════════════════════ -->
+
+<div class="section">
+  <div class="section-title">1. The σ-Selector Q<sub>N</sub>(σ) — Definition 3.4</div>
+
+  <div class="theorem-box" data-label="Definition 3.4">
+    <div class="eq">Q<sub>N</sub>(σ) = Σ<sub>n=2</sub><sup>N</sup> [n<sup>−σ</sup> − n<sup>−(1−σ)</sup>]² (ln n)²</div>
+    <p style="margin-top:0.75rem">
+      The σ-selector measures departure from the critical line σ = 1/2 using only the Dirichlet 
+      coefficient structure. It vanishes <strong>if and only if σ = 1/2</strong> (Proposition 3.5).
+    </p>
+  </div>
+
+  <div class="controls">
+    <div class="ctrl-group">
+      <div class="ctrl-label">N (truncation) <span id="lbl-N">100</span></div>
+      <input type="range" min="10" max="300" value="100" id="slN" 
+             oninput="document.getElementById('lbl-N').textContent=this.value">
+    </div>
+    <div class="ctrl-group">
+      <div class="ctrl-label">σ range</div>
+      <select id="selRange" style="font-family:var(--mono);font-size:11px;padding:4px 8px;border:1px solid var(--rule)">
+        <option value="narrow">[0.40, 0.60] narrow</option>
+        <option value="wide" selected>[0.30, 0.70] standard</option>
+        <option value="full">[0.10, 0.90] full</option>
+      </select>
+    </div>
+    <button class="btn" onclick="computeQN()">Compute Q<sub>N</sub>(σ)</button>
+  </div>
+
+  <div class="metrics" id="metrics-qn">
+    <div class="metric">
+      <div class="metric-label">Q<sub>N</sub>(σ=0.5)</div>
+      <div class="metric-value green" id="m-q-half">—</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Q<sub>N</sub>(σ=0.4)</div>
+      <div class="metric-value" id="m-q-04">—</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Minimum at σ</div>
+      <div class="metric-value green" id="m-sigma-min">—</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Q″<sub>N</sub>(1/2)</div>
+      <div class="metric-value gold" id="m-curv">—</div>
+    </div>
+  </div>
+
+  <div class="canvas-wrap">
+    <canvas id="cvQN" height="280"></canvas>
+    <div class="canvas-label">Q<sub>N</sub>(σ) — Unique minimum at σ = 1/2 (Proposition 3.5)</div>
+  </div>
+
+  <div class="theorem-box" data-label="Proposition 3.5 — Strict σ-Selection">
+    <p>For every fixed N ≥ 2:</p>
+    <div class="eq">Q<sub>N</sub>(σ) ≥ 0 for all σ ∈ (0,1)</div>
+    <div class="eq">Q<sub>N</sub>(σ) = 0 ⟺ σ = 1/2</div>
+    <div class="eq">Q<sub>N</sub>(σ) > 0 for all σ ∈ (0,1) ∖ {1/2}</div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════ -->
+<!-- SECTION 2: σ-GENERATOR g(σ; n) -->
+<!-- ════════════════════════════════════════════════════════ -->
+
+<div class="section">
+  <div class="section-title">2. The σ-Generator g(σ; n) — Definition 3.2</div>
+
+  <div class="theorem-box" data-label="Definition 3.2">
+    <div class="eq">g(σ; n) = n<sup>−σ</sup> − n<sup>−(1−σ)</sup></div>
+    <div class="eq">= −2n<sup>−1/2</sup> sinh((σ − 1/2) ln n)</div>
+    <p style="margin-top:0.75rem">
+      The generator encodes the functional equation symmetry σ ↔ 1−σ at the coefficient level.
+      It vanishes uniquely at σ = 1/2 (Lemma 3.3).
+    </p>
+  </div>
+
+  <div class="controls">
+    <div class="ctrl-group">
+      <div class="ctrl-label">Reference n <span id="lbl-n-ref">7</span></div>
+      <input type="range" min="2" max="20" value="7" id="slNref" 
+             oninput="document.getElementById('lbl-n-ref').textContent=this.value">
+    </div>
+    <button class="btn" onclick="computeGenerator()">Compute g(σ; n)</button>
+  </div>
+
+  <div class="canvas-wrap">
+    <canvas id="cvGen" height="260"></canvas>
+    <div class="canvas-label">g(σ; n) for selected n — Antisymmetric about σ = 1/2 (Lemma 3.3)</div>
+  </div>
+
+  <div class="theorem-box" data-label="Lemma 3.3 — Properties of g">
+    <p><strong>(i) Antisymmetry:</strong> g(1−σ; n) = −g(σ; n)</p>
+    <p><strong>(ii) Unique zero:</strong> g(σ; n) = 0 ⟺ σ = 1/2</p>
+    <p><strong>(iii) Hyperbolic factorisation:</strong> g(σ; n) = −2n<sup>−1/2</sup> sinh((σ−1/2) ln n)</p>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════ -->
+<!-- SECTION 3: CURVATURE AT σ = 1/2 -->
+<!-- ════════════════════════════════════════════════════════ -->
+
+<div class="section">
+  <div class="section-title">3. Non-Degenerate Curvature — Theorem 3.6</div>
+
+  <div class="theorem-box" data-label="Theorem 3.6">
+    <div class="eq">Q′<sub>N</sub>(1/2) = 0</div>
+    <div class="eq">Q″<sub>N</sub>(1/2) = 8 Σ<sub>n=2</sub><sup>N</sup> (ln n)⁴/n > 0</div>
+    <p style="margin-top:0.75rem">
+      Q<sub>N</sub> has a strict, non-degenerate quadratic minimum at σ = 1/2.
+    </p>
+  </div>
+
+  <div class="controls">
+    <div class="ctrl-group">
+      <div class="ctrl-label">N range</div>
+      <select id="selNrange" style="font-family:var(--mono);font-size:11px;padding:4px 8px;border:1px solid var(--rule)">
+        <option value="small">10, 20, 40, 80</option>
+        <option value="medium" selected>20, 50, 100, 200</option>
+        <option value="large">50, 100, 200, 400</option>
+      </select>
+    </div>
+    <button class="btn" onclick="computeCurvature()">Compute Q″<sub>N</sub>(1/2)</button>
+  </div>
+
+  <div class="canvas-wrap">
+    <canvas id="cvCurv" height="240"></canvas>
+    <div class="canvas-label">Q″<sub>N</sub>(1/2) vs N — Monotone growth (Appendix B)</div>
+  </div>
+
+  <table class="data-table" id="curv-table">
+    <thead>
+      <tr>
+        <th>N</th>
+        <th>Q″<sub>N</sub>(1/2)</th>
+        <th>Σ (ln n)⁴/n</th>
+        <th>Ratio (8× formula)</th>
+      </tr>
+    </thead>
+    <tbody id="curv-tbody"></tbody>
+  </table>
+</div>
+
+<!-- ════════════════════════════════════════════════════════ -->
+<!-- SECTION 4: TAYLOR EXPANSION -->
+<!-- ════════════════════════════════════════════════════════ -->
+
+<div class="section">
+  <div class="section-title">4. Taylor Expansion Near σ = 1/2 — Corollary 3.7</div>
+
+  <div class="theorem-box" data-label="Corollary 3.7">
+    <p>Writing ε = σ − 1/2, near σ = 1/2:</p>
+    <div class="eq">Q<sub>N</sub>(σ) = 4ε² Σ<sub>n=2</sub><sup>N</sup> (ln n)⁴/n + (4ε⁴/3) Σ<sub>n=2</sub><sup>N</sup> (ln n)⁶/n + O(ε⁶)</div>
+  </div>
+
+  <div class="controls">
+    <div class="ctrl-group">
+      <div class="ctrl-label">N <span id="lbl-N-taylor">80</span></div>
+      <input type="range" min="20" max="200" value="80" id="slNtaylor" 
+             oninput="document.getElementById('lbl-N-taylor').textContent=this.value">
+    </div>
+    <div class="ctrl-group">
+      <div class="ctrl-label">σ <span id="lbl-sigma-taylor">0.52</span></div>
+      <input type="range" min="0.45" max="0.55" step="0.001" value="0.52" id="slSigmaTaylor" 
+             oninput="document.getElementById('lbl-sigma-taylor').textContent=(+this.value).toFixed(3)">
+    </div>
+    <button class="btn" onclick="computeTaylor()">Compare Q<sub>N</sub> vs Taylor</button>
+  </div>
+
+  <div class="metrics">
+    <div class="metric">
+      <div class="metric-label">Q<sub>N</sub>(σ) exact</div>
+      <div class="metric-value" id="m-exact">—</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Taylor O(ε²)</div>
+      <div class="metric-value" id="m-taylor2">—</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Taylor O(ε⁴)</div>
+      <div class="metric-value" id="m-taylor4">—</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Relative error</div>
+      <div class="metric-value gold" id="m-taylor-err">—</div>
+    </div>
+  </div>
+
+  <div class="canvas-wrap">
+    <canvas id="cvTaylor" height="260"></canvas>
+    <div class="canvas-label">Q<sub>N</sub>(σ) vs Taylor approximations near σ = 1/2</div>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════════════
+// CORE MATHEMATICS — σ-SELECTIVITY FRAMEWORK
+// ════════════════════════════════════════════════════════════════
+
+// Definition 3.4: The σ-selector
+function Q_N(sigma, N) {
+  let sum = 0;
+  for (let n = 2; n <= N; n++) {
+    const lnn = Math.log(n);
+    const g = Math.pow(n, -sigma) - Math.pow(n, -(1 - sigma));
+    sum += g * g * lnn * lnn;
+  }
+  return sum;
+}
+
+// Definition 3.2: The σ-generator
+function g_sigma(sigma, n) {
+  return Math.pow(n, -sigma) - Math.pow(n, -(1 - sigma));
+}
+
+// Alternative form (Lemma 3.3 iii)
+function g_sigma_hyperbolic(sigma, n) {
+  return -2 * Math.pow(n, -0.5) * Math.sinh((sigma - 0.5) * Math.log(n));
+}
+
+// Theorem 3.6: Second derivative at σ = 1/2
+function Q_N_second_derivative(N) {
+  let sum = 0;
+  for (let n = 2; n <= N; n++) {
+    const lnn = Math.log(n);
+    sum += Math.pow(lnn, 4) / n;
+  }
+  return 8 * sum;
+}
+
+// Corollary 3.7: Taylor expansion coefficients
+function taylor_coefficients(N) {
+  let c2 = 0, c4 = 0;
+  for (let n = 2; n <= N; n++) {
+    const lnn = Math.log(n);
+    c2 += Math.pow(lnn, 4) / n;
+    c4 += Math.pow(lnn, 6) / n;
+  }
+  return { c2: 4 * c2, c4: (4 / 3) * c4 };
+}
+
+// Taylor approximation
+function Q_N_taylor(sigma, N, order = 4) {
+  const eps = sigma - 0.5;
+  const { c2, c4 } = taylor_coefficients(N);
+  if (order === 2) return c2 * eps * eps;
+  return c2 * eps * eps + c4 * eps * eps * eps * eps;
+}
+
+// ════════════════════════════════════════════════════════════════
+// CANVAS HELPERS
+// ════════════════════════════════════════════════════════════════
+
+function setupCanvas(id) {
+  const canvas = document.getElementById(id);
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.parentElement.getBoundingClientRect();
+  const w = rect.width || 640;
+  const h = canvas.height;
+  canvas.width = w * dpr;
+  canvas.height = h * dpr;
+  canvas.style.width = w + 'px';
+  canvas.style.height = h + 'px';
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+  return { ctx, w, h };
+}
+
+function drawAxes(ctx, W, H, pad, xmin, xmax, ymin, ymax, xlabel, ylabel) {
+  const toX = v => pad.l + (v - xmin) / (xmax - xmin) * (W - pad.l - pad.r);
+  const toY = v => H - pad.b - (v - ymin) / (ymax - ymin) * (H - pad.t - pad.b);
+
+  ctx.strokeStyle = '#bbb';
+  ctx.lineWidth = 0.5;
+  
+  // Axes
+  ctx.beginPath();
+  ctx.moveTo(pad.l, pad.t);
+  ctx.lineTo(pad.l, H - pad.b);
+  ctx.moveTo(pad.l, H - pad.b);
+  ctx.lineTo(W - pad.r, H - pad.b);
+  ctx.stroke();
+
+  // X ticks
+  ctx.fillStyle = '#888';
+  ctx.font = '9px DM Mono, monospace';
+  ctx.textAlign = 'center';
+  const nxticks = 8;
+  for (let i = 0; i <= nxticks; i++) {
+    const v = xmin + i * (xmax - xmin) / nxticks;
+    const px = toX(v);
+    ctx.beginPath();
+    ctx.moveTo(px, H - pad.b);
+    ctx.lineTo(px, H - pad.b + 4);
+    ctx.stroke();
+    ctx.fillText(v.toFixed(2), px, H - pad.b + 13);
+  }
+  ctx.fillText(xlabel, W / 2, H - 2);
+
+  // Y ticks
+  const nyticks = 5;
+  ctx.textAlign = 'right';
+  for (let i = 0; i <= nyticks; i++) {
+    const v = ymin + i * (ymax - ymin) / nyticks;
+    const py = toY(v);
+    ctx.beginPath();
+    ctx.moveTo(pad.l, py);
+    ctx.lineTo(pad.l - 4, py);
+    ctx.stroke();
+    const label = v < 0.01 ? v.toExponential(1) : v.toFixed(2);
+    ctx.fillText(label, pad.l - 6, py + 3);
+  }
+  
+  ctx.save();
+  ctx.translate(11, H / 2);
+  ctx.rotate(-Math.PI / 2);
+  ctx.textAlign = 'center';
+  ctx.fillText(ylabel, 0, 0);
+  ctx.restore();
+
+  return { toX, toY };
+}
+
+// ════════════════════════════════════════════════════════════════
+// SECTION 1: Q_N(σ) COMPUTATION
+// ════════════════════════════════════════════════════════════════
+
+function computeQN() {
+  const N = +document.getElementById('slN').value;
+  const rng = document.getElementById('selRange').value;
+  const [smin, smax] = rng === 'narrow' ? [0.40, 0.60] : 
+                        rng === 'wide' ? [0.30, 0.70] : [0.10, 0.90];
+  
+  const steps = 100;
+  const sigmas = Array.from({ length: steps + 1 }, (_, i) => smin + i * (smax - smin) / steps);
+  const Qvals = sigmas.map(s => Q_N(s, N));
+  
+  const minIdx = Qvals.indexOf(Math.min(...Qvals));
+  const minSig = sigmas[minIdx];
+  const qHalf = Q_N(0.5, N);
+  const q04 = Q_N(0.4, N);
+  const curv = Q_N_second_derivative(N);
+  
+  // Update metrics
+  document.getElementById('m-q-half').textContent = qHalf.toExponential(3);
+  document.getElementById('m-q-04').textContent = q04.toFixed(4);
+  document.getElementById('m-sigma-min').textContent = minSig.toFixed(4);
+  document.getElementById('m-curv').textContent = curv.toFixed(2);
+  
+  // Draw
+  const { ctx, w, h } = setupCanvas('cvQN');
+  ctx.clearRect(0, 0, w, h);
+  const pad = { l: 52, r: 20, t: 20, b: 36 };
+  const ymax = Math.max(...Qvals) * 1.08;
+  const { toX, toY } = drawAxes(ctx, w, h, pad, smin, smax, 0, ymax, 'σ', 'Q_N(σ)');
+  
+  // Fill area
+  ctx.beginPath();
+  sigmas.forEach((s, i) => {
+    const px = toX(s), py = toY(Qvals[i]);
+    i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+  });
+  ctx.lineTo(toX(smax), toY(0));
+  ctx.lineTo(toX(smin), toY(0));
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(192, 57, 43, 0.07)';
+  ctx.fill();
+  
+  // Line
+  ctx.beginPath();
+  ctx.strokeStyle = '#c0392b';
+  ctx.lineWidth = 1.8;
+  sigmas.forEach((s, i) => {
+    const px = toX(s), py = toY(Qvals[i]);
+    i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+  });
+  ctx.stroke();
+  
+  // σ = 1/2 line
+  ctx.setLineDash([4, 3]);
+  ctx.strokeStyle = '#b8860b';
+  ctx.lineWidth = 1.2;
+  ctx.beginPath();
+  ctx.moveTo(toX(0.5), pad.t);
+  ctx.lineTo(toX(0.5), h - pad.b);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle = '#b8860b';
+  ctx.font = '9px DM Mono, monospace';
+  ctx.textAlign = 'center';
+  ctx.fillText('σ = 1/2', toX(0.5), pad.t + 10);
+  
+  // Minimum dot
+  ctx.fillStyle = '#c0392b';
+  ctx.beginPath();
+  ctx.arc(toX(minSig), toY(Qvals[minIdx]), 5, 0, 2 * Math.PI);
+  ctx.fill();
+}
+
+// ════════════════════════════════════════════════════════════════
+// SECTION 2: σ-GENERATOR g(σ; n)
+// ════════════════════════════════════════════════════════════════
+
+function computeGenerator() {
+  const nRef = +document.getElementById('slNref').value;
+  const sigmas = Array.from({ length: 101 }, (_, i) => 0.1 + i * 0.8 / 100);
+  
+  const gVals = sigmas.map(s => g_sigma(s, nRef));
+  
+  const { ctx, w, h } = setupCanvas('cvGen');
+  ctx.clearRect(0, 0, w, h);
+  const pad = { l: 52, r: 20, t: 20, b: 36 };
+  const ymin = Math.min(...gVals) * 1.1;
+  const ymax = Math.max(...gVals) * 1.1;
+  const { toX, toY } = drawAxes(ctx, w, h, pad, 0.1, 0.9, ymin, ymax, 'σ', `g(σ; ${nRef})`);
+  
+  // Zero line
+  ctx.strokeStyle = '#ccc';
+  ctx.lineWidth = 0.8;
+  ctx.beginPath();
+  ctx.moveTo(pad.l, toY(0));
+  ctx.lineTo(w - pad.r, toY(0));
+  ctx.stroke();
+  
+  // g(σ; n) curve
+  ctx.beginPath();
+  ctx.strokeStyle = '#1a6b3a';
+  ctx.lineWidth = 1.8;
+  sigmas.forEach((s, i) => {
+    const px = toX(s), py = toY(gVals[i]);
+    i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+  });
+  ctx.stroke();
+  
+  // σ = 1/2 line
+  ctx.setLineDash([4, 3]);
+  ctx.strokeStyle = '#b8860b';
+  ctx.lineWidth = 1.2;
+  ctx.beginPath();
+  ctx.moveTo(toX(0.5), pad.t);
+  ctx.lineTo(toX(0.5), h - pad.b);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  
+  // Zero point
+  ctx.fillStyle = '#c0392b';
+  ctx.beginPath();
+  ctx.arc(toX(0.5), toY(0), 5, 0, 2 * Math.PI);
+  ctx.fill();
+}
+
+// ════════════════════════════════════════════════════════════════
+// SECTION 3: CURVATURE Q″_N(1/2)
+// ════════════════════════════════════════════════════════════════
+
+function computeCurvature() {
+  const rng = document.getElementById('selNrange').value;
+  const Nvals = rng === 'small' ? [10, 20, 40, 80] :
+                rng === 'medium' ? [20, 50, 100, 200] :
+                [50, 100, 200, 400];
+  
+  const curvVals = Nvals.map(N => Q_N_second_derivative(N));
+  const sumVals = Nvals.map(N => {
+    let s = 0;
+    for (let n = 2; n <= N; n++) s += Math.pow(Math.log(n), 4) / n;
+    return s;
+  });
+  
+  // Update table
+  const tbody = document.getElementById('curv-tbody');
+  tbody.innerHTML = '';
+  Nvals.forEach((N, i) => {
+    const tr = document.createElement('tr');
+    const ratio = (curvVals[i] / (8 * sumVals[i])).toFixed(6);
+    tr.innerHTML = `
+      <td>${N}</td>
+      <td>${curvVals[i].toFixed(4)}</td>
+      <td>${sumVals[i].toFixed(4)}</td>
+      <td>${ratio}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+  
+  // Draw
+  const { ctx, w, h } = setupCanvas('cvCurv');
+  ctx.clearRect(0, 0, w, h);
+  const pad = { l: 52, r: 20, t: 20, b: 36 };
+  const ymax = Math.max(...curvVals) * 1.08;
+  const xmin = Math.min(...Nvals);
+  const xmax = Math.max(...Nvals);
+  const { toX, toY } = drawAxes(ctx, w, h, pad, xmin, xmax, 0, ymax, 'N', 'Q″_N(1/2)');
+  
+  // Points and line
+  ctx.strokeStyle = '#1a6b3a';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  Nvals.forEach((N, i) => {
+    const px = toX(N), py = toY(curvVals[i]);
+    i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+  });
+  ctx.stroke();
+  
+  ctx.fillStyle = '#c0392b';
+  Nvals.forEach((N, i) => {
+    ctx.beginPath();
+    ctx.arc(toX(N), toY(curvVals[i]), 4, 0, 2 * Math.PI);
+    ctx.fill();
+  });
+}
+
+// ════════════════════════════════════════════════════════════════
+// SECTION 4: TAYLOR EXPANSION
+// ════════════════════════════════════════════════════════════════
+
+function computeTaylor() {
+  const N = +document.getElementById('slNtaylor').value;
+  const sigma = +document.getElementById('slSigmaTaylor').value;
+  
+  const exact = Q_N(sigma, N);
+  const taylor2 = Q_N_taylor(sigma, N, 2);
+  const taylor4 = Q_N_taylor(sigma, N, 4);
+  const relErr = Math.abs(taylor4 - exact) / Math.max(exact, 1e-15);
+  
+  document.getElementById('m-exact').textContent = exact.toExponential(4);
+  document.getElementById('m-taylor2').textContent = taylor2.toExponential(4);
+  document.getElementById('m-taylor4').textContent = taylor4.toExponential(4);
+  document.getElementById('m-taylor-err').textContent = relErr.toExponential(2);
+  
+  // Draw comparison
+  const sigmas = Array.from({ length: 101 }, (_, i) => 0.45 + i * 0.1 / 100);
+  const exactVals = sigmas.map(s => Q_N(s, N));
+  const taylor2Vals = sigmas.map(s => Q_N_taylor(s, N, 2));
+  const taylor4Vals = sigmas.map(s => Q_N_taylor(s, N, 4));
+  
+  const { ctx, w, h } = setupCanvas('cvTaylor');
+  ctx.clearRect(0, 0, w, h);
+  const pad = { l: 52, r: 20, t: 20, b: 36 };
+  const allVals = [...exactVals, ...taylor2Vals, ...taylor4Vals];
+  const ymax = Math.max(...allVals) * 1.08;
+  const { toX, toY } = drawAxes(ctx, w, h, pad, 0.45, 0.55, 0, ymax, 'σ', 'Q_N(σ)');
+  
+  // Exact
+  ctx.beginPath();
+  ctx.strokeStyle = '#0e0f14';
+  ctx.lineWidth = 2;
+  sigmas.forEach((s, i) => {
+    const px = toX(s), py = toY(exactVals[i]);
+    i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+  });
+  ctx.stroke();
+  
+  // Taylor O(ε²)
+  ctx.beginPath();
+  ctx.strokeStyle = '#1a6b3a';
+  ctx.lineWidth = 1.5;
+  ctx.setLineDash([6, 3]);
+  sigmas.forEach((s, i) => {
+    const px = toX(s), py = toY(taylor2Vals[i]);
+    i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+  });
+  ctx.stroke();
+  
+  // Taylor O(ε⁴)
+  ctx.beginPath();
+  ctx.strokeStyle = '#c0392b';
+  ctx.lineWidth = 1.5;
+  ctx.setLineDash([3, 2]);
+  sigmas.forEach((s, i) => {
+    const px = toX(s), py = toY(taylor4Vals[i]);
+    i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+  });
+  ctx.stroke();
+  ctx.setLineDash([]);
+  
+  // σ = 1/2 line
+  ctx.strokeStyle = '#b8860b';
+  ctx.lineWidth = 1;
+  ctx.setLineDash([4, 3]);
+  ctx.beginPath();
+  ctx.moveTo(toX(0.5), pad.t);
+  ctx.lineTo(toX(0.5), h - pad.b);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  
+  // Legend
+  ctx.font = '9px DM Mono, monospace';
+  ctx.textAlign = 'left';
+  ctx.fillStyle = '#0e0f14';
+  ctx.fillRect(pad.l + 8, pad.t + 8, 16, 8);
+  ctx.fillText('Exact Q_N(σ)', pad.l + 30, pad.t + 15);
+  ctx.fillStyle = '#1a6b3a';
+  ctx.fillRect(pad.l + 8, pad.t + 23, 16, 8);
+  ctx.fillText('Taylor O(ε²)', pad.l + 30, pad.t + 30);
+  ctx.fillStyle = '#c0392b';
+  ctx.fillRect(pad.l + 8, pad.t + 38, 16, 8);
+  ctx.fillText('Taylor O(ε⁴)', pad.l + 30, pad.t + 45);
+}
+
+// ════════════════════════════════════════════════════════════════
+// INITIALIZATION
+// ════════════════════════════════════════════════════════════════
+
+window.addEventListener('load', () => {
+  computeQN();
+  computeGenerator();
+  computeCurvature();
+  computeTaylor();
+});
+</script>
+
+</body>
+</html>
