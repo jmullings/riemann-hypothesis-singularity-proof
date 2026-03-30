@@ -154,7 +154,7 @@ cd TDD_PROOF && pytest
 cd TDD_PROOF && pytest -v
 
 # Run a specific tier (e.g., analytic promotions)
-cd TDD_PROOF && pytest tests/test_46_analytic_promotions.py -v
+cd TDD_PROOF && pytest TDD_PROOF/tests/test_46_analytic_promotions.py -v
 ```
 
 ---

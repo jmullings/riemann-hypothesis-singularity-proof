@@ -40,7 +40,7 @@ __pycache__/
 
 # Include the HTML visualization
 !RH_SINGULARITY.html
-
+!RH_SELECTIVITY.html
 # Include index page
 !index.html
 

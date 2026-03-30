@@ -6,7 +6,7 @@
 > environment, and **exact commands for independent computational verification**.
 > All claims are testable via `pytest` — dependencies: `numpy`, `scipy`, `pytest`, `mpmath`.
 >
-> **To verify**: `cd TDD_PROOF && pip install -r requirements.txt && pytest tests/ -q --tb=short`
+> **To verify**: `cd TDD_PROOF && pip install -r requirements.txt && pytest TDD_PROOF/tests/ -q --tb=short`
 > **Expected**: `2052 passed, 10 xfailed, 0 warnings` — zero failures.
 
 ---
@@ -256,7 +256,7 @@ pip install numpy scipy pytest mpmath
 ### Step 1: Run the Full Suite (2052 tests)
 ```bash
 cd TDD_PROOF
-pytest tests/ -q --tb=short
+pytest TDD_PROOF/tests/ -q --tb=short
 ```
 **Expected output**: `2052 passed, 10 xfailed, 0 warnings`
 - **2052 passed**: All proof assertions hold.
@@ -266,38 +266,38 @@ pytest tests/ -q --tb=short
 
 ### Step 2: Verify the Contradiction Engine (Capstone)
 ```bash
-pytest tests/test_45_contradiction_engine.py -v --tb=short
+pytest TDD_PROOF/tests/test_45_contradiction_engine.py -v --tb=short
 ```
 **Expected**: 50/50 passed. Every off-critical $(\gamma_0, \Delta\beta > 0)$ fires a contradiction; every on-critical ($\Delta\beta = 0$) does NOT.
 
 ### Step 3: Verify the Four Gap Closures
 ```bash
 # Gap 1: Multi-zero interference isolation
-pytest tests/test_50_multi_zero_isolation.py tests/test_40_high_lying_bounds.py -v --tb=short
+pytest TDD_PROOF/tests/test_50_multi_zero_isolation.py TDD_PROOF/tests/test_40_high_lying_bounds.py -v --tb=short
 # Expected: 97 passed — base Weil always negative, Theorem 6.1 domination, R-L decay
 
 # Gap 2: Functional H-averaging
-pytest tests/test_51_functional_averaging.py tests/test_44_euler_form_spectral.py -v --tb=short
+pytest TDD_PROOF/tests/test_51_functional_averaging.py TDD_PROOF/tests/test_44_euler_form_spectral.py -v --tb=short
 # Expected: 49 passed — base_deltaA_avg always negative, Euler ↔ mpmath
 
 # Gap 3: Uniform small-Δβ bounds
-pytest tests/test_52_uniform_delta_beta.py tests/test_42_ube_analytic_bounds.py -v --tb=short
+pytest TDD_PROOF/tests/test_52_uniform_delta_beta.py TDD_PROOF/tests/test_42_ube_analytic_bounds.py -v --tb=short
 # Expected: 92 passed — γ₀-independent envelope, θ_ceiling → 0
 
 # Gap 4: Explicit contradiction witness
-pytest tests/test_53_contradiction_witness.py -v --tb=short
+pytest TDD_PROOF/tests/test_53_contradiction_witness.py -v --tb=short
 # Expected: 32 passed — witness construction, multi-regime, gap4 certificate
 ```
 
 ### Step 4: Verify Anti-Tautology (CIRCA Guard)
 ```bash
-pytest tests/test_27_circa_trap.py tests/test_28_bridge_isolation.py -v --tb=short
+pytest TDD_PROOF/tests/test_27_circa_trap.py TDD_PROOF/tests/test_28_bridge_isolation.py -v --tb=short
 # Expected: 32 passed — no circular logic, ZKZ firewall intact
 ```
 
 ### Step 5: Verify Triad Cross-Consistency
 ```bash
-pytest tests/test_39_triad_consistency.py tests/test_43_triad_analytic_integration.py -v --tb=short
+pytest TDD_PROOF/tests/test_39_triad_consistency.py TDD_PROOF/tests/test_43_triad_analytic_integration.py -v --tb=short
 # Expected: 96 passed — on-critical clean, off-critical detected, layers agree
 ```
 
@@ -336,9 +336,9 @@ When independently reviewing this repository, **execute** the following checks:
 
 | # | Claim | Verification Command | Expected |
 |---|-------|---------------------|----------|
-| 1 | Full suite passes | `pytest tests/ -q` | 2052 passed, 10 xfailed, 0 failures |
-| 2 | Contradiction fires off-critical | `pytest tests/test_45 -k "off_critical" -v` | All pass |
-| 3 | No false alarms on-critical | `pytest tests/test_45 -k "on_critical" -v` | All pass |
+| 1 | Full suite passes | `pytest TDD_PROOF/tests/ -q` | 2052 passed, 10 xfailed, 0 failures |
+| 2 | Contradiction fires off-critical | `pytest TDD_PROOF/tests/test_45 -k "off_critical" -v` | All pass |
+| 3 | No false alarms on-critical | `pytest TDD_PROOF/tests/test_45 -k "on_critical" -v` | All pass |
 | 4 | CIRCA anti-tautology holds | `pytest tests/test_27 -v` | All pass |
 | 5 | Bridge isolation (no zero leaks) | `pytest tests/test_28 -v` | All pass |
 | 6 | Bochner PSD universality | `pytest tests/test_02 tests/test_05 -v` | All pass |
