@@ -4,6 +4,7 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18881814.svg)](https://doi.org/10.5281/zenodo.18881814)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18912432.svg)](https://doi.org/10.5281/zenodo.18912432)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19038824.svg)](https://doi.org/10.5281/zenodo.19038824)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19223508.svg)](https://doi.org/10.5281/zenodo.19223508)
 
 > **📂 Start Here — TDD Proof Engine:**
 >
