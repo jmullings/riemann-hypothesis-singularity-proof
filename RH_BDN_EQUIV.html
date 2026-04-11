@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>de Bruijn–Newman Equivalence & Calogero-Moser Flow Visualizer</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
+
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: #020408;
+      color: #e0eee8;
+      font-family: 'Space Mono', monospace;
+    }
+
+    canvas {
+      display: block;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    /* Top Left UI */
+    #ui {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: rgba(2, 6, 16, 0.85);
+      border: 1px solid rgba(0, 224, 154, 0.2);
+      padding: 20px;
+      border-radius: 8px;
+      width: 350px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(10px);
+      z-index: 10;
+    }
+
+    /* Top Right Console - Continuous Tracking */
+    #console-tr {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: rgba(2, 6, 16, 0.85);
+      border: 1px solid rgba(255, 170, 0, 0.3);
+      padding: 20px;
+      border-radius: 8px;
+      width: 380px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(10px);
+      z-index: 10;
+      transition: all 0.3s ease;
+    }
+
+    h1 {
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #00e09a;
+      margin: 0 0 10px 0;
+    }
+
+    #console-tr h1 {
+      color: #ffaa00;
+    }
+
+    p {
+      font-size: 11px;
+      color: #8fa096;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      font-size: 11px;
+      margin-bottom: 8px;
+    }
+
+    .color-box {
+      width: 12px;
+      height: 12px;
+      border-radius: 2px;
+      margin-right: 10px;
+    }
+
+    .control-group {
+      margin-top: 20px;
+      border-top: 1px solid rgba(0, 224, 154, 0.1);
+      padding-top: 15px;
+    }
+
+    .control-group.orange {
+      border-top: 1px solid rgba(255, 170, 0, 0.2);
+    }
+
+    label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      margin-bottom: 5px;
+      cursor: pointer;
+    }
+
+    input[type=range] {
+      width: 100%;
+      height: 4px;
+      background: rgba(0, 224, 154, 0.1);
+      border-radius: 2px;
+      outline: none;
+      accent-color: #00e09a;
+    }
+
+    input[type=range].orange-range {
+      background: rgba(255, 170, 0, 0.1);
+      accent-color: #ffaa00;
+    }
+
+    input[type="checkbox"] {
+      accent-color: #ffaa00;
+      width: 14px;
+      height: 14px;
+      cursor: pointer;
+    }
+
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      font-weight: bold;
+      color: #e0eee8;
+      margin-bottom: 15px;
+    }
+
+    .tracking-metrics {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 15px;
+      font-size: 11px;
+      color: #8fa096;
+    }
+
+    .tracking-metrics div span {
+      display: block;
+      color: #ffaa00;
+      font-size: 13px;
+      font-weight: bold;
+      margin-top: 3px;
+    }
+
+    /* Citations / Links */
+    .links-section {
+      margin-top: 25px;
+      padding-top: 15px;
+      border-top: 1px dashed rgba(0, 224, 154, 0.2);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .links-section a {
+      color: #00e09a;
+      text-decoration: none;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      transition: all 0.2s;
+      background: rgba(0, 224, 154, 0.05);
+      padding: 8px 10px;
+      border-radius: 4px;
+      border: 1px solid rgba(0, 224, 154, 0.1);
+    }
+
+    .links-section a:hover {
+      background: rgba(0, 224, 154, 0.15);
+      color: #ffffff;
+      transform: translateX(3px);
+    }
+
+    #metrics {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(2, 6, 16, 0.85);
+      border: 1px solid rgba(0, 224, 154, 0.2);
+      padding: 10px 30px;
+      border-radius: 4px;
+      font-size: 12px;
+      display: flex;
+      gap: 30px;
+      letter-spacing: 1px;
+      z-index: 9;
+    }
+
+    .metric-val {
+      color: #00e09a;
+      font-weight: bold;
+    }
+
+    .panels-bottom {
+      position: absolute;
+      bottom: 20px;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      pointer-events: none;
+    }
+
+    .eq-panel {
+      background: rgba(2, 6, 16, 0.9);
+      border: 1px solid rgba(0, 224, 154, 0.2);
+      border-radius: 4px;
+      padding: 10px 14px;
+      font-size: 11px;
+      line-height: 1.4;
+      max-width: 260px;
+      pointer-events: auto;
+      margin: 0 20px;
+      z-index: 9;
+    }
+
+    .eq-title {
+      color: #00e09a;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+
+    .eq-title.orange {
+      color: #ffaa00;
+    }
+
+    .eq-body {
+      color: #e0eee8;
+      font-size: 11px;
+      white-space: pre-line;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 8px;
+      border-radius: 4px;
+      margin-top: 6px;
+    }
+
+    .eq-note {
+      color: #8fa096;
+      font-size: 10px;
+      margin-top: 6px;
+    }
+
+    #tracking-content {
+      transition: opacity 0.3s;
+    }
+
+    .disabled {
+      opacity: 0.3;
+      pointer-events: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="ui">
+    <h1>de Bruijn–Newman Equivalence</h1>
+    <p>
+      A visual exploration of how a fixed sech² transport Λ(T,H) and the
+      de Bruijn–Newman heat-flow H(λ,z) both probe the critical line.
+    </p>
+
+    <div class="legend-item">
+      <div class="color-box" style="background: #00b0ff; box-shadow: 0 0 8px #00b0ff;"></div>
+      <span>Λ(T,H) Sech² Kernel Base</span>
+    </div>
+    <div class="legend-item">
+      <div class="color-box" style="background: #ff3366; box-shadow: 0 0 8px #ff3366;"></div>
+      <span>de Bruijn–Newman Heat-Flow Probe (H(λ,z))</span>
+    </div>
+    <div class="legend-item">
+      <div class="color-box" style="background: #00ff88; box-shadow: 0 0 8px #00ff88;"></div>
+      <span>Zero Location (γ)</span>
+    </div>
+
+    <div class="control-group">
+      <label><span>Simulation Speed</span> <span id="valSpeed">0.1x</span></label>
+      <input type="range" id="speedSlider" min="0.1" max="3" step="0.1" value="0.1">
+    </div>
+
+    <!-- Changed Camera Orbit to Dynamic Zoom Slider -->
+    <div class="control-group">
+      <label><span>Zoom Level</span> <span id="valZoom">0.7x</span></label>
+      <input type="range" id="zoomSlider" min="0.7" max="3" step="0.1" value="0.7">
+    </div>
+
+    <!-- Citations / References Section -->
+    <div class="links-section">
+      <a href="https://zenodo.org/records/19223508" target="_blank">
+        📄 Zenodo: RH Singularity Proof Paper
+      </a>
+      <a href="https://github.com/jmullings/riemann-hypothesis-singularity-proof" target="_blank">
+        💻 GitHub: Computational Repository
+      </a>
+    </div>
+  </div>
+
+  <div id="console-tr">
+    <h1>Continuous Tracking CM Gas Flow</h1>
+
+    <label class="toggle-row">
+      <input type="checkbox" id="trToggle" checked>
+      Enable Particle System Surrogate
+    </label>
+
+    <div id="tracking-content">
+      <p style="margin-bottom: 10px;">
+        Visual Calogero-Moser approximation of ζ zero repulsion under λ-deformation. Simulating stabilized Dyson log-gas
+        dynamics with exact global far-field forces.
+      </p>
+
+      <label><span>Smoothing Width (H)</span> <span id="valH">0.00</span></label>
+      <input type="range" id="trSlider" class="orange-range" min="0" max="1" step="0.01" value="0">
+
+      <div class="tracking-metrics">
+        <div>Effective λ Proxy: <span id="m_lambda">0.000</span></div>
+        <div>Local Rigidity Δt: <span id="m_iso">SCANNING</span></div>
+        <div>Interaction Topology: <span style="color:#00ff88;">Global (N×N)</span></div>
+        <div>Density Drift: <span id="m_stab" style="color:#00ff88;">STABILIZED</span></div>
+      </div>
+
+      <div class="control-group orange">
+        <div class="eq-title orange">Stabilized CM ODE</div>
+        <div class="eq-body">dt_k/dλ = 2 ∑_{j≠k} (t_k-t_j) / ((t_k-t_j)²+ε²)
+
+          λ_eff(H) = (π² H²) / 6</div>
+        <div class="eq-note">
+          Global integral system maintaining spectral rigidity. Replaces DBN analytic PDE for stable visualization.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="metrics">
+    <div>CURRENT HEIGHT T: <span id="m_T" class="metric-val">0.00</span></div>
+    <div>ACTIVE ZERO γ: <span id="m_zero" class="metric-val">14.13</span></div>
+  </div>
+
+  <div class="panels-bottom">
+    <div class="eq-panel" id="eq-classical">
+      <div class="eq-title">Classical de Bruijn–Newman</div>
+      <div class="eq-body">H(λ,z) = ∫_ℝ Φ(t) e^{λ t²} e^{i z t} dt
+        ∂H/∂λ = ∂²H/∂z²</div>
+      <div class="eq-note">Analytic heat-flow evolution in λ.</div>
+    </div>
+
+    <div class="eq-panel" id="eq-sech2">
+      <div class="eq-title">Λ(T,H) Sech² Functional</div>
+      <div class="eq-body">Λ(T,H) = ∫ |Z(T+u)|² g_H(u) / ∫ g_H(u)
+        g_H(u) = sech²(u/H)</div>
+      <div class="eq-note">Transport analogue inspired by DBN.</div>
+    </div>
+  </div>
+
+  <canvas id="canvas"></canvas>
+
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    // --- MATHEMATICAL ZERO GENERATION (First 100 Real Zeros) ---
+    const positiveZeros = [
+      14.1347, 21.0220, 25.0108, 30.4248, 32.9350, 37.5861, 40.9187, 43.3270, 48.0051, 49.7738,
+      52.9703, 56.4462, 59.3470, 60.8317, 65.1125, 67.0798, 69.5464, 72.0671, 75.7046, 77.1448,
+      79.3373, 82.9103, 84.7354, 87.4252, 88.8091, 92.4918, 94.6513, 95.8706, 98.8311, 101.3178,
+      104.3320, 105.4466, 107.1686, 111.0295, 111.8746, 114.3202, 116.2266, 118.7907, 121.3701, 122.9468,
+      124.2568, 127.5166, 129.5787, 131.0876, 133.4977, 134.7565, 138.1160, 139.7362, 141.1237, 143.1118,
+      146.0009, 147.4227, 150.0535, 150.9252, 153.0246, 156.1129, 157.5975, 158.8499, 161.1889, 163.0307,
+      165.5373, 167.1844, 169.0945, 169.9119, 173.4115, 174.7541, 176.4414, 178.3774, 179.9164, 182.2070,
+      184.8744, 185.5987, 187.2289, 189.4161, 192.0266, 193.0797, 195.2653, 196.8764, 198.0153, 201.2647,
+      202.4935, 204.1896, 205.3946, 207.9062, 209.5765, 211.6908, 213.3479, 214.5470, 216.1695, 219.0675,
+      220.7149, 221.3996, 224.0070, 224.9833, 227.4214, 229.3374, 231.2501, 231.9872, 233.6934, 236.5242
+    ];
+
+    // Precompute trajectories using full global Calogero-Moser ODE solver
+    const H_MAX = 1.0;
+    const H_STEPS = 100;
+    const trajectories = [];
+    trajectories.push(new Float64Array(positiveZeros));
+    const EPSILON_SQ = 0.05; // Stabilizer
+
+    for (let s = 1; s <= H_STEPS; s++) {
+      let H_prev = ((s - 1) / H_STEPS) * H_MAX;
+      let H_curr = (s / H_STEPS) * H_MAX;
+      let lam_prev = (Math.PI * Math.PI * H_prev * H_prev) / 6;
+      let lam_curr = (Math.PI * Math.PI * H_curr * H_curr) / 6;
+      let dlam = lam_curr - lam_prev;
+
+      let prevZ = trajectories[s - 1];
+      let nextZ = new Float64Array(prevZ.length);
+
+      for (let i = 0; i < prevZ.length; i++) {
+        let sum = 0;
+        // Global N*N Interaction (No cutoff window)
+        for (let j = 0; j < prevZ.length; j++) {
+          if (i !== j) {
+            let diff = prevZ[i] - prevZ[j];
+            sum += diff / (diff * diff + EPSILON_SQ);
+          }
+        }
+        nextZ[i] = prevZ[i] + dlam * 2 * sum;
+      }
+      trajectories.push(nextZ);
+    }
+
+    // --- UI CONTROLS ---
+
+    let T = 10.0;
+    let speed = 0.01;
+    let cameraAngle = 0;
+    let zoomScale = 0.7; // Handled by zoom slider now
+
+    const speedSlider = document.getElementById('speedSlider');
+    const zoomSlider = document.getElementById('zoomSlider'); // Replaced orbit
+    const trToggle = document.getElementById('trToggle');
+    const trSlider = document.getElementById('trSlider');
+    const trContent = document.getElementById('tracking-content');
+
+    speedSlider.addEventListener('input', (e) => {
+      speed = 0.02 * parseFloat(e.target.value);
+      document.getElementById('valSpeed').innerText = parseFloat(e.target.value).toFixed(1) + "x";
+    });
+
+    zoomSlider.addEventListener('input', (e) => {
+      zoomScale = parseFloat(e.target.value);
+      document.getElementById('valZoom').innerText = zoomScale.toFixed(1) + "x";
+    });
+
+    trToggle.addEventListener('change', (e) => {
+      if (e.target.checked) {
+        trContent.classList.remove('disabled');
+      } else {
+        trContent.classList.add('disabled');
+      }
+    });
+
+    trSlider.addEventListener('input', (e) => {
+      const hVal = parseFloat(e.target.value);
+      document.getElementById('valH').innerText = hVal.toFixed(2);
+      const lam = (Math.PI * Math.PI * hVal * hVal) / 6;
+      document.getElementById('m_lambda').innerText = lam.toFixed(3);
+    });
+
+    // --- 3D ENGINE (Enlarged Scale & Zoomable) ---
+
+    const BASE_FOV = 550;
+    const SCALEY = 50;
+
+    function project(x, y, z) {
+      const cosA = Math.cos(cameraAngle);
+      const sinA = Math.sin(cameraAngle);
+      const rx = x * cosA - z * sinA;
+      const rz = x * sinA + z * cosA + 600;
+
+      // Zoom modifies the effective FOV projection scale
+      const scale = (BASE_FOV * zoomScale) / rz;
+
+      return {
+        x: canvas.width / 2 + rx * scale,
+        y: canvas.height / 2 + y * scale,
+        scale,
+        depth: rz
+      };
+    }
+
+    const trailsSech2 = [];
+    const trailsDBN = [];
+    const bursts = [];
+    const greenPulses = [];
+
+    function createBurst(x, y, z, color) {
+      for (let i = 0; i < 30; i++) {
+        bursts.push({
+          x, y, z,
+          vx: (Math.random() - 0.5) * 20,
+          vy: (Math.random() - 0.5) * 20,
+          vz: (Math.random() - 0.5) * 20,
+          life: 1.0,
+          color
+        });
+      }
+    }
+
+    function createGreenPulse(x, y, z) {
+      greenPulses.push({ x, y, z, radius: 0, maxRadius: 220, life: 1.0 });
+    }
+
+    // --- RENDER LOOP ---
+
+    let activeZeroRenderIdx = 0;
+
+    function loop() {
+      ctx.fillStyle = '#020408';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Subtle constant rotation ensures 3D volume mapping stays evident
+      cameraAngle += 0.002;
+
+      const isTracking = trToggle.checked;
+      const currentH = isTracking ? parseFloat(trSlider.value) : 0;
+      const stepIdx = Math.floor(currentH * H_STEPS);
+      const currentZeros = trajectories[stepIdx];
+      const baseZ = trajectories[0];
+
+      // Identify active zero based on T
+      let activeFound = false;
+      for (let i = 0; i < currentZeros.length; i++) {
+        if (currentZeros[i] > T) {
+          activeZeroRenderIdx = i;
+          activeFound = true;
+          break;
+        }
+      }
+
+      // Cycle T gracefully if we reach the end of our subset
+      if (T > currentZeros[currentZeros.length - 2]) {
+        T = 10.0;
+        activeZeroRenderIdx = 0;
+        trailsSech2.length = 0;
+        trailsDBN.length = 0;
+      }
+
+      const currentZeroPos = currentZeros[activeZeroRenderIdx];
+      T += speed;
+
+      if (activeFound && Math.abs(T - currentZeroPos) < speed) {
+        createGreenPulse(0, 0, 0);
+        createBurst(0, 0, 0, '#00ff88');
+        createBurst(0, 0, 0, '#ff3366');
+        createBurst(0, 0, 0, '#00b0ff');
+      }
+
+      document.getElementById('m_T').innerText = T.toFixed(2);
+      document.getElementById('m_zero').innerText = currentZeroPos ? currentZeroPos.toFixed(3) : "---";
+
+      if (isTracking && currentZeroPos && activeZeroRenderIdx > 0 && activeZeroRenderIdx < currentZeros.length - 1) {
+        const leftDist = currentZeroPos - currentZeros[activeZeroRenderIdx - 1];
+        const rightDist = currentZeros[activeZeroRenderIdx + 1] - currentZeroPos;
+        const isolation = Math.min(leftDist, rightDist);
+        document.getElementById('m_iso').innerText = isolation.toFixed(3);
+      }
+
+      // Grid rendering
+      ctx.strokeStyle = 'rgba(0, 224, 154, 0.08)';
+      ctx.lineWidth = 1;
+      for (let i = -300; i <= 300; i += 40) {
+        const p1 = project(-150, i, 0);
+        const p2 = project(150, i, 0);
+        ctx.beginPath(); ctx.moveTo(p1.x, p1.y); ctx.lineTo(p2.x, p2.y); ctx.stroke();
+      }
+
+      // Central Critical Line (Extended infinitely to edges)
+      const axisTop = project(0, -10000, 0);
+      const axisBottom = project(0, 10000, 0);
+      ctx.strokeStyle = 'rgba(0, 255, 136, 0.4)';
+      ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(axisTop.x, axisTop.y); ctx.lineTo(axisBottom.x, axisBottom.y); ctx.stroke();
+
+      // Render Zeros
+      for (let i = 0; i < 20; i++) {
+        let gIdx = activeZeroRenderIdx + i - 4;
+        if (gIdx < 0 || gIdx >= currentZeros.length) continue;
+
+        let zBase = baseZ[gIdx];
+        let zCurr = currentZeros[gIdx];
+
+        let yPosBase = (zBase - T) * SCALEY;
+        let yPosCurr = (zCurr - T) * SCALEY;
+
+        if (Math.abs(yPosCurr) > 800) continue;
+
+        // --- Snaking Flow Trails ---
+        if (isTracking && currentH > 0) {
+          const pb = project(0, yPosBase, 0);
+
+          // Draw ghost origin anchor
+          ctx.beginPath();
+          ctx.arc(pb.x, pb.y, 4 * pb.scale, 0, Math.PI * 2);
+          ctx.strokeStyle = 'rgba(255, 170, 0, 0.3)';
+          ctx.stroke();
+
+          // Calculate dynamic coil snake wrapping around critical line
+          let flowDist = Math.abs(yPosCurr - yPosBase);
+          let snakeAmp = Math.min(25, flowDist * 0.4 + 2); // Scales with drift
+          let snakeTwists = 2.5; // Number of coils
+
+          ctx.beginPath();
+          for (let k = 0; k <= 1.0; k += 0.04) {
+            // Envelope limits amplitude at the exact beginning and end
+            let env = Math.sin(k * Math.PI);
+            let phase = T * 3 + gIdx; // Offsets timing per zero
+
+            let sX = Math.cos(k * snakeTwists * Math.PI * 2 + phase) * snakeAmp * env;
+            let sZ = Math.sin(k * snakeTwists * Math.PI * 2 + phase) * snakeAmp * env;
+            let sY = yPosBase + (yPosCurr - yPosBase) * k;
+
+            let pk = project(sX, sY, sZ);
+            if (k === 0) ctx.moveTo(pk.x, pk.y);
+            else ctx.lineTo(pk.x, pk.y);
+          }
+
+          ctx.strokeStyle = 'rgba(255, 170, 0, 0.7)';
+          ctx.lineWidth = 2 * zoomScale;
+          ctx.stroke();
+        }
+
+        const pos = project(0, yPosCurr, 0);
+        if (pos.scale > 0) {
+          ctx.beginPath();
+          ctx.arc(pos.x, pos.y, 8 * pos.scale, 0, Math.PI * 2);
+          ctx.fillStyle = isTracking ? '#ffaa00' : 'rgba(0, 224, 154, 0.9)';
+          ctx.shadowBlur = isTracking ? 12 : 0;
+          ctx.shadowColor = '#ffaa00';
+          ctx.fill();
+          ctx.shadowBlur = 0;
+
+          ctx.fillStyle = 'rgba(255,255,255,0.9)';
+          ctx.font = `${Math.max(12, Math.floor(15 * pos.scale))}px 'Space Mono'`;
+          ctx.fillText(`γ = ${zCurr.toFixed(2)}`, pos.x + 26 * zoomScale, pos.y + 5 * zoomScale);
+        }
+      }
+
+      // Dynamic probing paths (Enlarged)
+      const distToZero = (currentZeroPos - T);
+      const angleSech2 = T * 4;
+      const radiusSech2 = Math.min(150, Math.max(0, distToZero * SCALEY));
+      const xS = Math.cos(angleSech2) * radiusSech2;
+      const zS = Math.sin(angleSech2) * radiusSech2;
+      const yS = distToZero * SCALEY;
+
+      const angleDBN = T * 2.5 + Math.PI;
+      const radiusDBN = Math.min(120, Math.max(0, distToZero * (SCALEY * 0.8)));
+      const xD = Math.cos(angleDBN) * radiusDBN;
+      const zD = Math.sin(angleDBN) * radiusDBN;
+      const yD = distToZero * SCALEY;
+
+      trailsSech2.push({ x: xS, y: yS, z: zS, alpha: 1.0 });
+      trailsDBN.push({ x: xD, y: yD, z: zD, alpha: 1.0 });
+      if (trailsSech2.length > 100) trailsSech2.shift();
+      if (trailsDBN.length > 100) trailsDBN.shift();
+
+      function drawTrail(trailArray, color) {
+        if (trailArray.length < 2) return;
+        ctx.beginPath();
+        ctx.strokeStyle = color;
+        for (let i = 0; i < trailArray.length; i++) {
+          const pt = trailArray[i];
+          const pos = project(pt.x, pt.y, pt.z);
+          if (i === 0) ctx.moveTo(pos.x, pos.y);
+          else ctx.lineTo(pos.x, pos.y);
+          pt.alpha -= 0.01;
+        }
+        ctx.stroke();
+      }
+
+      ctx.lineWidth = 2.5 * zoomScale;
+      drawTrail(trailsSech2, '#00b0ff');
+      drawTrail(trailsDBN, '#ff3366');
+
+      const posS = project(xS, yS, zS);
+      ctx.beginPath(); ctx.arc(posS.x, posS.y, 10 * posS.scale, 0, Math.PI * 2);
+      ctx.fillStyle = '#00b0ff'; ctx.shadowBlur = 20; ctx.shadowColor = '#00b0ff'; ctx.fill();
+
+      const posD = project(xD, yD, zD);
+      ctx.beginPath(); ctx.arc(posD.x, posD.y, 10 * posD.scale, 0, Math.PI * 2);
+      ctx.fillStyle = '#ff3366'; ctx.shadowBlur = 20; ctx.shadowColor = '#ff3366'; ctx.fill();
+      ctx.shadowBlur = 0;
+
+      // Effects
+      for (let i = greenPulses.length - 1; i >= 0; i--) {
+        const g = greenPulses[i];
+        g.radius += 6 * zoomScale; g.life -= 0.02;
+        if (g.life <= 0 || g.radius > g.maxRadius * zoomScale) { greenPulses.splice(i, 1); continue; }
+        const center = project(g.x, g.y, g.z);
+        ctx.beginPath(); ctx.arc(center.x, center.y, g.radius, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(0,255,136,${g.life})`; ctx.lineWidth = 3 * zoomScale; ctx.stroke();
+      }
+
+      for (let i = bursts.length - 1; i >= 0; i--) {
+        const b = bursts[i];
+        b.x += b.vx; b.y += b.vy; b.z += b.vz; b.life -= 0.03;
+        if (b.life <= 0) { bursts.splice(i, 1); continue; }
+        const pos = project(b.x, b.y, b.z);
+        ctx.beginPath(); ctx.arc(pos.x, pos.y, 4 * pos.scale * b.life, 0, Math.PI * 2);
+        ctx.fillStyle = b.color; ctx.globalAlpha = b.life; ctx.fill();
+        ctx.globalAlpha = 1.0;
+      }
+
+      requestAnimationFrame(loop);
+    }
+
+    loop();
+  </script>
+</body>
+
+</html>
